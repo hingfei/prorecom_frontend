@@ -8,6 +8,8 @@ import MuiToolbar, { ToolbarProps } from '@mui/material/Toolbar'
 
 // ** Type Import
 import { Settings } from 'src/@core/context/settingsContext'
+import { Simulate } from "react-dom/test-utils";
+import blur = Simulate.blur;
 
 interface Props {
   hidden: boolean
@@ -22,9 +24,11 @@ const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   padding: theme.spacing(0, 6),
-  backgroundColor: 'transparent',
+  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  backdropFilter: blur('0.25rem'),
   color: theme.palette.text.primary,
   minHeight: theme.mixins.toolbar.minHeight,
+  boxShadow: theme.shadows[5],
   [theme.breakpoints.down('sm')]: {
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4)
@@ -52,12 +56,12 @@ const LayoutAppBar = (props: Props) => {
   const { contentWidth } = settings
 
   return (
-    <AppBar elevation={0} color='default' className='layout-navbar' position='static'>
+    <AppBar elevation={0} color='default' className='layout-navbar' position='sticky'>
       <Toolbar
         className='navbar-content-container'
         sx={{
           ...(contentWidth === 'boxed' && {
-            '@media (min-width:1440px)': { maxWidth: `calc(1440px - ${theme.spacing(6)} * 2)` }
+            '@media (min-width:1440px)': { maxWidth: `calc(1440px - ${theme.spacing(1)} * 2)` }
           })
         }}
       >
