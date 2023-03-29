@@ -57,7 +57,8 @@ const VerticalNavHeader = (props: Props) => {
   return (
     <MenuHeaderWrapper className='nav-header' sx={{ pl: 6 }}>
       {userVerticalNavMenuBranding ? (
-        userVerticalNavMenuBranding(props)
+        // userVerticalNavMenuBranding(props)
+        ''
       ) : (
         <Link href='/' passHref>
           <StyledLink>
