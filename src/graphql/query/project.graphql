@@ -1,0 +1,7 @@
+query projectListing {
+  projectListing {
+    projectId
+    projectName
+    companyName
+  }
+}

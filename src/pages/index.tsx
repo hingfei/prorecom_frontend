@@ -3,20 +3,8 @@ import IntroToProRecom from 'src/views/home/IntroToProRecom'
 import IntroToAlgo from 'src/views/home/IntroToAlgo'
 import { styled } from '@mui/material/styles'
 import Box, { BoxProps } from '@mui/material/Box'
-import { graphql } from '../gql'
-import { useQuery } from "@apollo/client";
-import Spinner from "../@core/components/spinner";
-
-const PROJECT_LISTING = graphql(`
-  query ProjectListing {
-    projectListing {
-      projectId
-      projectName
-      companyName
-    }
-  }
-`)
-
+import Spinner from '../@core/components/spinner'
+import { useProjectListingQuery } from '../graphql/api'
 
 // ** Styled Components
 const BoxSection = styled(Box)<BoxProps>(({ theme }) => ({
@@ -29,22 +17,18 @@ const BoxSection = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const Home = () => {
-  const { data, loading, error } = useQuery(PROJECT_LISTING)
+  const { data, loading } = useProjectListingQuery({
+    fetchPolicy: 'no-cache'
+  })
+
+  if (data) {
+    console.log('data', data)
+  }
+
   if (loading) {
     return <Spinner />
   }
 
-  if (error) {
-    console.error(error)
-    return <div>Error</div>
-  }
-
-  if (!data) {
-    return <div>No data</div>
-  }
-  if (data) {
-    console.log("data", data);
-  }
   return (
     <>
       <BoxSection>

@@ -1,10 +1,11 @@
-/* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -170,4 +171,39 @@ export type ProjectListingQueryVariables = Exact<{ [key: string]: never; }>;
 export type ProjectListingQuery = { __typename?: 'Query', projectListing: Array<{ __typename?: 'Project', projectId: string, projectName: string, companyName: string }> };
 
 
-export const ProjectListingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ProjectListing"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projectListing"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projectId"}},{"kind":"Field","name":{"kind":"Name","value":"projectName"}},{"kind":"Field","name":{"kind":"Name","value":"companyName"}}]}}]}}]} as unknown as DocumentNode<ProjectListingQuery, ProjectListingQueryVariables>;
+export const ProjectListingDocument = gql`
+    query projectListing {
+  projectListing {
+    projectId
+    projectName
+    companyName
+  }
+}
+    `;
+
+/**
+ * __useProjectListingQuery__
+ *
+ * To run a query within a React component, call `useProjectListingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectListingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectListingQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProjectListingQuery(baseOptions?: Apollo.QueryHookOptions<ProjectListingQuery, ProjectListingQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectListingQuery, ProjectListingQueryVariables>(ProjectListingDocument, options);
+      }
+export function useProjectListingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectListingQuery, ProjectListingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectListingQuery, ProjectListingQueryVariables>(ProjectListingDocument, options);
+        }
+export type ProjectListingQueryHookResult = ReturnType<typeof useProjectListingQuery>;
+export type ProjectListingLazyQueryHookResult = ReturnType<typeof useProjectListingLazyQuery>;
+export type ProjectListingQueryResult = Apollo.QueryResult<ProjectListingQuery, ProjectListingQueryVariables>;

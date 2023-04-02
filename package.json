@@ -18,7 +18,7 @@
     "export": "next export",
     "lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "codegen": "graphql-codegen"
+    "generate:graphql": "graphql-codegen --config codegen.yml"
   },
   "eslintIgnore": [
     "src/graphql/api.ts"
