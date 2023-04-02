@@ -13,16 +13,19 @@
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    // "@typescript-eslint/no-explicit-any": "error",
     // add new line above comment
     "lines-around-comment": [
       "error",
       {
-        "beforeLineComment": true,
-        "beforeBlockComment": true,
-        "allowBlockStart": true,
-        "allowClassStart": true,
-        "allowObjectStart": true,
-        "allowArrayStart": true
+        "beforeLineComment": false,
+        "beforeBlockComment": false,
+        "allowBlockStart": false,
+        "allowClassStart": false,
+        "allowObjectStart": false,
+        "allowArrayStart": false
       }
     ],
     // add new line above return
