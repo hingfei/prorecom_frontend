@@ -22,6 +22,7 @@ export type TextInputType = {
   inputProps?: TextFieldProps;
   isNumber?: boolean;
   isRequired?: boolean;
+  isAutofocus?: boolean;
   onChangeCallback?: (value: any) => void;
 };
 

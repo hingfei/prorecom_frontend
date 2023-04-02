@@ -46,6 +46,7 @@ export const TextInput = ({
   inputProps,
   isRequired,
   isNumber,
+  isAutofocus,
   onChangeCallback,
   endAdornment,
   startAdornment
@@ -61,6 +62,7 @@ export const TextInput = ({
     <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message}>
       <TextField
         required={Boolean(isRequired)}
+        autoFocus={Boolean(isAutofocus)}
         value={value ? value : ''}
         onChange={event => {
           if (isNumber && !!event?.target?.value) {
