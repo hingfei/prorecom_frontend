@@ -3,6 +3,8 @@ import Head from 'next/head'
 import { Router } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
+import { ApolloProvider } from "@apollo/client";
+import { client } from "../@core/utils/create-apollo-client";
 
 // ** Loader Import
 import NProgress from 'nprogress'
@@ -59,25 +61,27 @@ const App = (props: ExtendedAppProps) => {
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>{`${themeConfig.templateName} - Intelligent Project Recommendation`}</title>
-        <meta
-          name='description'
-          content={`${themeConfig.templateName} – Intelligent Project Recommendation Designed Just For You.`}
-        />
-        <meta name='keywords' content='Project, Recommendation' />
-        <meta name='viewport' content='initial-scale=1, width=device-width' />
-      </Head>
+    <ApolloProvider client={client}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>{`${themeConfig.templateName} - Intelligent Project Recommendation`}</title>
+          <meta
+            name='description'
+            content={`${themeConfig.templateName} – Intelligent Project Recommendation Designed Just For You.`}
+          />
+          <meta name='keywords' content='Project, Recommendation' />
+          <meta name='viewport' content='initial-scale=1, width=device-width' />
+        </Head>
 
-      <SettingsProvider>
-        <SettingsConsumer>
-          {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-          }}
-        </SettingsConsumer>
-      </SettingsProvider>
-    </CacheProvider>
+        <SettingsProvider>
+          <SettingsConsumer>
+            {({ settings }) => {
+              return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+            }}
+          </SettingsConsumer>
+        </SettingsProvider>
+      </CacheProvider>
+    </ApolloProvider>
   )
 }
 
