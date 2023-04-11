@@ -14,6 +14,7 @@ export type Settings = {
   mode: PaletteMode
   themeColor: ThemeColor
   contentWidth: ContentWidth
+  toastPosition?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
 }
 
 export type SettingsContextValue = {
@@ -24,7 +25,8 @@ export type SettingsContextValue = {
 const initialSettings: Settings = {
   themeColor: 'primary',
   mode: themeConfig.mode,
-  contentWidth: themeConfig.contentWidth
+  contentWidth: themeConfig.contentWidth,
+  toastPosition: themeConfig.toastPosition,
 }
 
 // ** Create Context
