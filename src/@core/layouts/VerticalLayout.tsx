@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Fab from '@mui/material/Fab'
@@ -23,6 +23,9 @@ import ScrollToTop from 'src/@core/components/scroll-to-top'
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import toast from "react-hot-toast";
+import { authConfig } from "../../configs/auth";
+import DrawerBase from "../components/drawer/DrawerBase";
 
 const VerticalLayoutWrapper = styled('div')({
   height: '100%',
@@ -89,6 +92,7 @@ const VerticalLayout = (props: LayoutProps) => {
             }}
           >
             {children}
+            <DrawerBase />
           </ContentWrapper>
 
           {/* Footer Component */}
