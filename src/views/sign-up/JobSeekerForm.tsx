@@ -2,16 +2,18 @@ import { useTheme } from '@mui/material/styles'
 import { SelectInput, TextInput } from 'src/@core/components/custom-inputs'
 import { Box, Button, Grid, Typography } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
+import { genderSelect } from "../../constants";
 
-const genderSelect = [
-  {
-    label: 'Male',
-    value: 'male'
-  },
-  { label: 'Female', value: 'female' }
-]
 
-const JobSeekerForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (val: number) => void }) => {
+const JobSeekerForm = ({
+  onClick,
+  changeStep,
+  isSubmitting
+}: {
+  onClick?: any
+  changeStep?: (val: number) => void
+  isSubmitting: boolean
+}) => {
   const theme = useTheme()
 
   const { control } = useFormContext()
@@ -31,7 +33,7 @@ const JobSeekerForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (v
             }}
             controllerProps={{
               control,
-              name: 'seeker_name'
+              name: 'seekerName'
             }}
             isRequired
           />
@@ -44,7 +46,7 @@ const JobSeekerForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (v
               }}
               controllerProps={{
                 control,
-                name: 'seeker_age'
+                name: 'seekerAge'
               }}
               isNumber
               isRequired
@@ -55,7 +57,7 @@ const JobSeekerForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (v
               selectProps={{ label: 'Gender' }}
               controllerProps={{
                 control,
-                name: 'seeker_gender'
+                name: 'seekerGender'
               }}
               selectData={genderSelect}
               isRequired
@@ -71,9 +73,8 @@ const JobSeekerForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (v
               }}
               controllerProps={{
                 control,
-                name: 'seeker_birthdate'
+                name: 'seekerBirthdate'
               }}
-              isRequired
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -83,7 +84,7 @@ const JobSeekerForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (v
               }}
               controllerProps={{
                 control,
-                name: 'seeker_phone_no'
+                name: 'seekerPhoneNo'
               }}
               isNumber
               isRequired
@@ -98,7 +99,7 @@ const JobSeekerForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (v
             }}
             controllerProps={{
               control,
-              name: 'seeker_street'
+              name: 'seekerStreet'
             }}
             isRequired
           />
@@ -111,7 +112,7 @@ const JobSeekerForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (v
               }}
               controllerProps={{
                 control,
-                name: 'seeker_city'
+                name: 'seekerCity'
               }}
               isRequired
             />
@@ -123,7 +124,7 @@ const JobSeekerForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (v
               }}
               controllerProps={{
                 control,
-                name: 'seeker_state'
+                name: 'seekerState'
               }}
               isRequired
             />
@@ -144,7 +145,7 @@ const JobSeekerForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (v
         >
           Back
         </Button>
-        <Button fullWidth variant='contained' onClick={onClick} size={'large'}>
+        <Button fullWidth variant='contained' onClick={onClick} size={'large'} disabled={isSubmitting}>
           Join Now
         </Button>
       </Box>

@@ -2,16 +2,17 @@ import { useTheme } from '@mui/material/styles'
 import { SelectInput, TextInput } from 'src/@core/components/custom-inputs'
 import { Box, Button, Grid, Typography } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
+import { companySize } from "../../constants";
 
-const companySize = [
-  { label: '0 - 10', value: 'extra_small' },
-  { label: '11 - 50', value: 'small' },
-  { label: '51 - 200', value: 'medium' },
-  { label: '201 - 500', value: 'large' },
-  { label: '501 - 1000', value: 'extra_large' }
-]
-
-const CompanyForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (val: number) => void }) => {
+const CompanyForm = ({
+  onClick,
+  changeStep,
+  isSubmitting
+}: {
+  onClick?: any
+  changeStep?: (val: number) => void
+  isSubmitting: boolean
+}) => {
   const theme = useTheme()
 
   const { control } = useFormContext()
@@ -31,7 +32,7 @@ const CompanyForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (val
             }}
             controllerProps={{
               control,
-              name: 'company_name'
+              name: 'companyName'
             }}
             isRequired
           />
@@ -44,7 +45,7 @@ const CompanyForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (val
               }}
               controllerProps={{
                 control,
-                name: 'company_founder'
+                name: 'companyFounder'
               }}
               isRequired
             />
@@ -54,7 +55,7 @@ const CompanyForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (val
               selectProps={{ label: 'Company Size' }}
               controllerProps={{
                 control,
-                name: 'company_size'
+                name: 'companySize'
               }}
               selectData={companySize}
               isRequired
@@ -69,7 +70,7 @@ const CompanyForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (val
             }}
             controllerProps={{
               control,
-              name: 'company_street'
+              name: 'companyStreet'
             }}
             isRequired
           />
@@ -82,7 +83,7 @@ const CompanyForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (val
               }}
               controllerProps={{
                 control,
-                name: 'company_city'
+                name: 'companyCity'
               }}
               isRequired
             />
@@ -94,7 +95,7 @@ const CompanyForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (val
               }}
               controllerProps={{
                 control,
-                name: 'company_state'
+                name: 'companyState'
               }}
               isRequired
             />
@@ -108,7 +109,7 @@ const CompanyForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (val
             }}
             controllerProps={{
               control,
-              name: 'company_desc'
+              name: 'companyDesc'
             }}
             isRequired
           />
@@ -128,7 +129,7 @@ const CompanyForm = ({ onClick, changeStep }: { onClick?: any; changeStep?: (val
         >
           Back
         </Button>
-        <Button fullWidth variant='contained' onClick={onClick} size={'large'}>
+        <Button fullWidth variant='contained' onClick={onClick} size={'large'} disabled={isSubmitting}>
           Join Now
         </Button>
       </Box>

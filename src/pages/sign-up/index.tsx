@@ -5,12 +5,15 @@ import UserForm from '../../views/sign-up/UserForm'
 import { FormProvider, useForm } from 'react-hook-form'
 import UserTypeForm from 'src/views/sign-up/UserTypeForm'
 import { CardContent, Typography } from '@mui/material'
-import JobSeekerForm from "../../views/sign-up/JobSeekerForm";
-import themeConfig from "../../configs/themeConfig";
-import { styled, useTheme } from "@mui/material/styles";
-import MuiCard, { CardProps } from "@mui/material/Card";
+import JobSeekerForm from '../../views/sign-up/JobSeekerForm'
+import themeConfig from '../../configs/themeConfig'
+import { styled, useTheme } from '@mui/material/styles'
+import MuiCard, { CardProps } from '@mui/material/Card'
 import CompanyForm from 'src/views/sign-up/CompanyForm'
-import { getFormInputValues } from "../../@core/utils/get-form-input-values";
+import { getFormInputValues } from '../../@core/utils/get-form-input-values'
+import { useCreateCompanyMutation, useCreateJobSeekerMutation } from '../../graphql/api'
+import { onCompleted, onError } from '../../@core/utils/response'
+import { useRouter } from 'next/router'
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
@@ -19,6 +22,7 @@ const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
 
 const RegisterPage = () => {
   const theme = useTheme()
+  const router = useRouter()
   const [steps, setSteps] = useState(1)
   const [selected, setSelected] = useState<'job_seeker' | 'company'>()
   const formMethods = useForm({
@@ -30,15 +34,47 @@ const RegisterPage = () => {
   const {
     handleSubmit,
     setError,
-    formState: { isSubmitting },
-    reset,
-    control
+    formState: { isSubmitting }
   } = formMethods
 
+  const [createJobSeeker, { loading: jobSeekerLoading }] = useCreateJobSeekerMutation({
+    onCompleted: data => {
+      onCompleted(data?.createJobSeeker, () => {
+        router.push('/login')
+      })
+    },
+    onError: error => {
+      onError(error, undefined, setError)
+    }
+  })
+
+  const [createCompany, { loading: companyLoading }] = useCreateCompanyMutation({
+    onCompleted: data => {
+      onCompleted(data?.createCompany, () => {
+        router.push('/login')
+      })
+    },
+    onError: error => {
+      onError(error, undefined, setError)
+    }
+  })
+
   const onSubmit = (values: any) => {
-    console.log(values)
     const input = getFormInputValues(values)
-    console.log('input', input)
+
+    if (selected === 'job_seeker') {
+      createJobSeeker({
+        variables: {
+          input: input
+        }
+      })
+    } else if (selected === 'company') {
+      createCompany({
+        variables: {
+          input: input
+        }
+      })
+    }
   }
 
   const changeStep = (val: number) => {
@@ -57,7 +93,6 @@ const RegisterPage = () => {
                 <Typography
                   variant='h6'
                   sx={{
-                    ml: 3,
                     lineHeight: 1,
                     fontWeight: 600,
                     textTransform: 'uppercase',
@@ -73,9 +108,9 @@ const RegisterPage = () => {
                 <UserForm onClick={changeStep} />
               ) : steps === 3 ? (
                 selected === 'job_seeker' ? (
-                  <JobSeekerForm changeStep={changeStep} onClick={handleSubmit(onSubmit)} />
+                  <JobSeekerForm changeStep={changeStep} onClick={handleSubmit(onSubmit)} isSubmitting={jobSeekerLoading || isSubmitting}/>
                 ) : (
-                  <CompanyForm changeStep={changeStep} onClick={handleSubmit(onSubmit)} />
+                  <CompanyForm changeStep={changeStep} onClick={handleSubmit(onSubmit)} isSubmitting={companyLoading || isSubmitting}/>
                 )
               ) : (
                 ''

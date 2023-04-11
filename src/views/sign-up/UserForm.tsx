@@ -43,17 +43,17 @@ export const PasswordComponent = () => {
 const UserForm = ({ onClick }: { onClick?: (val: number) => void }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const { control, getValues, watch } = useFormContext()
-  const username = watch('user_name')
-  const user_email = watch('user_email')
+  const userName = watch('userName')
+  const userEmail = watch('userEmail')
   const password = watch('password')
 
   useEffect(() => {
     isFormFilled()
-  }, [username, user_email, password])
+  }, [userName, userEmail, password])
 
   const isFormFilled = () => {
     const formValues = getValues()
-    if (formValues.user_name && formValues.user_email && formValues.password) {
+    if (formValues.userName && formValues.userEmail && formValues.password) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
@@ -74,7 +74,7 @@ const UserForm = ({ onClick }: { onClick?: (val: number) => void }) => {
         }}
         controllerProps={{
           control,
-          name: 'user_name'
+          name: 'userName'
         }}
         isAutofocus
         isRequired
@@ -86,7 +86,7 @@ const UserForm = ({ onClick }: { onClick?: (val: number) => void }) => {
         }}
         controllerProps={{
           control,
-          name: 'user_email'
+          name: 'userEmail'
         }}
         isRequired
       />

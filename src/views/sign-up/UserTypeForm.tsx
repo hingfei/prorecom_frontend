@@ -1,18 +1,12 @@
 import MuiCard, { CardProps } from '@mui/material/Card'
-import { styled, useTheme } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import Link from 'next/link'
 import { Box, Button, CardContent, Divider, Grid, GridProps, Typography } from '@mui/material'
-import { useFormContext } from 'react-hook-form'
-import React, { useState } from 'react'
+import React from 'react'
 import { AccountTieOutline, OfficeBuildingOutline } from 'mdi-material-ui'
-import ShowAlert from '../../@core/components/custom-snackbar'
 
 type SetStateFunction<T> = React.Dispatch<React.SetStateAction<T>>
 
-// Styled Grid component
-const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: { width: '28rem' }
-}))
 
 const LinkStyled = styled('a')(({ theme }) => ({
   fontSize: '0.875rem',
@@ -44,31 +38,12 @@ const UserTypeForm = ({
   selected?: string
   setSelected?: SetStateFunction<'job_seeker' | 'company'>
 }) => {
-  const theme = useTheme()
-
-  const [open, setOpen] = useState(false)
-  const { setValue, getValues } = useFormContext()
-
   const onSelect = (val: 'job_seeker' | 'company') => {
     setSelected(val)
-    setValue('user_type', val)
   }
 
-  // const handleNextClick = () => {
-  //   if (!selected) {
-  //     setOpen(true)
-  //
-  //     return
-  //   }
-  //   onClick && onClick(2)
-  // }
-  //
-  // const handleClose = () => {
-  //   setOpen(false)
-  // }
-
   const isFormFilled = () => {
-    return getValues('user_type')
+    return Boolean(selected)
   }
 
   return (
