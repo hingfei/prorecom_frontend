@@ -31,6 +31,8 @@
     "@mui/lab": "^5.0.0-alpha.70",
     "@mui/material": "^5.4.3",
     "@popperjs/core": "^2.11.2",
+    "@reduxjs/toolkit": "^1.9.3",
+    "@types/react-redux": "^7.1.25",
     "apexcharts-clevision": "3.28.5",
     "clsx": "^1.1.1",
     "graphql": "^16.6.0",
@@ -42,8 +44,10 @@
     "react-datepicker": "^4.5.0",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.43.8",
+    "react-hot-toast": "^2.4.0",
     "react-perfect-scrollbar": "^1.5.8",
-    "react-popper": "^2.2.5"
+    "react-popper": "^2.2.5",
+    "react-redux": "^8.0.5"
   },
   "devDependencies": {
     "@apollo/client": "^3.7.11",

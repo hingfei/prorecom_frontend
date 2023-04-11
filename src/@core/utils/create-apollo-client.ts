@@ -2,10 +2,10 @@ import { ApolloClient, ApolloLink, HttpLink, HttpOptions } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
 import { InMemoryCache } from '@apollo/client/cache'
 import { setContext } from '@apollo/client/link/context'
-import authConfig from 'src/configs/auth'
 import { NextPageContext } from 'next/types'
 import { withApollo as createWithApollo } from 'next-apollo'
 import { createUploadLink } from 'apollo-upload-client'
+import { authConfig } from "../../configs/auth";
 
 const isServer = () => typeof window === 'undefined'
 

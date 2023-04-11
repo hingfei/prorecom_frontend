@@ -13,6 +13,7 @@ type ThemeConfig = {
   menuTextTruncate: boolean
   contentWidth: ContentWidth
   responsiveFontSizes: boolean
+  toastPosition: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
 }
 
 const themeConfig: ThemeConfig = {
@@ -30,7 +31,8 @@ const themeConfig: ThemeConfig = {
 
   // ** Other Configs
   responsiveFontSizes: true /* true | false */,
-  disableRipple: false /* true | false */
+  disableRipple: false, /* true | false */
+  toastPosition: 'top-right'
 }
 
 export default themeConfig
