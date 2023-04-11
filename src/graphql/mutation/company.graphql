@@ -1,0 +1,34 @@
+mutation createCompany($input: CreateCompanyInput!) {
+  createCompany(input: $input) {
+    ...on CompanyResponse {
+      success
+      company {
+        companyId
+        companyName
+      }
+      message
+    }
+  }
+}
+
+mutation updateCompany($input: UpdateCompanyInput!) {
+  updateCompany(input: $input) {
+    ... on CompanyResponse {
+      success
+      company {
+        companyId
+        companyName
+      }
+      message
+    }
+  }
+}
+
+mutation deleteCompany($companyId: Int!) {
+  deleteCompany(companyId: $companyId) {
+    ...on CompanyResponse {
+      success
+      message
+    }
+  }
+}

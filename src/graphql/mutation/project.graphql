@@ -1,0 +1,36 @@
+mutation createProject($input: CreateProjectInput!) {
+  createProject (input: $input) {
+    ...on ProjectResponse {
+      success
+      project {
+        projectId
+        company {
+          companyId
+          companyName
+        }
+      }
+      message
+    }
+  }
+}
+
+mutation updateProject($input: UpdateProjectInput!) {
+  updateProject (input: $input) {
+    ...on ProjectResponse {
+      success
+      project {
+        projectId
+      }
+      message
+    }
+  }
+}
+
+mutation deleteProject($projectId: Int!) {
+  deleteProject(projectId: $projectId) {
+    ...on ProjectResponse {
+      success
+      message
+    }
+  }
+}

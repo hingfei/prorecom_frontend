@@ -1,0 +1,67 @@
+mutation createJobSeeker($input: CreateJobSeekerInput!) {
+  createJobSeeker (input: $input) {
+    ...on JobSeekerResponse {
+      success
+      jobSeeker {
+        seekerId
+        seekerName
+        seekerAge
+        seekerGender
+        seekerBirthdate
+        seekerPhoneNo
+        seekerStreet
+        seekerCity
+        seekerState
+        seekerHighestEduc
+        seekerResume
+      }
+      message
+    }
+  }
+}
+
+mutation updateJobSeeker($input: UpdateJobSeekerInput!) {
+  updateJobSeeker (input:$input) {
+    ...on JobSeekerResponse {
+      success
+      jobSeeker {
+        seekerId
+        seekerName
+        seekerAge
+        seekerGender
+        seekerBirthdate
+        seekerPhoneNo
+        seekerStreet
+        seekerCity
+        seekerState
+        seekerHighestEduc
+        seekerResume
+      }
+      message
+    }
+  }
+}
+
+mutation deleteJobSeeker($seekerId: Int!) {
+  deleteJobSeeker (seekerId: $seekerId) {
+    ... on JobSeekerResponse {
+      message
+      success
+      jobSeeker {
+        seekerId
+      }
+    }
+  }
+}
+
+mutation updateJobSeekerPassword($userId: Int!, $currentPassword: String!, $newPassword: String!) {
+  updateJobSeekerPassword(userId: $userId, currentPassword: $currentPassword, newPassword: $newPassword) {
+    ... on JobSeekerResponse {
+      success
+      jobSeeker {
+        seekerId
+      }
+      message
+    }
+  }
+}

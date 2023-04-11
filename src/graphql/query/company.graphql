@@ -1,0 +1,32 @@
+query companyListing {
+  companyListing {
+    companyId
+    companyName
+    companyFounder
+    companySize
+    companyDesc
+    companyStreet
+    companyCity
+    companyState
+  }
+}
+
+query companyDetail($companyId: Int!){
+  companyDetail(companyId: $companyId) {
+    companyId
+    companyName
+    companyFounder
+    companySize
+    companyDesc
+    companyStreet
+    companyCity
+    companyState
+    users {
+      userId
+      userName
+      userEmail
+      password
+      userType
+    }
+  }
+}

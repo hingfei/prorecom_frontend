@@ -1,0 +1,25 @@
+mutation createUser($username: String!,$userEmail: String!, $password: String!) {
+  createUser(userName: $username, userEmail: $userEmail, password: $password) {
+    ...on User {
+      userId
+    }
+    ...on UserExists {
+      message
+    }
+  }
+}
+
+mutation login($userName: String!, $password: String!) {
+  login(userName: $userName, password: $password)  {
+    ... on UserResponse {
+      success
+      user {
+        userId
+        userName
+        userEmail
+        password
+      }
+      message
+    }
+  }
+}

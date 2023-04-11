@@ -1,0 +1,39 @@
+query jobSeekerListing {
+  jobSeekerListing {
+    seekerId
+    seekerName
+    seekerAge
+    seekerGender
+    seekerBirthdate
+    seekerPhoneNo
+    seekerStreet
+    seekerCity
+    seekerState
+    seekerHighestEduc
+    seekerResume
+  }
+}
+
+query jobSeekerDetail($seekerId: Int!) {
+  jobSeekerDetail(seekerId: $seekerId) {
+    seekerId
+    seekerName
+    seekerAge
+    seekerGender
+    seekerBirthdate
+    seekerPhoneNo
+    seekerStreet
+    seekerCity
+    seekerState
+    seekerHighestEduc
+    seekerResume
+    seekerAbout
+    users {
+      userId
+      userName
+      userEmail
+      password
+      userType
+    }
+  }
+}

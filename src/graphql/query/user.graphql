@@ -1,0 +1,19 @@
+query userListing {
+  userListing {
+    userId
+    userName
+    password
+    userType
+  }
+}
+
+query useDetail($userId: Int!) {
+  userDetail(userId: $userId) {
+    userId
+    userName
+    userEmail
+    password
+  }
+}
+
+
