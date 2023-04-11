@@ -1,12 +1,42 @@
-import Grid from '@mui/material/Grid'
 import { styled } from '@mui/material/styles'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Button, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { TextInput } from 'src/@core/components/custom-inputs'
+import { useRouter } from 'next/router'
+import { Magnify } from 'mdi-material-ui'
+import { BoxProps } from '@mui/material/Box'
 
 const defaultValues = {
   keyword: ''
 }
+
+// ** Styled Components
+const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center'
+}))
+
+const TitleWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+  maxWidth: '780px',
+  textAlign: 'center'
+}))
+
+const SearchWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  [theme.breakpoints.up('sm')]: {
+    flexDirection: 'row',
+    alignItems: 'unset'
+  },
+  display: 'flex',
+  marginTop: 36,
+  justifyContent: 'center',
+  gap: 20
+}))
 
 const Img = styled('img')(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -15,6 +45,7 @@ const Img = styled('img')(({ theme }) => ({
 }))
 
 const SearchContent = () => {
+  const router = useRouter()
   const formMethods = useForm({
     defaultValues: {
       ...defaultValues
@@ -30,8 +61,7 @@ const SearchContent = () => {
   } = formMethods
 
   const onSubmit = (values: any) => {
-    console.log("run")
-    console.log({ values });
+    console.log({ values })
     // const { user_mobile, user_alternative_mobile, ...restValues } = values;
     // createUser({
     //   variables: {
@@ -47,56 +77,42 @@ const SearchContent = () => {
     //     }
     //   }
     // });
-  };
+  }
 
   return (
     // @ts-ignore
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={6} sx={{ flexDirection: { xs: 'column-reverse', md: 'row' }, alignItems: 'center' }}>
-          <Grid
-            item
-            xs={12}
-            md={6}
-            display={'flex'}
-            alignItems={'center'}
-            flexDirection={'column'}
-            sx={{ justifyContent: { xs: 'center', md: 'flex-start' } }}
-          >
-            <Typography variant={'h3'} fontWeight={900} marginBottom={7}>
-              Find the dream project that you love.
+        <BoxWrapper>
+          <TitleWrapper>
+            <Typography fontWeight={800} variant={'h2'} marginBottom={9}>
+              Building better teams, one recommendation at a time
             </Typography>
-            <Grid
-              container
-              spacing={6}
-              flexDirection={'row'}
-              alignItems={'center'}
-              sx={{ justifyContent: { xs: 'center', md: 'flex-start' } }}
-            >
-              <Grid item xs={6}>
-                <TextInput
-                  inputProps={{
-                    label: 'Search',
-                    placeholder: 'Search for your project...'
-                    // sx: {width: '50px'}
-                  }}
-                  controllerProps={{
-                    control,
-                    name: 'keyword'
-                  }}
-                />
-              </Grid>
-              <Grid item>
-                <Button variant='contained' size={'large'} sx={{padding:'12px 28px !important'}} onClick={handleSubmit(onSubmit)}>
-                  Search
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} md={6} display={'flex'} justifyContent={'center'} alignItems={'center'}>
-            <Img src={'/images/homepage/job_searching.jpg'} alt={'home_img'} width={'500px'} height={'auto'} />
-          </Grid>
-        </Grid>
+            <Typography variant={'h6'}>
+              Unlock your potential with personalized project and candidate recommendations.
+            </Typography>
+          </TitleWrapper>
+          <SearchWrapper>
+            <TextInput
+              inputProps={{
+                label: 'Search',
+                placeholder: 'Search for your project...',
+                autoComplete: 'off'
+                // sx: {width: '50px'}
+              }}
+              controllerProps={{
+                control,
+                name: 'keyword'
+              }}
+            />
+            <Button variant={'contained'} startIcon={<Magnify />} onClick={handleSubmit(onSubmit)}>
+              Search
+            </Button>
+          </SearchWrapper>
+          {/*<Grid item xs={12} md={6} display={'flex'} justifyContent={'center'} alignItems={'center'}>*/}
+          {/*  <Img src={'/images/homepage/job_searching.jpg'} alt={'home_img'} width={'500px'} height={'auto'} />*/}
+          {/*</Grid>*/}
+        </BoxWrapper>
       </form>
     </FormProvider>
   )

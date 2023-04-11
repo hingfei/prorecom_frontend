@@ -10,7 +10,7 @@ const Img = styled('img')(({ theme }) => ({
   }
 }))
 
-const SearchContent = () => {
+const IntroToAlgo = () => {
   const router = useRouter()
 
   return (
@@ -27,10 +27,10 @@ const SearchContent = () => {
         flexDirection={'column'}
         sx={{ justifyContent: { xs: 'center', md: 'flex-start' } }}
       >
-        <Typography variant={'h4'} fontWeight={700} mb={4}>
-          Help you to get the best job that fits you
+        <Typography variant={'h4'} fontWeight={600} mb={4}>
+          Discover Your Dream Projects with Our Skill-Based Recommendation System.
         </Typography>
-        <Box display={'flex'} sx={{ width: '100%', justifyContent: { xs: 'center', md: 'flex-start' }, mb: 4 }}>
+        <Box display={'flex'} sx={{ width: '100%', justifyContent: { xs: 'center', md: 'flex-start' }, mb: 6 }}>
           <List>
             <ListItem>
               <ListItemIcon>
@@ -38,8 +38,13 @@ const SearchContent = () => {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  <Typography variant={'body1'} fontWeight={700}>
-                    Analysing your skillset
+                  <Typography variant={'h6'} fontWeight={500}>
+                    Unleashing Your Potential
+                  </Typography>
+                }
+                secondary={
+                  <Typography variant={'body1'}>
+                    Analyzing and Matching Your Skills
                   </Typography>
                 }
               />
@@ -50,8 +55,13 @@ const SearchContent = () => {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  <Typography variant={'body1'} fontWeight={700}>
-                    Extracting skillset provided
+                  <Typography variant={'h6'} fontWeight={500}>
+                    Crafting Your Perfect Profile
+                  </Typography>
+                }
+                secondary={
+                  <Typography variant={'body1'}>
+                    Skill Extraction and Curation
                   </Typography>
                 }
               />
@@ -62,20 +72,13 @@ const SearchContent = () => {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  <Typography variant={'body1'} fontWeight={700}>
-                    Matching the skillset from projects
+                  <Typography variant={'h6'} fontWeight={500}>
+                    Discover Your Dream Project
                   </Typography>
                 }
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <Check />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  <Typography variant={'body1'} fontWeight={700}>
-                    Recommend projects matched the most for you
+                secondary={
+                  <Typography variant={'body1'}>
+                    Skill Matching and Recommendation
                   </Typography>
                 }
               />
@@ -95,4 +98,4 @@ const SearchContent = () => {
   )
 }
 
-export default SearchContent
+export default IntroToAlgo
