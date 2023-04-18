@@ -1,26 +1,34 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { authConfig } from '../../configs/auth'
-import { useAuth } from "../context/authContext";
-import toast from "react-hot-toast";
+import { useAuth } from '../context/authContext'
+import toast from 'react-hot-toast'
+import Spinner from '../components/spinner'
 
-const withAuth = (Component: React.ComponentType<any>) => {
-  const Auth = () => {
-    const [data, setData] = useState()
-    const {isAuthenticated} = useAuth()
+const withAuth = <P extends object>(Component: React.ComponentType<P>) => {
+  const Auth = (props: P) => {
+    const [isLoading, setIsLoading] = useState(true)
+    const { isAuthenticated, isInitialized, fetchMe } = useAuth()
     const router = useRouter()
 
     useEffect(() => {
-      if (!isAuthenticated) {
-        router.push('/login')
-        toast.error("Please login before proceeding.")
-      } else {
-        const userData = window.localStorage.getItem(authConfig.storageTokenKeyName)
-        setData(userData)
+      const checkAuth = async () => {
+        if (isInitialized) {
+          await fetchMe()
+          setIsLoading(false)
+        } else {
+          if (!isAuthenticated) {
+            router.push('/401')
+            toast.error('Please login before proceeding.')
+          } else {
+            setIsLoading(false)
+          }
+        }
       }
+
+      checkAuth()
     }, [])
 
-    return Component
+    return isLoading ? <Spinner /> : <Component {...props} />
   }
 
   return Auth
