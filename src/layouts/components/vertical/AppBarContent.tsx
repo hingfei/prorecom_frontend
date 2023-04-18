@@ -49,7 +49,7 @@ const AppBarContent = (props: Props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [userId, setUserId] = useState()
   const [userName, setUsername] = useState()
-  const { logout, handleLogin } = useAuth()
+  const { isAuthenticated: useAuthAuthenticated, logout, handleLogin } = useAuth()
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
 
@@ -64,13 +64,21 @@ const AppBarContent = (props: Props) => {
   }
 
   useEffect(() => {
-    const sessionToken = window.localStorage.getItem(authConfig.storageTokenKeyName)
-    if (sessionToken) {
-      const userData = JSON.parse(sessionToken)
-      setUserId(userData?.userId)
-      setUsername(userData?.userName)
-      setIsAuthenticated(true)
+    const checkAuth = () => {
+      if (!useAuthAuthenticated) {
+        setIsAuthenticated(false)
+      } else {
+        const data = window.localStorage.getItem('userData')
+        if (data) {
+          const userData = JSON.parse(data)
+          setUserId(userData?.userId)
+          setUsername(userData?.userName)
+          setIsAuthenticated(true)
+        }
+      }
     }
+
+    checkAuth()
   }, [logout, handleLogin])
 
   return (
