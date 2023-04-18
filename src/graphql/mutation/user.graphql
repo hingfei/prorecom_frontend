@@ -11,8 +11,9 @@ mutation createUser($username: String!,$userEmail: String!, $password: String!) 
 
 mutation login($userName: String!, $password: String!) {
   login(userName: $userName, password: $password)  {
-    ... on UserResponse {
+    ... on AuthResponse {
       success
+      token
       user {
         userId
         userName

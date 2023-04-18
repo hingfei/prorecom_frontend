@@ -18,6 +18,14 @@ export type Scalars = {
 
 export type AddUserResponse = User | UserExists;
 
+export type AuthResponse = {
+  __typename?: 'AuthResponse';
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+  token?: Maybe<Scalars['String']>;
+  user?: Maybe<UserType>;
+};
+
 export type CompanyResponse = {
   __typename?: 'CompanyResponse';
   company?: Maybe<CompanyType>;
@@ -116,7 +124,7 @@ export type Mutation = {
   deleteJobSeeker: JobSeekerResponse;
   deleteProject: ProjectResponse;
   deleteUser: DeleteUserResponse;
-  login: UserResponse;
+  login: AuthResponse;
   updateCompany: CompanyResponse;
   updateJobSeeker: JobSeekerResponse;
   updateJobSeekerPassword: JobSeekerResponse;
@@ -230,6 +238,7 @@ export type Query = {
   companyListing: Array<CompanyType>;
   jobSeekerDetail?: Maybe<JobSeekerType>;
   jobSeekerListing: Array<JobSeekerType>;
+  me: UserType;
   projectDetail?: Maybe<ProjectType>;
   projectListing: Array<ProjectType>;
   userDetail?: Maybe<User>;
@@ -329,13 +338,6 @@ export type UserExists = {
 export type UserNotFound = {
   __typename?: 'UserNotFound';
   message: Scalars['String'];
-};
-
-export type UserResponse = {
-  __typename?: 'UserResponse';
-  message?: Maybe<Scalars['String']>;
-  success: Scalars['Boolean'];
-  user?: Maybe<UserType>;
 };
 
 export type UserType = {
@@ -439,7 +441,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', success: boolean, message?: string | null, user?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string } | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', success: boolean, token?: string | null, message?: string | null, user?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string } | null } };
 
 export type CompanyListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -488,6 +490,11 @@ export type UseDetailQueryVariables = Exact<{
 
 
 export type UseDetailQuery = { __typename?: 'Query', userDetail?: { __typename?: 'User', userId: string, userName: string, userEmail: string, password: string } | null };
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, userType: string, password: string } };
 
 
 export const CreateCompanyDocument = gql`
@@ -949,8 +956,9 @@ export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMut
 export const LoginDocument = gql`
     mutation login($userName: String!, $password: String!) {
   login(userName: $userName, password: $password) {
-    ... on UserResponse {
+    ... on AuthResponse {
       success
+      token
       user {
         userId
         userName
@@ -1369,3 +1377,41 @@ export function useUseDetailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type UseDetailQueryHookResult = ReturnType<typeof useUseDetailQuery>;
 export type UseDetailLazyQueryHookResult = ReturnType<typeof useUseDetailLazyQuery>;
 export type UseDetailQueryResult = Apollo.QueryResult<UseDetailQuery, UseDetailQueryVariables>;
+export const MeDocument = gql`
+    query Me {
+  me {
+    userId
+    userName
+    userEmail
+    userType
+    password
+  }
+}
+    `;
+
+/**
+ * __useMeQuery__
+ *
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+      }
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+        }
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;

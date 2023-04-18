@@ -16,4 +16,14 @@ query useDetail($userId: Int!) {
   }
 }
 
+query Me {
+  me {
+    userId
+    userName
+    userEmail
+    userType
+    password
+  }
+}
+
 
