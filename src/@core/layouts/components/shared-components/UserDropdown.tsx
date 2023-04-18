@@ -107,7 +107,7 @@ const UserDropdown = ({ handleLogout, userId, userName }: { handleLogout: () => 
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/profiles/${userId}`)}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/profiles')}>
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
             Profile
