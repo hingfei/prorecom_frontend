@@ -15,7 +15,7 @@ const ResumeSection = ({ jobSeeker, seekerId }: { jobSeeker: any; seekerId: stri
         </Button>
       </Box>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={1}>
-        <Typography variant={'body1'}>{jobSeeker?.seekerResume ?? 'Add your resume now'}</Typography>
+        <Typography variant={'body2'}>{jobSeeker?.seekerResume ?? 'Add your resume now'}</Typography>
       </Box>
     </Box>
   )

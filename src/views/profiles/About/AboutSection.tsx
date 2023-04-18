@@ -25,7 +25,11 @@ const AboutSection = ({
         </Button>
       </Box>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={1}>
-        <Typography variant={'body1'} sx={{whiteSpace: 'pre-line'}}>{aboutData ?? 'Introduce yourself now!'}</Typography>
+        {aboutData ? (
+          <Typography variant={'body1'} sx={{whiteSpace: 'pre-line'}}>{aboutData}</Typography>
+        ) : (
+          <Typography variant={'body2'}>Introduce yourself now</Typography>
+        )}
       </Box>
     </Box>
   )

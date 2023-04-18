@@ -94,7 +94,7 @@ const EducationSection = ({ edu, seekerId }: { edu: string | null | undefined; s
           </TextBox>
         </Box>
       ) : (
-        <Typography variant={'body2'}>Add your education now'</Typography>
+        <Typography variant={'body2'}>Add your education now</Typography>
       )}
     </Box>
   )
