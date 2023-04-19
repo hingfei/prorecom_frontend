@@ -2,7 +2,8 @@ export const DrawerType = {
   editJobSeekerForm: 'editJobSeekerForm',
   editEducationForm: 'editEducationForm',
   editAboutForm: 'editAboutForm',
-  editPasswordForm: 'editPasswordForm'
+  editPasswordForm: 'editPasswordForm',
+  editSkillForm: 'editSkillForm'
 }
 
 export const companySize = [

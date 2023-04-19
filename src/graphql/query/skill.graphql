@@ -1,0 +1,6 @@
+query skillListing {
+  skillListing {
+    skillId
+    skillName
+  }
+}

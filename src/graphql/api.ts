@@ -111,6 +111,7 @@ export type JobSeekerType = {
   seekerResume?: Maybe<Scalars['Upload']>;
   seekerState?: Maybe<Scalars['String']>;
   seekerStreet?: Maybe<Scalars['String']>;
+  skills: Array<SkillType>;
   users?: Maybe<UserType>;
 };
 
@@ -241,6 +242,7 @@ export type Query = {
   me: UserType;
   projectDetail?: Maybe<ProjectType>;
   projectListing: Array<ProjectType>;
+  skillListing: Array<SkillType>;
   userDetail?: Maybe<User>;
   userListing: Array<User>;
 };
@@ -299,6 +301,7 @@ export type UpdateJobSeekerInput = {
   seekerResume?: InputMaybe<Scalars['Upload']>;
   seekerState?: InputMaybe<Scalars['String']>;
   seekerStreet?: InputMaybe<Scalars['String']>;
+  skills?: InputMaybe<Array<Scalars['Int']>>;
   userEmail?: InputMaybe<Scalars['String']>;
   userName?: InputMaybe<Scalars['String']>;
 };
@@ -458,7 +461,7 @@ export type CompanyDetailQuery = { __typename?: 'Query', companyDetail?: { __typ
 export type ProjectListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProjectListingQuery = { __typename?: 'Query', projectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectSalary?: string | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillName?: string | null }> }> };
+export type ProjectListingQuery = { __typename?: 'Query', projectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectSalary?: string | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
 
 export type ProjectDetailQueryVariables = Exact<{
   projectId: Scalars['Int'];
@@ -477,7 +480,12 @@ export type JobSeekerDetailQueryVariables = Exact<{
 }>;
 
 
-export type JobSeekerDetailQuery = { __typename?: 'Query', jobSeekerDetail?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerHighestEduc?: string | null, seekerResume?: any | null, seekerAbout?: string | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null } | null };
+export type JobSeekerDetailQuery = { __typename?: 'Query', jobSeekerDetail?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerHighestEduc?: string | null, seekerResume?: any | null, seekerAbout?: string | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> } | null };
+
+export type SkillListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SkillListingQuery = { __typename?: 'Query', skillListing: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> };
 
 export type UserListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1113,6 +1121,7 @@ export const ProjectListingDocument = gql`
     projectReq
     projectExpLvl
     skills {
+      skillId
       skillName
     }
   }
@@ -1271,6 +1280,10 @@ export const JobSeekerDetailDocument = gql`
       password
       userType
     }
+    skills {
+      skillId
+      skillName
+    }
   }
 }
     `;
@@ -1302,6 +1315,41 @@ export function useJobSeekerDetailLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type JobSeekerDetailQueryHookResult = ReturnType<typeof useJobSeekerDetailQuery>;
 export type JobSeekerDetailLazyQueryHookResult = ReturnType<typeof useJobSeekerDetailLazyQuery>;
 export type JobSeekerDetailQueryResult = Apollo.QueryResult<JobSeekerDetailQuery, JobSeekerDetailQueryVariables>;
+export const SkillListingDocument = gql`
+    query skillListing {
+  skillListing {
+    skillId
+    skillName
+  }
+}
+    `;
+
+/**
+ * __useSkillListingQuery__
+ *
+ * To run a query within a React component, call `useSkillListingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSkillListingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSkillListingQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSkillListingQuery(baseOptions?: Apollo.QueryHookOptions<SkillListingQuery, SkillListingQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SkillListingQuery, SkillListingQueryVariables>(SkillListingDocument, options);
+      }
+export function useSkillListingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SkillListingQuery, SkillListingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SkillListingQuery, SkillListingQueryVariables>(SkillListingDocument, options);
+        }
+export type SkillListingQueryHookResult = ReturnType<typeof useSkillListingQuery>;
+export type SkillListingLazyQueryHookResult = ReturnType<typeof useSkillListingLazyQuery>;
+export type SkillListingQueryResult = Apollo.QueryResult<SkillListingQuery, SkillListingQueryVariables>;
 export const UserListingDocument = gql`
     query userListing {
   userListing {

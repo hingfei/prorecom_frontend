@@ -35,5 +35,9 @@ query jobSeekerDetail($seekerId: Int!) {
       password
       userType
     }
+    skills {
+      skillId
+      skillName
+    }
   }
 }

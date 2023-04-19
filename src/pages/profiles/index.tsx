@@ -11,6 +11,7 @@ import PasswordSection from '../../views/profiles/Password/PasswordSection'
 import { onError } from '../../@core/utils/response'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import SkillSection from "../../views/profiles/Skill/SkillSection";
 
 const Profile = () => {
   const [loading, setLoading] = useState(true)
@@ -62,6 +63,9 @@ const Profile = () => {
               edu={data?.jobSeekerDetail?.seekerHighestEduc}
               seekerId={data?.jobSeekerDetail?.seekerId}
             />
+            <Divider sx={{ mb: 5 }} />
+
+            <SkillSection skills={data?.jobSeekerDetail?.skills} seekerId={data?.jobSeekerDetail?.seekerId} />
             <Divider sx={{ mb: 5 }} />
 
             <ResumeSection jobSeeker={data?.jobSeekerDetail} seekerId={data?.jobSeekerDetail?.seekerId} />

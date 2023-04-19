@@ -8,6 +8,7 @@ import EditEducationForm from '../../../views/profiles/Education/EditEducationFo
 import EditPersonalInfoForm from '../../../views/profiles/PersonalInfo/EditPersonalInfoForm'
 import EditAboutForm from '../../../views/profiles/About/EditAboutForm'
 import EditPasswordForm from "../../../views/profiles/Password/EditPasswordForm";
+import EditSkillForm from "../../../views/profiles/Skill/EditSkillForm";
 
 const Drawer = styled(MuiDrawer)<DrawerProps>(({ theme }) => ({
   zIndex: theme.zIndex.drawer,
@@ -43,6 +44,8 @@ const DrawerBase = ({ onCloseCallback }: { onCloseCallback?: () => void }) => {
         return <EditAboutForm />
       case DrawerType.editPasswordForm:
         return <EditPasswordForm />
+      case DrawerType.editSkillForm:
+        return <EditSkillForm />
       default:
         return null
     }
