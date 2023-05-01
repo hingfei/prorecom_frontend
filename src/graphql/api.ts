@@ -66,7 +66,6 @@ export type CreateJobSeekerInput = {
   seekerBirthdate?: InputMaybe<Scalars['String']>;
   seekerCity?: InputMaybe<Scalars['String']>;
   seekerGender?: InputMaybe<Scalars['String']>;
-  seekerHighestEduc?: InputMaybe<Scalars['String']>;
   seekerName?: InputMaybe<Scalars['String']>;
   seekerPhoneNo?: InputMaybe<Scalars['Int']>;
   seekerResume?: InputMaybe<Scalars['Upload']>;
@@ -90,6 +89,33 @@ export type CreateProjectInput = {
 
 export type DeleteUserResponse = UserDeleteMessage | UserNotFound;
 
+export type EducationInput = {
+  description?: InputMaybe<Scalars['String']>;
+  educationId?: InputMaybe<Scalars['ID']>;
+  educationInstitution?: InputMaybe<Scalars['String']>;
+  educationLevel?: InputMaybe<Scalars['Int']>;
+  fieldOfStudy?: InputMaybe<Scalars['Int']>;
+  grade?: InputMaybe<Scalars['String']>;
+  graduationYear?: InputMaybe<Scalars['Int']>;
+};
+
+export type EducationResponse = {
+  __typename?: 'EducationResponse';
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+};
+
+export type EducationType = {
+  __typename?: 'EducationType';
+  description?: Maybe<Scalars['String']>;
+  educationId: Scalars['ID'];
+  educationInstitution?: Maybe<Scalars['String']>;
+  educationLevel?: Maybe<Scalars['Int']>;
+  fieldOfStudy?: Maybe<Scalars['Int']>;
+  grade?: Maybe<Scalars['String']>;
+  graduationYear?: Maybe<Scalars['Int']>;
+};
+
 export type JobSeekerResponse = {
   __typename?: 'JobSeekerResponse';
   jobSeeker?: Maybe<JobSeekerType>;
@@ -99,12 +125,12 @@ export type JobSeekerResponse = {
 
 export type JobSeekerType = {
   __typename?: 'JobSeekerType';
+  educations: Array<EducationType>;
   seekerAbout?: Maybe<Scalars['String']>;
   seekerAge?: Maybe<Scalars['Int']>;
   seekerBirthdate?: Maybe<Scalars['String']>;
   seekerCity?: Maybe<Scalars['String']>;
   seekerGender?: Maybe<Scalars['String']>;
-  seekerHighestEduc?: Maybe<Scalars['String']>;
   seekerId: Scalars['ID'];
   seekerName?: Maybe<Scalars['String']>;
   seekerPhoneNo?: Maybe<Scalars['Int']>;
@@ -122,6 +148,7 @@ export type Mutation = {
   createProject: ProjectResponse;
   createUser: AddUserResponse;
   deleteCompany: CompanyResponse;
+  deleteEducation: EducationResponse;
   deleteJobSeeker: JobSeekerResponse;
   deleteProject: ProjectResponse;
   deleteUser: DeleteUserResponse;
@@ -158,6 +185,11 @@ export type MutationCreateUserArgs = {
 
 export type MutationDeleteCompanyArgs = {
   companyId: Scalars['Int'];
+};
+
+
+export type MutationDeleteEducationArgs = {
+  educationId: Scalars['ID'];
 };
 
 
@@ -237,6 +269,7 @@ export type Query = {
   __typename?: 'Query';
   companyDetail?: Maybe<CompanyType>;
   companyListing: Array<CompanyType>;
+  educationListing: Array<EducationType>;
   jobSeekerDetail?: Maybe<JobSeekerType>;
   jobSeekerListing: Array<JobSeekerType>;
   me: UserType;
@@ -288,13 +321,13 @@ export type UpdateCompanyInput = {
 };
 
 export type UpdateJobSeekerInput = {
+  educations?: InputMaybe<Array<EducationInput>>;
   password?: InputMaybe<Scalars['String']>;
   seekerAbout?: InputMaybe<Scalars['String']>;
   seekerAge?: InputMaybe<Scalars['Int']>;
   seekerBirthdate?: InputMaybe<Scalars['String']>;
   seekerCity?: InputMaybe<Scalars['String']>;
   seekerGender?: InputMaybe<Scalars['String']>;
-  seekerHighestEduc?: InputMaybe<Scalars['String']>;
   seekerId: Scalars['ID'];
   seekerName?: InputMaybe<Scalars['String']>;
   seekerPhoneNo?: InputMaybe<Scalars['Int']>;
@@ -378,6 +411,13 @@ export type DeleteCompanyMutationVariables = Exact<{
 
 export type DeleteCompanyMutation = { __typename?: 'Mutation', deleteCompany: { __typename?: 'CompanyResponse', success: boolean, message?: string | null } };
 
+export type DeleteEducationMutationVariables = Exact<{
+  educationId: Scalars['ID'];
+}>;
+
+
+export type DeleteEducationMutation = { __typename?: 'Mutation', deleteEducation: { __typename?: 'EducationResponse', message?: string | null, success: boolean } };
+
 export type CreateProjectMutationVariables = Exact<{
   input: CreateProjectInput;
 }>;
@@ -404,14 +444,14 @@ export type CreateJobSeekerMutationVariables = Exact<{
 }>;
 
 
-export type CreateJobSeekerMutation = { __typename?: 'Mutation', createJobSeeker: { __typename?: 'JobSeekerResponse', success: boolean, message?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerHighestEduc?: string | null, seekerResume?: any | null } | null } };
+export type CreateJobSeekerMutation = { __typename?: 'Mutation', createJobSeeker: { __typename?: 'JobSeekerResponse', success: boolean, message?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null } | null } };
 
 export type UpdateJobSeekerMutationVariables = Exact<{
   input: UpdateJobSeekerInput;
 }>;
 
 
-export type UpdateJobSeekerMutation = { __typename?: 'Mutation', updateJobSeeker: { __typename?: 'JobSeekerResponse', success: boolean, message?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerHighestEduc?: string | null, seekerResume?: any | null } | null } };
+export type UpdateJobSeekerMutation = { __typename?: 'Mutation', updateJobSeeker: { __typename?: 'JobSeekerResponse', success: boolean, message?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null } | null } };
 
 export type DeleteJobSeekerMutationVariables = Exact<{
   seekerId: Scalars['Int'];
@@ -473,14 +513,14 @@ export type ProjectDetailQuery = { __typename?: 'Query', projectDetail?: { __typ
 export type JobSeekerListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type JobSeekerListingQuery = { __typename?: 'Query', jobSeekerListing: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerHighestEduc?: string | null, seekerResume?: any | null }> };
+export type JobSeekerListingQuery = { __typename?: 'Query', jobSeekerListing: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null }> };
 
 export type JobSeekerDetailQueryVariables = Exact<{
   seekerId: Scalars['Int'];
 }>;
 
 
-export type JobSeekerDetailQuery = { __typename?: 'Query', jobSeekerDetail?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerHighestEduc?: string | null, seekerResume?: any | null, seekerAbout?: string | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> } | null };
+export type JobSeekerDetailQuery = { __typename?: 'Query', jobSeekerDetail?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> } | null };
 
 export type SkillListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -621,6 +661,42 @@ export function useDeleteCompanyMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteCompanyMutationHookResult = ReturnType<typeof useDeleteCompanyMutation>;
 export type DeleteCompanyMutationResult = Apollo.MutationResult<DeleteCompanyMutation>;
 export type DeleteCompanyMutationOptions = Apollo.BaseMutationOptions<DeleteCompanyMutation, DeleteCompanyMutationVariables>;
+export const DeleteEducationDocument = gql`
+    mutation deleteEducation($educationId: ID!) {
+  deleteEducation(educationId: $educationId) {
+    ... on EducationResponse {
+      message
+      success
+    }
+  }
+}
+    `;
+export type DeleteEducationMutationFn = Apollo.MutationFunction<DeleteEducationMutation, DeleteEducationMutationVariables>;
+
+/**
+ * __useDeleteEducationMutation__
+ *
+ * To run a mutation, you first call `useDeleteEducationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteEducationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteEducationMutation, { data, loading, error }] = useDeleteEducationMutation({
+ *   variables: {
+ *      educationId: // value for 'educationId'
+ *   },
+ * });
+ */
+export function useDeleteEducationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteEducationMutation, DeleteEducationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteEducationMutation, DeleteEducationMutationVariables>(DeleteEducationDocument, options);
+      }
+export type DeleteEducationMutationHookResult = ReturnType<typeof useDeleteEducationMutation>;
+export type DeleteEducationMutationResult = Apollo.MutationResult<DeleteEducationMutation>;
+export type DeleteEducationMutationOptions = Apollo.BaseMutationOptions<DeleteEducationMutation, DeleteEducationMutationVariables>;
 export const CreateProjectDocument = gql`
     mutation createProject($input: CreateProjectInput!) {
   createProject(input: $input) {
@@ -754,7 +830,6 @@ export const CreateJobSeekerDocument = gql`
         seekerStreet
         seekerCity
         seekerState
-        seekerHighestEduc
         seekerResume
       }
       message
@@ -803,7 +878,6 @@ export const UpdateJobSeekerDocument = gql`
         seekerStreet
         seekerCity
         seekerState
-        seekerHighestEduc
         seekerResume
       }
       message
@@ -1226,7 +1300,6 @@ export const JobSeekerListingDocument = gql`
     seekerStreet
     seekerCity
     seekerState
-    seekerHighestEduc
     seekerResume
   }
 }
@@ -1270,7 +1343,6 @@ export const JobSeekerDetailDocument = gql`
     seekerStreet
     seekerCity
     seekerState
-    seekerHighestEduc
     seekerResume
     seekerAbout
     users {
@@ -1283,6 +1355,15 @@ export const JobSeekerDetailDocument = gql`
     skills {
       skillId
       skillName
+    }
+    educations {
+      educationId
+      educationLevel
+      educationInstitution
+      description
+      fieldOfStudy
+      graduationYear
+      grade
     }
   }
 }

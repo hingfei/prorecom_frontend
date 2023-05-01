@@ -1,18 +1,25 @@
 import { Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { JobSeekerDetailDocument, useJobSeekerDetailQuery, useUpdateJobSeekerMutation } from '../../../graphql/api'
+import { JobSeekerDetailDocument, useUpdateJobSeekerMutation } from '../../../graphql/api'
 import { closeDrawerState, useAppDispatch, useAppSelector } from '../../../store'
-import Spinner from '../../../@core/components/spinner'
 import { onCompleted, onError } from '../../../@core/utils/response'
 import { getFormInputValues } from '../../../@core/utils/get-form-input-values'
 import EducationForm from './EducationForm'
 
-const EditEducationForm = () => {
-  const [loading, setLoading] = useState(true)
+const educationDefaultValues = {
+  educationLevel: null,
+  educationInstitution: null,
+  fieldOfStudy: null,
+  graduationYear: null,
+  description: null,
+  grade: null
+}
+
+const AddEducationForm = () => {
   const { isOpen, content } = useAppSelector(state => state.drawer)
   const dispatch = useAppDispatch()
-  console.log("content", content)
+
   const formMethods = useForm()
 
   const {
@@ -22,38 +29,12 @@ const EditEducationForm = () => {
     formState: { isSubmitting }
   } = formMethods
 
-  const resetValue = (jobSeekerDetail: any) => {
-    console.log(jobSeekerDetail.educations)
-    const edu = jobSeekerDetail.educations.find(item => item.educationId == content.eduId)
-
-    const formValues = {
-      educationId: edu?.educationId,
-      educationLevel: edu?.educationLevel,
-      educationInstitution: edu?.educationInstitution,
-      fieldOfStudy: edu?.fieldOfStudy,
-      graduationYear: edu?.graduationYear,
-      description: edu?.description,
-      grade: edu?.grade
-    }
-
-    console.log({ formValues })
-    reset(formValues)
-    setLoading(false)
+  const resetValue = () => {
+    reset(educationDefaultValues)
   }
 
-  const { loading: queryLoading, data } = useJobSeekerDetailQuery({
-    variables: {
-      seekerId: parseInt(content.seekerId)
-    },
-    onCompleted: ({ jobSeekerDetail }) => {
-      resetValue(jobSeekerDetail)
-    }
-  })
-
   useEffect(() => {
-    if (data?.jobSeekerDetail) {
-      resetValue(data?.jobSeekerDetail)
-    }
+    resetValue()
   }, [isOpen])
 
   const [updateJobSeeker, { loading: updateLoading }] = useUpdateJobSeekerMutation({
@@ -70,11 +51,10 @@ const EditEducationForm = () => {
   const onSubmit = (values: any) => {
     const input = getFormInputValues(values)
     console.log('input', input)
-
     updateJobSeeker({
       variables: {
         input: {
-          seekerId: data?.jobSeekerDetail?.seekerId,
+          seekerId: parseInt(content),
           educations: [input]
         }
       }
@@ -85,17 +65,13 @@ const EditEducationForm = () => {
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Typography variant='h6' sx={{ fontWeight: 600 }}>
-          Edit Education Info
+          Add Education Info
         </Typography>
 
-        {queryLoading || loading ? (
-          <Spinner />
-        ) : (
-          <EducationForm isEdit onClick={handleSubmit(onSubmit)} disabled={isSubmitting || updateLoading} />
-        )}
+        <EducationForm onClick={handleSubmit(onSubmit)} disabled={isSubmitting || updateLoading} />
       </form>
     </FormProvider>
   )
 }
 
-export default EditEducationForm
+export default AddEducationForm

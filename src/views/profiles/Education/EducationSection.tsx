@@ -1,8 +1,13 @@
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Grid, IconButton, Typography } from '@mui/material'
 import { setDrawerState, useAppDispatch } from '../../../store'
 import { DrawerType, eduLevelSelect, fieldStudySelect } from '../../../constants'
 import { styled } from '@mui/material/styles'
 import { BoxProps } from '@mui/material/Box'
+import { EducationType, JobSeekerDetailDocument, useDeleteEducationMutation } from '../../../graphql/api'
+import { MinusCircleOutline, SquareEditOutline } from 'mdi-material-ui'
+import { onCompleted, onError } from '../../../@core/utils/response'
+import { DialogDeleteLayout } from '../../../@core/components/dialog'
+import { useState } from 'react'
 
 // ** Styled Components
 const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -17,9 +22,15 @@ const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
   alignItems: 'center'
 }))
 
-const EducationSection = ({ edu, seekerId }: { edu: string | null | undefined; seekerId: string | undefined }) => {
+const EducationSection = ({
+  educations,
+  seekerId
+}: {
+  educations: Array<EducationType> | undefined
+  seekerId: string | undefined
+}) => {
+  const [dialog, setDialog] = useState(false)
   const dispatch = useAppDispatch()
-  const education = JSON.parse(edu)
 
   const convertEducLevel = (level: number) => {
     const result = eduLevelSelect.find(item => item.value === level)
@@ -39,6 +50,24 @@ const EducationSection = ({ edu, seekerId }: { edu: string | null | undefined; s
     return '-'
   }
 
+  const [deleteEducationMutation, { loading }] = useDeleteEducationMutation({
+    onCompleted: data => onCompleted(data?.deleteEducation, () => {
+      setDialog(false)
+    }),
+    onError: error => {
+      onError(error, undefined)
+    },
+    refetchQueries: [JobSeekerDetailDocument]
+  })
+
+  const onDeleteEducation = (id: any) => {
+    deleteEducationMutation({
+      variables: {
+        educationId: id
+      }
+    })
+  }
+
   return (
     <Box mb={5}>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={3}>
@@ -51,48 +80,121 @@ const EducationSection = ({ edu, seekerId }: { edu: string | null | undefined; s
             dispatch(
               setDrawerState({
                 isOpen: true,
-                type: DrawerType.editEducationForm,
+                type: DrawerType.addEducationForm,
                 content: seekerId
               })
             )
           }
         >
-          Edit
+          Add
         </Button>
       </Box>
-      {education ? (
-        <Box width={'100%'} display={'flex'} flexDirection={'column'} rowGap={'16px'}>
-          <TextBox>
-            <Typography variant='body1'>Education Institution</Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {education.educationInstitution ?? '-'}
-            </Typography>
-          </TextBox>
-          <TextBox>
-            <Typography variant='body1'>Education Level</Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {convertEducLevel(education.educationLevel) ?? '-'}
-            </Typography>
-          </TextBox>
-          <TextBox>
-            <Typography variant='body1'>Field of Study</Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {convertFieldofStudy(education.fieldOfStudy) ?? '-'}
-            </Typography>
-          </TextBox>
-          <TextBox>
-            <Typography variant='body1'>Graduation Year</Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {education.graduationYear ?? '-'}
-            </Typography>
-          </TextBox>
-          <TextBox>
-            <Typography variant='body1'>Description</Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {education.description ?? '-'}
-            </Typography>
-          </TextBox>
-        </Box>
+      {educations && educations.length > 0 ? (
+        educations.map((education, index) => {
+          return (
+            <Grid key={index} container display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+              <Grid item xs={10} sm={11}>
+                <Card sx={{ marginBottom: 4 }}>
+                  <CardContent>
+                    <Box width={'100%'} display={'flex'} flexDirection={'column'} rowGap={'16px'}>
+                      <TextBox>
+                        <Typography variant='body1'>Education Institution</Typography>
+                        <Typography variant={'body1'} fontWeight={600}>
+                          {education.educationInstitution ?? '-'}
+                        </Typography>
+                      </TextBox>
+                      <TextBox>
+                        <Typography variant='body1'>Education Level</Typography>
+                        <Typography variant={'body1'} fontWeight={600}>
+                          {convertEducLevel(education.educationLevel) ?? '-'}
+                        </Typography>
+                      </TextBox>
+                      <TextBox>
+                        <Typography variant='body1'>Field of Study</Typography>
+                        <Typography variant={'body1'} fontWeight={600}>
+                          {convertFieldofStudy(education.fieldOfStudy) ?? '-'}
+                        </Typography>
+                      </TextBox>
+                      <TextBox>
+                        <Typography variant='body1'>Graduation Year</Typography>
+                        <Typography variant={'body1'} fontWeight={600}>
+                          {education.graduationYear ?? '-'}
+                        </Typography>
+                      </TextBox>
+                      {education.grade && (
+                        <TextBox>
+                          <Typography variant='body1'>Grade</Typography>
+                          <Typography variant={'body1'} fontWeight={600}>
+                            {education.grade ?? '-'}
+                          </Typography>
+                        </TextBox>
+                      )}
+                      <TextBox>
+                        <Typography variant='body1'>Description</Typography>
+                        <Typography variant={'body1'} fontWeight={600}>
+                          {education.description ?? '-'}
+                        </Typography>
+                      </TextBox>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item>
+                <Box display={'flex'} flexDirection={'column'} rowGap={4}>
+                  <IconButton
+                    color='inherit'
+                    aria-haspopup='true'
+                    aria-controls='edit-education'
+                    sx={{
+                      color: 'info.light',
+                      '&:hover': {
+                        color: 'info.dark'
+                      }
+                    }}
+                    onClick={() =>
+                      dispatch(
+                        setDrawerState({
+                          isOpen: true,
+                          type: DrawerType.editEducationForm,
+                          content: { seekerId: seekerId, eduId: education.educationId }
+                        })
+                      )
+                    }
+                    disabled={loading}
+                  >
+                    <SquareEditOutline />
+                  </IconButton>
+                  <IconButton
+                    color='inherit'
+                    aria-haspopup='true'
+                    aria-controls='remove-education'
+                    sx={{
+                      color: 'error.light',
+                      '&:hover': {
+                        color: 'error.dark'
+                      }
+                    }}
+                    onClick={e => {
+                      e.stopPropagation();
+                      setDialog(true)
+                    }}
+                    disabled={loading}
+                  >
+                    <MinusCircleOutline />
+                  </IconButton>
+                </Box>
+              </Grid>
+              <DialogDeleteLayout
+                isOpen={dialog}
+                onClose={() => setDialog(false)}
+                dialogTitle={'Delete Education'}
+                dialogContext={`Are you sure you want to delete the selected education?`}
+                onSubmit={() => onDeleteEducation(education.educationId)}
+                disabled={loading}
+              />
+            </Grid>
+          )
+        })
       ) : (
         <Typography variant={'body2'}>Add your education now</Typography>
       )}

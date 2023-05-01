@@ -1,17 +1,19 @@
-import { Box, Button, ButtonProps, Grid } from '@mui/material'
-import { useFormContext } from 'react-hook-form'
-import { closeDrawerState, useAppDispatch, useAppSelector } from '../../../store'
+import { Box, Button, ButtonProps, Grid, IconButton } from '@mui/material'
+import { useFormContext, useWatch } from 'react-hook-form'
+import { closeDrawerState, useAppDispatch } from '../../../store'
 import { SelectInput } from '../../../@core/components/custom-inputs'
-import { genderSelect } from '../../../constants'
-import { SkillType, useSkillListingQuery } from '../../../graphql/api'
-import { useEffect, useState } from 'react'
+import { useSkillListingQuery } from '../../../graphql/api'
 import DropdownSkeleton from '../../../@core/components/skeleton/DropdownSkeleton'
+import { MinusCircleOutline, PlusCircleOutline } from 'mdi-material-ui'
 
 const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
-  const [skillList, setSkillList] = useState<Array<SkillType>>([])
   const dispatch = useAppDispatch()
-  const { isOpen } = useAppSelector(state => state.drawer)
-  const { control, getValues } = useFormContext()
+  const { control, getValues, setValue } = useFormContext()
+
+  const skills = useWatch({
+    name: 'skills',
+    defaultValue: []
+  })
 
   const onCancel = () => {
     dispatch(closeDrawerState())
@@ -21,52 +23,83 @@ const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => 
     fetchPolicy: 'no-cache'
   })
 
-  useEffect(() => {
-    const skills = getValues('skills')
-    if (skills) {
-      setSkillList(skills)
-    }
-  }, [isOpen])
+  const removeSkill = (index: number) => {
+    const updatedSkills = getValues('skills')
+    updatedSkills.splice(index, 1)
+    setValue('skills', updatedSkills)
+    console.log('updated', updatedSkills)
+  }
+
+  const addSkill = () => {
+    const newSkills = [...skills, { value: '' }]
+    setValue('skills', newSkills)
+  }
 
   return (
     <>
       {loading ? (
         <DropdownSkeleton />
-      ) : skillList ? (
-        skillList.map((skill, index) => (
-          <Grid item mt={6} mb={2} key={index} display={'flex'} columnGap={4}>
-            <SelectInput
-              controllerProps={{
-                control,
-                name: `skills[${index}].value`
-              }}
-              selectProps={{ label: `Skill ${index + 1}` }}
-              selectData={data?.skillListing?.map(item => ({
-                label: item?.skillName,
-                value: item?.skillId
-              }))}
-              onChangeCallback={newValue => {
-                console.log(newValue)
-                setSkillList(prevState => {
-                  const newState = [...prevState]
-                  newState[index].skillName = newValue.value
-
-                  return newState
-                })
-              }}
-            />
-            <Button
-              variant='contained'
-              size='small'
-              onClick={() => setSkillList(prevState => [...prevState.slice(0, index), ...prevState.slice(index + 1)])}
-            >
-              Remove
-            </Button>
+      ) : skills.length > 0 ? (
+        skills.map((skill, index) => (
+          <Grid
+            container
+            mt={6}
+            mb={2}
+            key={index}
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
+          >
+            <Grid item xs={10} sm={11}>
+              <SelectInput
+                controllerProps={{
+                  control,
+                  name: `skills[${index}]`
+                }}
+                selectProps={{ label: `Skill ${index + 1}` }}
+                selectData={data?.skillListing?.map(item => ({
+                  label: item?.skillName,
+                  value: item?.skillId
+                }))}
+              />
+            </Grid>
+            <Grid item>
+              <IconButton
+                color='inherit'
+                aria-haspopup='true'
+                onClick={() => removeSkill(index)}
+                aria-controls='remove-skill'
+                sx={{
+                  color: 'error.light',
+                  '&:hover': {
+                    color: 'error.dark'
+                  }
+                }}
+              >
+                <MinusCircleOutline />
+              </IconButton>
+            </Grid>
           </Grid>
         ))
       ) : (
         ''
       )}
+      <Box display='flex' justifyContent='center' mt={6} mb={2}>
+        <IconButton
+          color='inherit'
+          aria-haspopup='true'
+          onClick={addSkill}
+          aria-controls='add-skill'
+          sx={{
+            color: 'info.light',
+            '&:hover': {
+              color: 'info.dark'
+            }
+          }}
+        >
+          <PlusCircleOutline />
+        </IconButton>
+      </Box>
 
       <Box display='flex' justifyContent='center' py={10}>
         <Button

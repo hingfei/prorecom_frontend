@@ -60,7 +60,7 @@ const Profile = () => {
             <Divider sx={{ mb: 5 }} />
 
             <EducationSection
-              edu={data?.jobSeekerDetail?.seekerHighestEduc}
+              educations={data?.jobSeekerDetail?.educations}
               seekerId={data?.jobSeekerDetail?.seekerId}
             />
             <Divider sx={{ mb: 5 }} />

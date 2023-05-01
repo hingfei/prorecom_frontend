@@ -1,0 +1,8 @@
+mutation deleteEducation($educationId: ID!){
+  deleteEducation(educationId: $educationId) {
+    ... on EducationResponse {
+      message
+      success
+    }
+  }
+}

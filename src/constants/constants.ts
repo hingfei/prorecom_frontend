@@ -1,6 +1,7 @@
 export const DrawerType = {
   editJobSeekerForm: 'editJobSeekerForm',
   editEducationForm: 'editEducationForm',
+  addEducationForm: 'addEducationForm',
   editAboutForm: 'editAboutForm',
   editPasswordForm: 'editPasswordForm',
   editSkillForm: 'editSkillForm'

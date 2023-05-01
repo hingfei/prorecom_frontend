@@ -12,7 +12,6 @@ mutation createJobSeeker($input: CreateJobSeekerInput!) {
         seekerStreet
         seekerCity
         seekerState
-        seekerHighestEduc
         seekerResume
       }
       message
@@ -34,7 +33,6 @@ mutation updateJobSeeker($input: UpdateJobSeekerInput!) {
         seekerStreet
         seekerCity
         seekerState
-        seekerHighestEduc
         seekerResume
       }
       message

@@ -57,6 +57,15 @@ const EducationForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean })
       </Grid>
       <Grid item mt={6} mb={2}>
         <TextInput
+          inputProps={{ label: 'Grade (Optional)' }}
+          controllerProps={{
+            control,
+            name: 'grade'
+          }}
+        />
+      </Grid>
+      <Grid item mt={6} mb={2}>
+        <TextInput
           inputProps={{ label: 'Description', multiline: true }}
           controllerProps={{
             control,

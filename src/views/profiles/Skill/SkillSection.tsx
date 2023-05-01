@@ -29,7 +29,7 @@ const SkillSection = ({ skills, seekerId }: { skills: Array<SkillType> | undefin
           Edit
         </Button>
       </Box>
-      {skills ? (
+      {skills && skills.length > 0 ? (
         <List>
           {skills.map(skill => {
             return (

@@ -9,7 +9,6 @@ query jobSeekerListing {
     seekerStreet
     seekerCity
     seekerState
-    seekerHighestEduc
     seekerResume
   }
 }
@@ -25,7 +24,6 @@ query jobSeekerDetail($seekerId: Int!) {
     seekerStreet
     seekerCity
     seekerState
-    seekerHighestEduc
     seekerResume
     seekerAbout
     users {
@@ -38,6 +36,15 @@ query jobSeekerDetail($seekerId: Int!) {
     skills {
       skillId
       skillName
+    }
+    educations {
+      educationId
+      educationLevel
+      educationInstitution
+      description
+      fieldOfStudy
+      graduationYear
+      grade
     }
   }
 }

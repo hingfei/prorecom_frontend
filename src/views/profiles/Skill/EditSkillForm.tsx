@@ -24,9 +24,7 @@ const EditSkillForm = () => {
 
   const resetValue = (jobSeekerDetail: any) => {
     console.log(jobSeekerDetail)
-    const skillList = jobSeekerDetail?.skills.map((item) => ({
-      value: item.skillId
-    }))
+    const skillList = jobSeekerDetail?.skills.map(item => item.skillId)
     const formValues = {
       skills: skillList
     }
@@ -64,33 +62,30 @@ const EditSkillForm = () => {
 
   const onSubmit = (values: any) => {
     const input = getFormInputValues(values)
-    console.log('input', input)
+    const skillsArray = input.skills.map((skill: any) => parseInt(skill.value))
+    console.log(skillsArray)
 
-    // updateJobSeeker({
-    //   variables: {
-    //     input: {
-    //       ...input,
-    //       seekerId: data?.jobSeekerDetail?.seekerId
-    //     }
-    //   }
-    // })
+    updateJobSeeker({
+      variables: {
+        input: {
+          skills: skillsArray,
+          seekerId: data?.jobSeekerDetail?.seekerId
+        }
+      }
+    })
   }
 
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant='h6' sx={{ fontWeight: 600 }}>
+        <Typography variant='h6' mb={6} sx={{ fontWeight: 600 }}>
           Edit Skills
         </Typography>
 
         {queryLoading || loading ? (
           <Spinner />
         ) : (
-          <SkillForm
-            isEdit
-            onClick={handleSubmit(onSubmit)}
-            disabled={isSubmitting || updateLoading}
-          />
+          <SkillForm isEdit onClick={handleSubmit(onSubmit)} disabled={isSubmitting || updateLoading} />
         )}
       </form>
     </FormProvider>
