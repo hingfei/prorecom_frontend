@@ -40,7 +40,7 @@ const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => 
       {loading ? (
         <DropdownSkeleton />
       ) : skills.length > 0 ? (
-        skills.map((skill, index) => (
+        skills.map((skill: any, index: number) => (
           <Grid
             container
             mt={6}
