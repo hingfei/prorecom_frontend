@@ -1,5 +1,5 @@
-query projectListing {
-  projectListing {
+query projectListing($recommendation: Boolean!) {
+  projectListing(recommendation: $recommendation) {
     projectId
     projectName
     companyId

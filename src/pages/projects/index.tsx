@@ -1,24 +1,59 @@
-import { Grid } from '@mui/material'
+import { Box, FormControlLabel, Grid, Icon, Switch, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { ProjectType, useProjectListingQuery } from '../../graphql/api'
+import { ProjectType, useProjectListingLazyQuery } from '../../graphql/api'
 import Spinner from '../../@core/components/spinner'
 import withAuth from '../../@core/hooks/withAuth'
 import ProjectDetails from '../../views/projects/ProjectDetails/ProjectDetails'
 import ProjectListing from '../../views/projects/ProjectListing'
+import { AlertCircleOutline } from 'mdi-material-ui'
 
 function Projects() {
+  const [loading, setLoading] = useState(true)
+  const [checked, setChecked] = useState(true);
+  const [label, setLabel] = useState('Recommended');
   const [project, setProject] = useState<ProjectType>()
-  const { data, loading } = useProjectListingQuery({
+
+  const [fetchProject, { data, loading: fetchLoading }] = useProjectListingLazyQuery({
+    variables: {
+      recommendation: true
+    },
+    onCompleted: data => {
+      setProject(data.projectListing[0])
+      setLoading(false)
+    },
     fetchPolicy: 'no-cache'
   })
 
-  useEffect(() => {
-    if (data) {
-      setProject(data.projectListing[0])
+  const handleChangeProjectList = () => {
+    if (checked) {
+      setChecked(false)
+      setLabel('Default')
+      fetchProject({
+        variables: {
+          recommendation: false
+        }
+      })
+    } else {
+      setChecked(true)
+      setLabel('Recommended')
+      fetchProject({
+        variables: {
+          recommendation: true
+        }
+      })
     }
-  }, [data])
+  }
 
-  if (loading) {
+  useEffect(() => {
+    setLoading(true)
+    fetchProject({
+      variables: {
+        recommendation: true
+      }
+    })
+  }, [])
+
+  if (loading || fetchLoading) {
     return <Spinner />
   }
 
@@ -26,15 +61,32 @@ function Projects() {
     setProject(project)
   }
 
-  return (
-    <Grid container spacing={6}>
-      <Grid item xs={4.5}>
-        <ProjectListing projectListing={data?.projectListing} project={project} onChangeProject={onChangeProject} />
+  return data != null ? (
+    <Box>
+      <Grid container>
+        <FormControlLabel control={<Switch checked={checked} onChange={handleChangeProjectList} />} label={label} />
       </Grid>
-      <Grid item xs={7.5}>
-        <ProjectDetails project={project} />
+
+      <Grid container spacing={6}>
+        <Grid item xs={4.5}>
+          <ProjectListing projectListing={data?.projectListing} project={project} onChangeProject={onChangeProject} />
+        </Grid>
+        <Grid item xs={7.5}>
+          <ProjectDetails project={project} />
+        </Grid>
       </Grid>
-    </Grid>
+    </Box>
+  ) : (
+    <Box display={'flex'} alignItems={'center'} justifyContent={'center'} flexDirection={'column'} height={'100%'}>
+      <Box>
+        <Icon sx={{ fontSize: '100px', display: 'initial' }}>
+          <AlertCircleOutline sx={{ fontSize: '100px' }} />
+        </Icon>
+      </Box>
+      <Typography variant={'h5'} fontWeight={600}>
+        Opps! No Project is Found.
+      </Typography>
+    </Box>
   )
 }
 

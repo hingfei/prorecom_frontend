@@ -296,6 +296,11 @@ export type QueryProjectDetailArgs = {
 };
 
 
+export type QueryProjectListingArgs = {
+  recommendation?: InputMaybe<Scalars['Boolean']>;
+};
+
+
 export type QueryUserDetailArgs = {
   userId: Scalars['Int'];
 };
@@ -498,7 +503,9 @@ export type CompanyDetailQueryVariables = Exact<{
 
 export type CompanyDetailQuery = { __typename?: 'Query', companyDetail?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null } | null };
 
-export type ProjectListingQueryVariables = Exact<{ [key: string]: never; }>;
+export type ProjectListingQueryVariables = Exact<{
+  recommendation: Scalars['Boolean'];
+}>;
 
 
 export type ProjectListingQuery = { __typename?: 'Query', projectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectSalary?: string | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
@@ -1170,8 +1177,8 @@ export type CompanyDetailQueryHookResult = ReturnType<typeof useCompanyDetailQue
 export type CompanyDetailLazyQueryHookResult = ReturnType<typeof useCompanyDetailLazyQuery>;
 export type CompanyDetailQueryResult = Apollo.QueryResult<CompanyDetailQuery, CompanyDetailQueryVariables>;
 export const ProjectListingDocument = gql`
-    query projectListing {
-  projectListing {
+    query projectListing($recommendation: Boolean!) {
+  projectListing(recommendation: $recommendation) {
     projectId
     projectName
     companyId
@@ -1214,10 +1221,11 @@ export const ProjectListingDocument = gql`
  * @example
  * const { data, loading, error } = useProjectListingQuery({
  *   variables: {
+ *      recommendation: // value for 'recommendation'
  *   },
  * });
  */
-export function useProjectListingQuery(baseOptions?: Apollo.QueryHookOptions<ProjectListingQuery, ProjectListingQueryVariables>) {
+export function useProjectListingQuery(baseOptions: Apollo.QueryHookOptions<ProjectListingQuery, ProjectListingQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ProjectListingQuery, ProjectListingQueryVariables>(ProjectListingDocument, options);
       }
