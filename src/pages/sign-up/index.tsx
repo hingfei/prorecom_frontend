@@ -90,17 +90,7 @@ const RegisterPage = () => {
           <Card sx={{ zIndex: 1 }}>
             <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
               <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Typography
-                  variant='h6'
-                  sx={{
-                    lineHeight: 1,
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    fontSize: '1.5rem !important'
-                  }}
-                >
-                  {themeConfig.templateName}
-                </Typography>
+                <img src='/images/prorecom_title.png' alt="pro_recom"/>
               </Box>
               {steps === 1 ? (
                 <UserTypeForm onClick={changeStep} selected={selected} setSelected={setSelected} />

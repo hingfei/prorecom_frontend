@@ -103,18 +103,7 @@ const LoginPage = () => {
         <Card sx={{ zIndex: 1 }}>
           <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
             <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Typography
-                variant='h6'
-                sx={{
-                  // ml: 3,
-                  lineHeight: 1,
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  fontSize: '1.5rem !important'
-                }}
-              >
-                {themeConfig.templateName}
-              </Typography>
+              <img src='/images/prorecom_title.png' alt="pro_recom"/>
             </Box>
             <Box sx={{ mb: 6 }}>
               <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
