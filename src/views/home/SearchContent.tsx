@@ -5,6 +5,7 @@ import { TextInput } from 'src/@core/components/custom-inputs'
 import { useRouter } from 'next/router'
 import { Magnify } from 'mdi-material-ui'
 import { BoxProps } from '@mui/material/Box'
+import { getFormInputValues } from '../../@core/utils/get-form-input-values'
 
 const defaultValues = {
   keyword: ''
@@ -19,7 +20,7 @@ const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const TitleWrapper = styled(Box)<BoxProps>(({ theme }) => ({
-  maxWidth: '780px',
+  maxWidth: '900px',
   textAlign: 'center'
 }))
 
@@ -62,21 +63,9 @@ const SearchContent = () => {
 
   const onSubmit = (values: any) => {
     console.log({ values })
-    // const { user_mobile, user_alternative_mobile, ...restValues } = values;
-    // createUser({
-    //   variables: {
-    //     input: {
-    //       ...getFormInputValues(restValues),
-    //       user_mobile: user_mobile?.charAt(0) === '6' ? user_mobile : `6${user_mobile}`,
-    //       ...(!!user_alternative_mobile
-    //         ? {
-    //           user_alternative_mobile:
-    //             user_alternative_mobile?.charAt(0) === '6' ? user_alternative_mobile : `6${user_alternative_mobile}`
-    //         }
-    //         : {})
-    //     }
-    //   }
-    // });
+    const input = getFormInputValues(values)
+    console.log(input.keyword)
+    router.push({ pathname: '/projects', query: { keywords: input.keyword } })
   }
 
   return (
@@ -86,7 +75,7 @@ const SearchContent = () => {
         <BoxWrapper>
           <TitleWrapper>
             <Typography fontWeight={800} variant={'h2'} marginBottom={9}>
-              Building better teams, one recommendation at a time
+              Building better teams <br /> One recommendation at a time
             </Typography>
             <Typography variant={'h6'}>
               Unlock your potential with personalized project and candidate recommendations.
@@ -96,7 +85,7 @@ const SearchContent = () => {
             <TextInput
               inputProps={{
                 label: 'Search',
-                placeholder: 'Search for your project...',
+                placeholder: 'Search project',
                 autoComplete: 'off'
                 // sx: {width: '50px'}
               }}
@@ -105,7 +94,7 @@ const SearchContent = () => {
                 name: 'keyword'
               }}
             />
-            <Button variant={'contained'} startIcon={<Magnify />} onClick={handleSubmit(onSubmit)}>
+            <Button variant={'contained'} startIcon={<Magnify/>} onClick={handleSubmit(onSubmit)}>
               Search
             </Button>
           </SearchWrapper>
@@ -115,7 +104,7 @@ const SearchContent = () => {
         </BoxWrapper>
       </form>
     </FormProvider>
-  )
+)
 }
 
 export default SearchContent
