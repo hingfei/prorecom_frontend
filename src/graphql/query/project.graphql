@@ -59,3 +59,34 @@ query projectDetail($projectId: Int!) {
     }
   }
 }
+
+query searchProjects($searchKeyword: String!) {
+  searchProjects(searchKeyword: $searchKeyword) {
+    projectId
+    projectName
+    companyId
+    company {
+      companyId
+      companyName
+      companyFounder
+      companySize
+      companyDesc
+      companyStreet
+      companyCity
+      companyState
+      users {
+        userType
+      }
+    }
+    projectTypes
+    postDates
+    projectSalary
+    projectDesc
+    projectReq
+    projectExpLvl
+    skills {
+      skillId
+      skillName
+    }
+  }
+}

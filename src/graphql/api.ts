@@ -275,6 +275,7 @@ export type Query = {
   me: UserType;
   projectDetail?: Maybe<ProjectType>;
   projectListing: Array<ProjectType>;
+  searchProjects: Array<ProjectType>;
   skillListing: Array<SkillType>;
   userDetail?: Maybe<User>;
   userListing: Array<User>;
@@ -298,6 +299,11 @@ export type QueryProjectDetailArgs = {
 
 export type QueryProjectListingArgs = {
   recommendation?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type QuerySearchProjectsArgs = {
+  searchKeyword: Scalars['String'];
 };
 
 
@@ -516,6 +522,13 @@ export type ProjectDetailQueryVariables = Exact<{
 
 
 export type ProjectDetailQuery = { __typename?: 'Query', projectDetail?: { __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectSalary?: string | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> } | null };
+
+export type SearchProjectsQueryVariables = Exact<{
+  searchKeyword: Scalars['String'];
+}>;
+
+
+export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectSalary?: string | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
 
 export type JobSeekerListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1296,6 +1309,66 @@ export function useProjectDetailLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type ProjectDetailQueryHookResult = ReturnType<typeof useProjectDetailQuery>;
 export type ProjectDetailLazyQueryHookResult = ReturnType<typeof useProjectDetailLazyQuery>;
 export type ProjectDetailQueryResult = Apollo.QueryResult<ProjectDetailQuery, ProjectDetailQueryVariables>;
+export const SearchProjectsDocument = gql`
+    query searchProjects($searchKeyword: String!) {
+  searchProjects(searchKeyword: $searchKeyword) {
+    projectId
+    projectName
+    companyId
+    company {
+      companyId
+      companyName
+      companyFounder
+      companySize
+      companyDesc
+      companyStreet
+      companyCity
+      companyState
+      users {
+        userType
+      }
+    }
+    projectTypes
+    postDates
+    projectSalary
+    projectDesc
+    projectReq
+    projectExpLvl
+    skills {
+      skillId
+      skillName
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchProjectsQuery__
+ *
+ * To run a query within a React component, call `useSearchProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchProjectsQuery({
+ *   variables: {
+ *      searchKeyword: // value for 'searchKeyword'
+ *   },
+ * });
+ */
+export function useSearchProjectsQuery(baseOptions: Apollo.QueryHookOptions<SearchProjectsQuery, SearchProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchProjectsQuery, SearchProjectsQueryVariables>(SearchProjectsDocument, options);
+      }
+export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchProjectsQuery, SearchProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchProjectsQuery, SearchProjectsQueryVariables>(SearchProjectsDocument, options);
+        }
+export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
+export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
+export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
 export const JobSeekerListingDocument = gql`
     query jobSeekerListing {
   jobSeekerListing {
