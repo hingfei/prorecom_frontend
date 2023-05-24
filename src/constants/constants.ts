@@ -77,3 +77,33 @@ export const fieldStudySelect = [
     value: 8
   }
 ]
+
+export const projectOptions = ['Part-Time', 'Full-Time', 'Freelance', 'Internship']
+
+export const companyStates = [
+  'Johor',
+  'Kedah',
+  'Kelantan',
+  'Kuala Lumpur',
+  'Labuan',
+  'Melaka',
+  'Negeri Sembilan',
+  'Pahang',
+  'Perak',
+  'Perlis',
+  'Pulau Penang',
+  'Putrajaya',
+  'Sabah',
+  'Sarawak',
+  'Selangor',
+  'Terengganu'
+]
+
+export const projectExpLevel = [
+  '#NoExperienceNeeded',
+  'Intern',
+  'Fresh Graduate',
+  '1 - 3 Years of Experience',
+  '4 - 7 Years of Experience',
+  '8 - 10 Years of Experience'
+]
