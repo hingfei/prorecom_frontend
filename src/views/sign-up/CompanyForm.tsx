@@ -2,7 +2,7 @@ import { useTheme } from '@mui/material/styles'
 import { SelectInput, TextInput } from 'src/@core/components/custom-inputs'
 import { Box, Button, Grid, Typography } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
-import { companySize } from "../../constants";
+import { companySize, statesListing } from "../../constants";
 
 const CompanyForm = ({
   onClick,
@@ -89,14 +89,16 @@ const CompanyForm = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} mb={4}>
-            <TextInput
-              inputProps={{
-                label: 'State'
-              }}
+            <SelectInput
+              selectProps={{ label: 'State' }}
               controllerProps={{
                 control,
                 name: 'companyState'
               }}
+              selectData={statesListing.map(item => ({
+                label: item,
+                value: item
+              }))}
               isRequired
             />
           </Grid>

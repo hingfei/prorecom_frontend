@@ -2,7 +2,7 @@ import { Box, Button, ButtonProps, Grid } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
 import { closeDrawerState, useAppDispatch } from '../../../store'
 import { SelectInput, TextInput } from '../../../@core/components/custom-inputs'
-import { genderSelect } from "../../../constants";
+import { genderSelect, statesListing } from "../../../constants";
 
 const PersonalInfoForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
   const dispatch = useAppDispatch()
@@ -98,15 +98,16 @@ const PersonalInfoForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean
         />
       </Grid>
       <Grid item mt={6} mb={2}>
-        <TextInput
-          inputProps={{
-            label: 'State',
-            multiline: true
-          }}
+        <SelectInput
+          selectProps={{ label: 'State' }}
           controllerProps={{
             control,
             name: 'seekerState'
           }}
+          selectData={statesListing.map(item => ({
+            label: item,
+            value: item
+          }))}
         />
       </Grid>
 
