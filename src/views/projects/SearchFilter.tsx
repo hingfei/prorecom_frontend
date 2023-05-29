@@ -19,12 +19,12 @@ import {
   Switch,
   Typography
 } from '@mui/material'
-import { Dispatch, SetStateAction, SyntheticEvent, useState } from 'react'
+import React, { Dispatch, SetStateAction, SyntheticEvent, useState } from 'react'
 import { styled } from '@mui/material/styles'
 import MuiMenu, { MenuProps } from '@mui/material/Menu'
 import MuiMenuItem, { MenuItemProps } from '@mui/material/MenuItem'
 import { TypographyProps } from '@mui/material/Typography'
-import { companyStates, projectExpLevel, projectOptions } from 'src/constants'
+import { projectExpLevel, projectOptions, statesListing } from 'src/constants'
 
 // ** Styled Components
 const Menu = styled(MuiMenu)<MenuProps>(({ theme }) => ({
@@ -88,17 +88,16 @@ const SearchFilter = ({
   onClick,
   handleChangeProjectList,
   switchOption,
-  projectList,
   defaultProjectList,
   setProjectList
 }: {
   onClick: any
   handleChangeProjectList: any
   switchOption?: { checked: boolean; label: string }
-  projectList?: never[]
   defaultProjectList?: never[]
   setProjectList?: Dispatch<SetStateAction<never[]>>
 }) => {
+  const [numFilters, setNumFilters] = useState(0)
   const [anchorEl, setAnchorEl] = useState<(EventTarget & Element) | null>(null)
   const { control } = useFormContext()
 
@@ -114,7 +113,7 @@ const SearchFilter = ({
     projectType: [],
     companyState: [],
     projectExpLevel: [],
-    projectSalary: 0
+    projectMinSalary: 0
   })
 
   const valueLabelFormat = (value: number) => {
@@ -130,7 +129,6 @@ const SearchFilter = ({
 
   const handleFilterButtonClick = () => {
     console.log(filterOptions)
-    console.log(defaultProjectList[0].projectExpLvl)
 
     const filteredProjects = defaultProjectList?.filter(project => {
       // Check project type filter
@@ -149,7 +147,7 @@ const SearchFilter = ({
       }
 
       // Check project salary filter
-      if (project.projectSalary < filterOptions.projectSalary) {
+      if (project.projectMinSalary < filterOptions.projectMinSalary) {
         return false
       }
 
@@ -157,6 +155,20 @@ const SearchFilter = ({
       return true
     })
 
+    const numItems = Object.values(filterOptions).reduce((total, arr) => {
+      console.log("total", total)
+      console.log("arr", arr)
+      if (Array.isArray(arr)) {
+        return total + arr.length
+      } else {
+        if (arr !== 0) {
+          return total + 1
+        }
+      }
+
+      return total
+    }, 0) as number
+    setNumFilters(numItems)
     // Use the filteredProjects array as needed
     console.log(filteredProjects)
     setProjectList(filteredProjects)
@@ -189,7 +201,26 @@ const SearchFilter = ({
         />
       </Grid>
       <Grid item>
-        <Button variant={'outlined'} endIcon={<FilterMenuOutline />} onClick={handleDropdownOpen}>
+        <Button
+          variant={'outlined'}
+          endIcon={
+            <Box display={'flex'} alignItems={'center'}>
+              {numFilters !== 0 ? (
+                <Chip
+                  size='small'
+                  variant={'filled'}
+                  label={numFilters}
+                  color='primary'
+                  sx={{ fontSize: '12px', borderRadius: '50%', marginRight: '4px' }}
+                />
+              ) : (
+                ''
+              )}
+              <FilterMenuOutline />
+            </Box>
+          }
+          onClick={handleDropdownOpen}
+        >
           Filter
         </Button>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleDropdownClose}>
@@ -237,7 +268,7 @@ const SearchFilter = ({
                 )}
                 MenuProps={MenuProps}
               >
-                {companyStates.map(option => (
+                {statesListing.map(option => (
                   <MenuItem key={option} value={option}>
                     <Checkbox checked={filterOptions.companyState.includes(option)} />
                     <ListItemText primary={option} />
@@ -277,9 +308,9 @@ const SearchFilter = ({
           <StyledMenuItem lastchild={true}>
             <FormControl fullWidth>
               <CustomSlider
-                value={filterOptions.projectSalary}
+                value={filterOptions.projectMinSalary}
                 valueLabelFormat={valueLabelFormat}
-                onChange={(event, value) => handleFilterChange('projectSalary', value)}
+                onChange={(event, value) => handleFilterChange('projectMinSalary', value)}
                 min={0}
                 max={20000}
                 step={100}
