@@ -80,7 +80,7 @@ export const fieldStudySelect = [
 
 export const projectOptions = ['Part-Time', 'Full-Time', 'Freelance', 'Internship']
 
-export const companyStates = [
+export const statesListing = [
   'Johor',
   'Kedah',
   'Kelantan',
