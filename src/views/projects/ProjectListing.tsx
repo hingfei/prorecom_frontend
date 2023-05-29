@@ -67,7 +67,15 @@ const ProjectListing = ({
                 color='primary'
                 sx={{ fontSize: '13px', fontWeight: 500, borderRadius: '18px' }}
               />
-              <Typography variant={'body2'}>{item.projectSalary}</Typography>
+              {item?.projectMinSalary != null && item?.projectMaxSalary != null ? (
+                <Typography variant={'body2'}>
+                  RM{item?.projectMinSalary} - RM{item?.projectMaxSalary}
+                </Typography>
+              ) : item?.projectMinSalary != null && item?.projectMaxSalary == null ? (
+                <Typography variant={'body2'}>RM{item?.projectMinSalary}</Typography>
+              ) : (
+                <Typography variant={'body2'}>Undisclosed</Typography>
+              )}
             </Box>
           </CardContent>
         </StyledCard>

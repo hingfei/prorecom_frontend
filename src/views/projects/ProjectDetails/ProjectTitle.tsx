@@ -32,7 +32,15 @@ const ProjectTitle = ({ project }: { project: ProjectType | undefined }) => {
           color='primary'
           sx={{ fontSize: '13px', fontWeight: 500, borderRadius: '18px' }}
         />
-        <Typography variant={'body2'}>{project?.projectSalary}</Typography>
+        {project?.projectMinSalary != null && project?.projectMaxSalary != null ? (
+          <Typography variant={'body2'}>
+            RM{project?.projectMinSalary} - RM{project?.projectMaxSalary}
+          </Typography>
+        ) : project?.projectMinSalary != null && project?.projectMaxSalary == null ? (
+          <Typography variant={'body2'}>RM{project?.projectMinSalary}</Typography>
+        ) : (
+          <Typography variant={'body2'}>Undisclosed</Typography>
+        )}
       </Box>
       <Typography variant={'body2'} textAlign={'end'}>
         {project?.postDates}

@@ -18,7 +18,8 @@ query projectListing($recommendation: Boolean!) {
     }
     projectTypes
     postDates
-    projectSalary
+    projectMinSalary
+    projectMaxSalary
     projectDesc
     projectReq
     projectExpLvl
@@ -49,7 +50,8 @@ query projectDetail($projectId: Int!) {
     }
     projectTypes
     postDates
-    projectSalary
+    projectMinSalary
+    projectMaxSalary
     projectDesc
     projectReq
     projectExpLvl
@@ -80,7 +82,8 @@ query searchProjects($searchKeyword: String!) {
     }
     projectTypes
     postDates
-    projectSalary
+    projectMinSalary
+    projectMaxSalary
     projectDesc
     projectReq
     projectExpLvl
