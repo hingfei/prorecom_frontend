@@ -67,12 +67,17 @@ export const AuthProvider = ({ children }: Props) => {
     onCompleted: data => {
       onCompleted(data.login, () => {
         if (data.login.success) {
+          console.log('data', data)
           window.localStorage.setItem(authConfig.storageTokenKeyName, data?.login?.token || '')
           window.localStorage.setItem('userData', JSON.stringify(data?.login?.user))
           setCookies(authConfig.storageTokenKeyName, `Bearer ${data?.login?.token}`)
           setIsAuthenticated(true)
           setIsInitialized(false)
-          router.push('/projects')
+          if (data?.login?.user?.userType === 'job_seekers') {
+            router.push('/projects')
+          } else {
+            router.push('/company-dashboard')
+          }
         }
       })
     },
