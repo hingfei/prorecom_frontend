@@ -56,7 +56,7 @@ const PersonalInfoSection = ({ jobSeeker, seekerId }: { jobSeeker: any; seekerId
     <>
       {renderUserAvatar()}
       <Typography variant={'h4'} fontWeight={700} sx={{ my: 4 }}>
-        {jobSeeker.seekerName ?? ''}
+        {jobSeeker?.seekerName ?? ''}
       </Typography>
       <Box width={'100%'} display={'flex'} flexDirection={'column'} rowGap={'16px'}>
         <TextBox>

@@ -6,6 +6,8 @@ import { useRouter } from 'next/router'
 import { Magnify } from 'mdi-material-ui'
 import { BoxProps } from '@mui/material/Box'
 import { getFormInputValues } from '../../@core/utils/get-form-input-values'
+import { useEffect, useState } from "react";
+import { useAuth } from "../../@core/context/authContext";
 
 const defaultValues = {
   keyword: ''
@@ -39,13 +41,10 @@ const SearchWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   gap: 20
 }))
 
-const Img = styled('img')(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    width: 276
-  }
-}))
 
 const SearchContent = () => {
+  const [userType, setUserType] = useState('job_seekers');
+  const { isAuthenticated, logout } = useAuth()
   const router = useRouter()
   const formMethods = useForm({
     defaultValues: {
@@ -53,20 +52,23 @@ const SearchContent = () => {
     }
   })
 
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-    reset,
-    setError,
-    control
-  } = formMethods
+  const { handleSubmit, control } = formMethods
 
   const onSubmit = (values: any) => {
-    console.log({ values })
     const input = getFormInputValues(values)
-    console.log(input.keyword)
     router.push({ pathname: '/projects', query: { keywords: input.keyword } })
   }
+
+  useEffect(() => {
+    const data = window.localStorage.getItem('userData')
+    if (data) {
+      const userData = JSON.parse(data)
+      setUserType(userData.userType)
+    } else {
+      setUserType('job_seekers')
+    }
+  }, [isAuthenticated]);
+
 
   return (
     // @ts-ignore
@@ -81,30 +83,35 @@ const SearchContent = () => {
               Unlock your potential with personalized project and candidate recommendations.
             </Typography>
           </TitleWrapper>
-          <SearchWrapper>
-            <TextInput
-              inputProps={{
-                label: 'Search',
-                placeholder: 'Search project',
-                autoComplete: 'off'
-                // sx: {width: '50px'}
-              }}
-              controllerProps={{
-                control,
-                name: 'keyword'
-              }}
-            />
-            <Button variant={'contained'} startIcon={<Magnify/>} onClick={handleSubmit(onSubmit)}>
-              Search
-            </Button>
-          </SearchWrapper>
+          {userType === 'job_seekers' ? (
+            <SearchWrapper>
+              <TextInput
+                inputProps={{
+                  label: 'Search',
+                  placeholder: 'Search project',
+                  autoComplete: 'off'
+                  // sx: {width: '50px'}
+                }}
+                controllerProps={{
+                  control,
+                  name: 'keyword'
+                }}
+              />
+              <Button variant={'contained'} startIcon={<Magnify />} onClick={handleSubmit(onSubmit)}>
+                Search
+              </Button>
+            </SearchWrapper>
+          ) : (
+            ''
+          )}
+
           {/*<Grid item xs={12} md={6} display={'flex'} justifyContent={'center'} alignItems={'center'}>*/}
           {/*  <Img src={'/images/homepage/job_searching.jpg'} alt={'home_img'} width={'500px'} height={'auto'} />*/}
           {/*</Grid>*/}
         </BoxWrapper>
       </form>
     </FormProvider>
-)
+  )
 }
 
 export default SearchContent

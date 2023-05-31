@@ -14,7 +14,6 @@ import SearchFilter from '../../views/projects/SearchFilter'
 function Projects() {
   const router = useRouter()
   const [switchOption, setSwitchOption] = useState({checked: true, label: 'Best Match'})
-  const [label, setLabel] = useState('Best Match')
   const [loading, setLoading] = useState(true)
   const [defaultProjectList, setDefaultProjectList] = useState([]);
   const [project, setProject] = useState<ProjectType>()
@@ -22,12 +21,7 @@ function Projects() {
 
   const formMethods = useForm()
 
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-    control,
-    setValue
-  } = formMethods
+  const { handleSubmit, setValue } = formMethods
 
   const [fetchProject, { loading: fetchLoading }] = useProjectListingLazyQuery({
     variables: {
@@ -133,7 +127,6 @@ function Projects() {
                 onClick={handleSubmit(onSubmit)}
                 handleChangeProjectList={handleChangeProjectList}
                 switchOption={switchOption}
-                projectList={projectList}
                 defaultProjectList={defaultProjectList}
                 setProjectList={setProjectList}
               />
@@ -155,7 +148,6 @@ function Projects() {
                 onClick={handleSubmit(onSubmit)}
                 handleChangeProjectList={handleChangeProjectList}
                 switchOption={switchOption}
-                projectList={projectList}
                 defaultProjectList={defaultProjectList}
                 setProjectList={setProjectList}
               />
@@ -183,4 +175,4 @@ function Projects() {
   )
 }
 
-export default withAuth(Projects)
+export default withAuth(Projects, ['job_seekers'])

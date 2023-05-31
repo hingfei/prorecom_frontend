@@ -128,8 +128,6 @@ const SearchFilter = ({
   }
 
   const handleFilterButtonClick = () => {
-    console.log(filterOptions)
-
     const filteredProjects = defaultProjectList?.filter(project => {
       // Check project type filter
       if (filterOptions.projectType.length > 0 && !filterOptions.projectType.includes(project.projectTypes)) {
@@ -156,8 +154,6 @@ const SearchFilter = ({
     })
 
     const numItems = Object.values(filterOptions).reduce((total, arr) => {
-      console.log("total", total)
-      console.log("arr", arr)
       if (Array.isArray(arr)) {
         return total + arr.length
       } else {
@@ -169,8 +165,6 @@ const SearchFilter = ({
       return total
     }, 0) as number
     setNumFilters(numItems)
-    // Use the filteredProjects array as needed
-    console.log(filteredProjects)
     setProjectList(filteredProjects)
   }
 

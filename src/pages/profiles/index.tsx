@@ -12,6 +12,7 @@ import { onError } from '../../@core/utils/response'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import SkillSection from "../../views/profiles/Skill/SkillSection";
+import withAuth from "../../@core/hooks/withAuth";
 
 const Profile = () => {
   const [loading, setLoading] = useState(true)
@@ -36,7 +37,7 @@ const Profile = () => {
     onError: error => {
       router.push('/404')
       onError(error, undefined)
-    }
+    },
   })
 
   if (loading) {
@@ -79,4 +80,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default withAuth(Profile, ['job_seekers'])
