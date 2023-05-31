@@ -30,6 +30,7 @@ import MuiTypography from './typography'
 import MuiToggleButton from './toggleButton'
 import MuiDateTimePicker from './dateTimePicker'
 import MuiIconButton from './iconButton'
+import MuiDataGrid from './dataGrid'
 
 const Overrides = (theme: Theme) => {
   const chip = MuiChip(theme)
@@ -55,6 +56,7 @@ const Overrides = (theme: Theme) => {
   const pagination = MuiPagination(theme)
   const dateTimePicker = MuiDateTimePicker(theme)
   const iconButton = MuiIconButton(theme)
+  const dataGrid = MuiDataGrid(theme)
 
   return Object.assign(
     chip,
@@ -84,7 +86,8 @@ const Overrides = (theme: Theme) => {
     MuiTypography,
     dateTimePicker,
     MuiToggleButton,
-    iconButton
+    iconButton,
+    dataGrid
   )
 }
 
