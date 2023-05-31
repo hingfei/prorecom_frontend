@@ -1,27 +1,18 @@
-// ** MUI Imports
 import Box from '@mui/material/Box'
 import { styled, Theme, useTheme } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
-
-// ** Icons Imports
-
-// ** Type Import
 import { Settings } from 'src/@core/context/settingsContext'
-
 // ** Components
 import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
 import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
-import themeConfig from '../../../configs/themeConfig'
-import Typography, { TypographyProps } from '@mui/material/Typography'
 import Link from 'next/link'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../../@core/context/authContext'
-import { authConfig } from '../../../configs/auth'
 import { useEffect, useState } from 'react'
-import { BriefcaseOutline } from 'mdi-material-ui'
-import Tooltip from "@mui/material/Tooltip";
+import { BriefcaseOutline, ViewDashboardOutline } from 'mdi-material-ui'
+import ModeToggler from "../../../@core/layouts/components/shared-components/ModeToggler";
 
 interface Props {
   hidden: boolean
@@ -31,14 +22,6 @@ interface Props {
 }
 
 // ** Styled Components
-const HeaderTitle = styled(Typography)<TypographyProps>(({ theme }) => ({
-  fontWeight: 600,
-  lineHeight: 'normal',
-  textTransform: 'uppercase',
-  color: theme.palette.text.primary,
-  transition: 'opacity .25s ease-in-out, margin .25s ease-in-out'
-}))
-
 const StyledLink = styled('a')({
   display: 'flex',
   alignItems: 'center',
@@ -47,8 +30,8 @@ const StyledLink = styled('a')({
 
 const AppBarContent = (props: Props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [userId, setUserId] = useState()
   const [userName, setUsername] = useState()
+  const [userType, setUserType] = useState()
   const { isAuthenticated: useAuthAuthenticated, logout, handleLogin } = useAuth()
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
@@ -71,8 +54,8 @@ const AppBarContent = (props: Props) => {
         const data = window.localStorage.getItem('userData')
         if (data) {
           const userData = JSON.parse(data)
-          setUserId(userData?.userId)
           setUsername(userData?.userName)
+          setUserType(userData?.userType)
           setIsAuthenticated(true)
         }
       }
@@ -86,7 +69,7 @@ const AppBarContent = (props: Props) => {
       <Box className='actions-left' sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
         <Link href='/' passHref>
           <StyledLink>
-            <img src='/images/prorecom_title.png' alt="pro_recom" width={230} height={'auto'}/>
+            <img src='/images/prorecom_title.png' alt='pro_recom' width={230} height={'auto'} />
           </StyledLink>
         </Link>
         {/*{hidden ? (*/}
@@ -122,11 +105,17 @@ const AppBarContent = (props: Props) => {
           </>
         ) : (
           <>
-            <IconButton color='inherit' onClick={() => router.push('/projects')}>
+            {userType === 'job_seekers' ? (
+              <IconButton color='inherit' onClick={() => router.push('/projects')}>
                 <BriefcaseOutline />
-            </IconButton>
+              </IconButton>
+            ) : (
+              <IconButton color='inherit' onClick={() => router.push('/company-dashboard')}>
+                <ViewDashboardOutline />
+              </IconButton>
+            )}
             <NotificationDropdown />
-            <UserDropdown handleLogout={handleLogout} userId={userId} userName={userName} />
+            <UserDropdown handleLogout={handleLogout} userType={userType} userName={userName} />
           </>
         )}
 

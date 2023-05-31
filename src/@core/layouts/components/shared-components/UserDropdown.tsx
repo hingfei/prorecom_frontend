@@ -16,10 +16,8 @@ import Typography from '@mui/material/Typography'
 
 // ** Icons Imports
 import CogOutline from 'mdi-material-ui/CogOutline'
-import EmailOutline from 'mdi-material-ui/EmailOutline'
 import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
-import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 
 // ** Styled Components
@@ -31,7 +29,15 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
   boxShadow: `0 0 0 2px ${theme.palette.background.paper}`
 }))
 
-const UserDropdown = ({ handleLogout, userId, userName }: { handleLogout: () => void; userId: any, userName: string }) => {
+const UserDropdown = ({
+  handleLogout,
+  userType,
+  userName
+}: {
+  handleLogout: () => void
+  userType: any
+  userName: string
+}) => {
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
@@ -107,7 +113,14 @@ const UserDropdown = ({ handleLogout, userId, userName }: { handleLogout: () => 
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/profiles')}>
+        <MenuItem
+          sx={{ p: 0 }}
+          onClick={
+            userType === 'job_seekers'
+              ? () => handleDropdownClose('/profiles')
+              : () => handleDropdownClose('/company-profiles')
+          }
+        >
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
             Profile
