@@ -43,6 +43,7 @@ export type CompanyType = {
   companySize?: Maybe<Scalars['String']>;
   companyState?: Maybe<Scalars['String']>;
   companyStreet?: Maybe<Scalars['String']>;
+  projects?: Maybe<Array<ProjectListingType>>;
   users?: Maybe<UserType>;
 };
 
@@ -84,6 +85,7 @@ export type CreateProjectInput = {
   projectMinSalary?: InputMaybe<Scalars['Int']>;
   projectName: Scalars['String'];
   projectReq?: InputMaybe<Scalars['String']>;
+  projectStatus?: InputMaybe<Scalars['String']>;
   projectTypes?: InputMaybe<Scalars['String']>;
   skills: Array<Scalars['Int']>;
 };
@@ -155,6 +157,7 @@ export type Mutation = {
   deleteUser: DeleteUserResponse;
   login: AuthResponse;
   updateCompany: CompanyResponse;
+  updateCompanyPassword: CompanyResponse;
   updateJobSeeker: JobSeekerResponse;
   updateJobSeekerPassword: JobSeekerResponse;
   updateProject: ProjectResponse;
@@ -220,6 +223,13 @@ export type MutationUpdateCompanyArgs = {
 };
 
 
+export type MutationUpdateCompanyPasswordArgs = {
+  currentPassword: Scalars['String'];
+  newPassword: Scalars['String'];
+  userId: Scalars['Int'];
+};
+
+
 export type MutationUpdateJobSeekerArgs = {
   input: UpdateJobSeekerInput;
 };
@@ -244,6 +254,22 @@ export type MutationUpdateUserArgs = {
   userName?: InputMaybe<Scalars['String']>;
 };
 
+export type ProjectListingType = {
+  __typename?: 'ProjectListingType';
+  companyId: Scalars['ID'];
+  postDates?: Maybe<Scalars['String']>;
+  projectDesc?: Maybe<Scalars['String']>;
+  projectExpLvl?: Maybe<Scalars['String']>;
+  projectId: Scalars['ID'];
+  projectMaxSalary?: Maybe<Scalars['Int']>;
+  projectMinSalary?: Maybe<Scalars['Int']>;
+  projectName: Scalars['String'];
+  projectReq?: Maybe<Scalars['String']>;
+  projectStatus: Scalars['String'];
+  projectTypes?: Maybe<Scalars['String']>;
+  skills: Array<SkillType>;
+};
+
 export type ProjectResponse = {
   __typename?: 'ProjectResponse';
   message?: Maybe<Scalars['String']>;
@@ -263,6 +289,7 @@ export type ProjectType = {
   projectMinSalary?: Maybe<Scalars['Int']>;
   projectName: Scalars['String'];
   projectReq?: Maybe<Scalars['String']>;
+  projectStatus?: Maybe<Scalars['String']>;
   projectTypes?: Maybe<Scalars['String']>;
   skills: Array<SkillType>;
 };
@@ -271,6 +298,7 @@ export type Query = {
   __typename?: 'Query';
   companyDetail?: Maybe<CompanyType>;
   companyListing: Array<CompanyType>;
+  companyProjectListing: Array<Maybe<ProjectType>>;
   educationListing: Array<EducationType>;
   jobSeekerDetail?: Maybe<JobSeekerType>;
   jobSeekerListing: Array<JobSeekerType>;
@@ -285,6 +313,11 @@ export type Query = {
 
 
 export type QueryCompanyDetailArgs = {
+  companyId: Scalars['Int'];
+};
+
+
+export type QueryCompanyProjectListingArgs = {
   companyId: Scalars['Int'];
 };
 
@@ -360,6 +393,7 @@ export type UpdateProjectInput = {
   projectMinSalary?: InputMaybe<Scalars['Int']>;
   projectName?: InputMaybe<Scalars['String']>;
   projectReq?: InputMaybe<Scalars['String']>;
+  projectStatus?: InputMaybe<Scalars['String']>;
   projectTypes?: InputMaybe<Scalars['String']>;
   skills?: InputMaybe<Array<Scalars['Int']>>;
 };
@@ -498,7 +532,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', success: boolean, token?: string | null, message?: string | null, user?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string } | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', success: boolean, token?: string | null, message?: string | null, user?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null } };
 
 export type CompanyListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -510,28 +544,35 @@ export type CompanyDetailQueryVariables = Exact<{
 }>;
 
 
-export type CompanyDetailQuery = { __typename?: 'Query', companyDetail?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null } | null };
+export type CompanyDetailQuery = { __typename?: 'Query', companyDetail?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null, projects?: Array<{ __typename?: 'ProjectListingType', projectId: string, projectName: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, projectStatus: string }> | null } | null };
 
 export type ProjectListingQueryVariables = Exact<{
   recommendation: Scalars['Boolean'];
 }>;
 
 
-export type ProjectListingQuery = { __typename?: 'Query', projectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
+export type ProjectListingQuery = { __typename?: 'Query', projectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
 
 export type ProjectDetailQueryVariables = Exact<{
   projectId: Scalars['Int'];
 }>;
 
 
-export type ProjectDetailQuery = { __typename?: 'Query', projectDetail?: { __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> } | null };
+export type ProjectDetailQuery = { __typename?: 'Query', projectDetail?: { __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> } | null };
 
 export type SearchProjectsQueryVariables = Exact<{
   searchKeyword: Scalars['String'];
 }>;
 
 
-export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
+export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
+
+export type CompanyProjectListingQueryVariables = Exact<{
+  companyId: Scalars['Int'];
+}>;
+
+
+export type CompanyProjectListingQuery = { __typename?: 'Query', companyProjectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: string | null, projectExpLvl?: string | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> } | null> };
 
 export type JobSeekerListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1069,6 +1110,7 @@ export const LoginDocument = gql`
         userName
         userEmail
         password
+        userType
       }
       message
     }
@@ -1161,6 +1203,18 @@ export const CompanyDetailDocument = gql`
       password
       userType
     }
+    projects {
+      projectId
+      projectName
+      projectTypes
+      postDates
+      projectMinSalary
+      projectMaxSalary
+      projectDesc
+      projectReq
+      projectExpLvl
+      projectStatus
+    }
   }
 }
     `;
@@ -1217,6 +1271,7 @@ export const ProjectListingDocument = gql`
     projectMaxSalary
     projectDesc
     projectReq
+    projectStatus
     projectExpLvl
     skills {
       skillId
@@ -1278,6 +1333,7 @@ export const ProjectDetailDocument = gql`
     projectMaxSalary
     projectDesc
     projectReq
+    projectStatus
     projectExpLvl
     skills {
       skillId
@@ -1339,6 +1395,7 @@ export const SearchProjectsDocument = gql`
     projectMaxSalary
     projectDesc
     projectReq
+    projectStatus
     projectExpLvl
     skills {
       skillId
@@ -1375,6 +1432,55 @@ export function useSearchProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type SearchProjectsQueryHookResult = ReturnType<typeof useSearchProjectsQuery>;
 export type SearchProjectsLazyQueryHookResult = ReturnType<typeof useSearchProjectsLazyQuery>;
 export type SearchProjectsQueryResult = Apollo.QueryResult<SearchProjectsQuery, SearchProjectsQueryVariables>;
+export const CompanyProjectListingDocument = gql`
+    query companyProjectListing($companyId: Int!) {
+  companyProjectListing(companyId: $companyId) {
+    projectId
+    projectName
+    companyId
+    projectTypes
+    postDates
+    projectMinSalary
+    projectMaxSalary
+    projectDesc
+    projectReq
+    projectStatus
+    projectExpLvl
+    skills {
+      skillId
+      skillName
+    }
+  }
+}
+    `;
+
+/**
+ * __useCompanyProjectListingQuery__
+ *
+ * To run a query within a React component, call `useCompanyProjectListingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompanyProjectListingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompanyProjectListingQuery({
+ *   variables: {
+ *      companyId: // value for 'companyId'
+ *   },
+ * });
+ */
+export function useCompanyProjectListingQuery(baseOptions: Apollo.QueryHookOptions<CompanyProjectListingQuery, CompanyProjectListingQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CompanyProjectListingQuery, CompanyProjectListingQueryVariables>(CompanyProjectListingDocument, options);
+      }
+export function useCompanyProjectListingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CompanyProjectListingQuery, CompanyProjectListingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CompanyProjectListingQuery, CompanyProjectListingQueryVariables>(CompanyProjectListingDocument, options);
+        }
+export type CompanyProjectListingQueryHookResult = ReturnType<typeof useCompanyProjectListingQuery>;
+export type CompanyProjectListingLazyQueryHookResult = ReturnType<typeof useCompanyProjectListingLazyQuery>;
+export type CompanyProjectListingQueryResult = Apollo.QueryResult<CompanyProjectListingQuery, CompanyProjectListingQueryVariables>;
 export const JobSeekerListingDocument = gql`
     query jobSeekerListing {
   jobSeekerListing {

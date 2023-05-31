@@ -28,5 +28,17 @@ query companyDetail($companyId: Int!){
       password
       userType
     }
+    projects {
+      projectId
+      projectName
+      projectTypes
+      postDates
+      projectMinSalary
+      projectMaxSalary
+      projectDesc
+      projectReq
+      projectExpLvl
+      projectStatus
+    }
   }
 }

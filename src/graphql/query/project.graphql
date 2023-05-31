@@ -22,6 +22,7 @@ query projectListing($recommendation: Boolean!) {
     projectMaxSalary
     projectDesc
     projectReq
+    projectStatus
     projectExpLvl
     skills {
       skillId
@@ -54,6 +55,7 @@ query projectDetail($projectId: Int!) {
     projectMaxSalary
     projectDesc
     projectReq
+    projectStatus
     projectExpLvl
     skills {
       skillId
@@ -86,6 +88,27 @@ query searchProjects($searchKeyword: String!) {
     projectMaxSalary
     projectDesc
     projectReq
+    projectStatus
+    projectExpLvl
+    skills {
+      skillId
+      skillName
+    }
+  }
+}
+
+query companyProjectListing($companyId: Int!) {
+  companyProjectListing(companyId: $companyId) {
+    projectId
+    projectName
+    companyId
+    projectTypes
+    postDates
+    projectMinSalary
+    projectMaxSalary
+    projectDesc
+    projectReq
+    projectStatus
     projectExpLvl
     skills {
       skillId
