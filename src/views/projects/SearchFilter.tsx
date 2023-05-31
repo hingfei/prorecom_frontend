@@ -127,45 +127,61 @@ const SearchFilter = ({
     }))
   }
 
-  const handleFilterButtonClick = () => {
-    const filteredProjects = defaultProjectList?.filter(project => {
-      // Check project type filter
-      if (filterOptions.projectType.length > 0 && !filterOptions.projectType.includes(project.projectTypes)) {
-        return false
-      }
-
-      // Check company state filter
-      if (filterOptions.companyState.length > 0 && !filterOptions.companyState.includes(project.company.companyState)) {
-        return false
-      }
-
-      // Check project experience level filter
-      if (filterOptions.projectExpLevel.length > 0 && !filterOptions.projectExpLevel.includes(project.projectExpLvl)) {
-        return false
-      }
-
-      // Check project salary filter
-      if (project.projectMinSalary < filterOptions.projectMinSalary) {
-        return false
-      }
-
-      // All filters passed, include the project in the filtered list
-      return true
+  const resetState = () => {
+    setFilterOptions({
+      projectType: [],
+      companyState: [],
+      projectExpLevel: [],
+      projectMinSalary: 0
     })
+    setNumFilters(0)
+    setProjectList(defaultProjectList)
+  }
 
-    const numItems = Object.values(filterOptions).reduce((total, arr) => {
-      if (Array.isArray(arr)) {
-        return total + arr.length
-      } else {
-        if (arr !== 0) {
-          return total + 1
+  const handleFilterButtonClick = (type: string) => {
+    if (type === 'default') {
+      resetState()
+    } else {
+      const filteredProjects = defaultProjectList?.filter(project => {
+        // Check project type filter
+        if (filterOptions.projectType.length > 0 && !filterOptions.projectType.includes(project.projectTypes)) {
+          return false
         }
-      }
 
-      return total
-    }, 0) as number
-    setNumFilters(numItems)
-    setProjectList(filteredProjects)
+        // Check company state filter
+        if (filterOptions.companyState.length > 0 && !filterOptions.companyState.includes(project.company.companyState)) {
+          return false
+        }
+
+        // Check project experience level filter
+        if (filterOptions.projectExpLevel.length > 0 && !filterOptions.projectExpLevel.includes(project.projectExpLvl)) {
+          return false
+        }
+
+        // Check project salary filter
+        if (project.projectMinSalary < filterOptions.projectMinSalary) {
+          return false
+        }
+
+        // All filters passed, include the project in the filtered list
+        return true
+      })
+
+      const numItems = Object.values(filterOptions).reduce((total, arr) => {
+        if (Array.isArray(arr)) {
+          return total + arr.length
+        } else {
+          if (arr !== 0) {
+            return total + 1
+          }
+        }
+
+        return total
+      }, 0) as number
+      setNumFilters(numItems)
+      setProjectList(filteredProjects)
+    }
+    setAnchorEl(null)
   }
 
   return (
@@ -313,14 +329,24 @@ const SearchFilter = ({
               />
             </FormControl>
           </StyledMenuItem>
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={handleFilterButtonClick}
-            sx={{ display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '12px' }}
-          >
-            Filter
-          </Button>
+          <Box display={'flex'} justifyContent={'center'} alignItems={'center'} mb={'12px'}>
+            <Button
+              variant='outlined'
+              color='primary'
+              onClick={() => handleFilterButtonClick('default')}
+              sx={{ marginRight: 4}}
+            >
+              Clear
+            </Button>
+
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={() => handleFilterButtonClick('filter')}
+            >
+              Filter
+            </Button>
+          </Box>
         </Menu>
       </Grid>
     </>
