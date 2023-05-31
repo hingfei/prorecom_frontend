@@ -1,10 +1,10 @@
-import { Box, Button, ButtonProps, Grid, IconButton } from '@mui/material'
+import { Box, Button, ButtonProps, Grid } from '@mui/material'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { closeDrawerState, useAppDispatch } from '../../../store'
 import { SelectInput } from '../../../@core/components/custom-inputs'
 import { useSkillListingQuery } from '../../../graphql/api'
 import DropdownSkeleton from '../../../@core/components/skeleton/DropdownSkeleton'
-import { MinusCircleOutline, PlusCircleOutline } from 'mdi-material-ui'
+import { MinusIcon, PlusIcon } from '../../../@core/components/icons'
 
 const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
   const dispatch = useAppDispatch()
@@ -64,20 +64,7 @@ const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => 
               />
             </Grid>
             <Grid item>
-              <IconButton
-                color='inherit'
-                aria-haspopup='true'
-                onClick={() => removeSkill(index)}
-                aria-controls='remove-skill'
-                sx={{
-                  color: 'error.light',
-                  '&:hover': {
-                    color: 'error.dark'
-                  }
-                }}
-              >
-                <MinusCircleOutline />
-              </IconButton>
+              <MinusIcon color={'error'} onClick={() => removeSkill(index)} aria-controls='remove-skill' />
             </Grid>
           </Grid>
         ))
@@ -85,20 +72,7 @@ const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => 
         ''
       )}
       <Box display='flex' justifyContent='center' mt={6} mb={2}>
-        <IconButton
-          color='inherit'
-          aria-haspopup='true'
-          onClick={addSkill}
-          aria-controls='add-skill'
-          sx={{
-            color: 'info.light',
-            '&:hover': {
-              color: 'info.dark'
-            }
-          }}
-        >
-          <PlusCircleOutline />
-        </IconButton>
+        <PlusIcon color='info' onClick={addSkill} aria-controls='add-skill' />
       </Box>
 
       <Box display='flex' justifyContent='center' py={10}>
