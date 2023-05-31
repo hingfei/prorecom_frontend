@@ -24,7 +24,14 @@ const PageHeader = (props: PageHeaderProps) => {
         <Box>
           {!!linkTitle && (
             <Button
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                whiteSpace: 'noWrap',
+                display: 'inline-block',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}
+              variant='contained'
               onClick={() => {
                 !!href && router?.push(href)
                 !!onLinkClick && onLinkClick()
