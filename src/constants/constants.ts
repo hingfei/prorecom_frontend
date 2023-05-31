@@ -4,7 +4,8 @@ export const DrawerType = {
   addEducationForm: 'addEducationForm',
   editAboutForm: 'editAboutForm',
   editPasswordForm: 'editPasswordForm',
-  editSkillForm: 'editSkillForm'
+  editSkillForm: 'editSkillForm',
+  editProject: 'editProject'
 }
 
 export const companySize = [
@@ -86,17 +87,18 @@ export const statesListing = [
   'Kelantan',
   'Kuala Lumpur',
   'Labuan',
-  'Melaka',
+  'Malacca',
   'Negeri Sembilan',
   'Pahang',
   'Perak',
   'Perlis',
-  'Pulau Penang',
+  'Penang',
   'Putrajaya',
   'Sabah',
   'Sarawak',
   'Selangor',
-  'Terengganu'
+  'Terengganu',
+  'Overseas'
 ]
 
 export const projectExpLevel = [
@@ -106,4 +108,15 @@ export const projectExpLevel = [
   '1 - 3 Years of Experience',
   '4 - 7 Years of Experience',
   '8 - 10 Years of Experience'
+]
+
+export const projectStatusListing = [
+  {
+    label: 'Active',
+    value: 'active'
+  },
+  {
+    label: 'Closed',
+    value: 'closed'
+  }
 ]
