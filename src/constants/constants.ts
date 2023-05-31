@@ -79,7 +79,7 @@ export const fieldStudySelect = [
   }
 ]
 
-export const projectOptions = ['Part-Time', 'Full-Time', 'Freelance', 'Internship']
+export const projectTypesListing = ['Part-Time', 'Full-Time', 'Freelance', 'Internship']
 
 export const statesListing = [
   'Johor',
@@ -101,7 +101,7 @@ export const statesListing = [
   'Overseas'
 ]
 
-export const projectExpLevel = [
+export const projectExpLevelListing = [
   '#NoExperienceNeeded',
   'Intern',
   'Fresh Graduate',

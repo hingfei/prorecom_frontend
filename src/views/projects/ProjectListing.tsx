@@ -16,7 +16,7 @@ const StyledCard = styled(Card)<CardProps>(({ theme }) => ({
 
 const PerfectScrollbar = styled(PerfectScrollbarComponent)({
   maxHeight: '100vh',
-  padding: '16px',
+  padding: '0 16px',
   '& .MuiMenuItem-root:last-of-type': {
     border: 0
   }

@@ -24,7 +24,7 @@ import { styled } from '@mui/material/styles'
 import MuiMenu, { MenuProps } from '@mui/material/Menu'
 import MuiMenuItem, { MenuItemProps } from '@mui/material/MenuItem'
 import { TypographyProps } from '@mui/material/Typography'
-import { projectExpLevel, projectOptions, statesListing } from 'src/constants'
+import { projectExpLevelListing, projectTypesListing, statesListing } from 'src/constants'
 
 // ** Styled Components
 const Menu = styled(MuiMenu)<MenuProps>(({ theme }) => ({
@@ -149,12 +149,18 @@ const SearchFilter = ({
         }
 
         // Check company state filter
-        if (filterOptions.companyState.length > 0 && !filterOptions.companyState.includes(project.company.companyState)) {
+        if (
+          filterOptions.companyState.length > 0 &&
+          !filterOptions.companyState.includes(project.company.companyState)
+        ) {
           return false
         }
 
         // Check project experience level filter
-        if (filterOptions.projectExpLevel.length > 0 && !filterOptions.projectExpLevel.includes(project.projectExpLvl)) {
+        if (
+          filterOptions.projectExpLevel.length > 0 &&
+          !filterOptions.projectExpLevel.includes(project.projectExpLvl)
+        ) {
           return false
         }
 
@@ -185,171 +191,174 @@ const SearchFilter = ({
   }
 
   return (
-    <>
-      <Grid item xs={4.5}>
-        <TextInput
-          inputProps={{
-            label: 'Search',
-            placeholder: 'Search project',
-            autoComplete: 'off'
-          }}
-          controllerProps={{
-            control,
-            name: 'searchKeyword'
-          }}
-          endAdornment={
-            <IconButton color='inherit' onClick={onClick}>
-              <Magnify />
-            </IconButton>
-          }
-        />
+    <Box>
+      <Grid container spacing={6} sx={{ alignItems: 'center', paddingBottom: 6 }}>
+        <Grid item xs={12}>
+          <TextInput
+            inputProps={{
+              label: 'Search',
+              placeholder: 'Search project',
+              autoComplete: 'off'
+            }}
+            controllerProps={{
+              control,
+              name: 'searchKeyword'
+            }}
+            endAdornment={
+              <IconButton color='inherit' onClick={onClick}>
+                <Magnify />
+              </IconButton>
+            }
+          />
+        </Grid>
       </Grid>
-      <Grid item>
-        <FormControlLabel
-          control={<Switch checked={switchOption?.checked} onChange={handleChangeProjectList} />}
-          label={switchOption?.label}
-        />
-      </Grid>
-      <Grid item>
-        <Button
-          variant={'outlined'}
-          endIcon={
-            <Box display={'flex'} alignItems={'center'}>
-              {numFilters !== 0 ? (
-                <Chip
-                  size='small'
-                  variant={'filled'}
-                  label={numFilters}
-                  color='primary'
-                  sx={{ fontSize: '12px', borderRadius: '50%', marginRight: '4px' }}
-                />
-              ) : (
-                ''
-              )}
-              <FilterMenuOutline />
-            </Box>
-          }
-          onClick={handleDropdownOpen}
-        >
-          Filter
-        </Button>
-        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleDropdownClose}>
-          <MenuItemTitle variant={'body1'}>Project Type</MenuItemTitle>
-          <StyledMenuItem>
-            <FormControl fullWidth>
-              <InputLabel>Project Types</InputLabel>
-              <Select
-                multiple
-                value={filterOptions.projectType}
-                input={<OutlinedInput id='select-multiple-chip' label='Project Types' />}
-                onChange={e => handleFilterChange('projectType', e.target.value as string[])}
-                renderValue={selected => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map(value => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-              >
-                {projectOptions.map(option => (
-                  <MenuItem key={option} value={option}>
-                    <Checkbox checked={filterOptions.projectType.includes(option)} />
-                    <ListItemText primary={option} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </StyledMenuItem>
-          <MenuItemTitle variant={'body1'}>States</MenuItemTitle>
-          <StyledMenuItem>
-            <FormControl fullWidth>
-              <InputLabel>States</InputLabel>
-              <Select
-                multiple
-                value={filterOptions.companyState}
-                input={<OutlinedInput id='select-multiple-chip' label='States' />}
-                onChange={e => handleFilterChange('companyState', e.target.value as string[])}
-                renderValue={selected => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map(value => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-                MenuProps={MenuProps}
-              >
-                {statesListing.map(option => (
-                  <MenuItem key={option} value={option}>
-                    <Checkbox checked={filterOptions.companyState.includes(option)} />
-                    <ListItemText primary={option} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </StyledMenuItem>
-          <MenuItemTitle variant={'body1'}>Experience Levels</MenuItemTitle>
-          <StyledMenuItem>
-            <FormControl fullWidth>
-              <InputLabel>Experience Levels</InputLabel>
-              <Select
-                input={<OutlinedInput id='select-multiple-chip' label='Experience Levels' />}
-                multiple
-                value={filterOptions.projectExpLevel}
-                onChange={e => handleFilterChange('projectExpLevel', e.target.value as string[])}
-                renderValue={selected => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map(value => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-                MenuProps={MenuProps}
-              >
-                {projectExpLevel.map(option => (
-                  <MenuItem key={option} value={option}>
-                    <Checkbox checked={filterOptions.projectExpLevel.includes(option)} />
-                    <ListItemText primary={option} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </StyledMenuItem>
-          <MenuItemTitle variant={'body1'}>Salary</MenuItemTitle>
-          <StyledMenuItem lastchild={true}>
-            <FormControl fullWidth>
-              <CustomSlider
-                value={filterOptions.projectMinSalary}
-                valueLabelFormat={valueLabelFormat}
-                onChange={(event, value) => handleFilterChange('projectMinSalary', value)}
-                min={0}
-                max={20000}
-                step={100}
-                valueLabelDisplay={'on'}
-                color={'secondary'}
-              />
-            </FormControl>
-          </StyledMenuItem>
-          <Box display={'flex'} justifyContent={'center'} alignItems={'center'} mb={'12px'}>
-            <Button
-              variant='outlined'
-              color='primary'
-              onClick={() => handleFilterButtonClick('default')}
-              sx={{ marginRight: 4}}
-            >
-              Clear
-            </Button>
 
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={() => handleFilterButtonClick('filter')}
-            >
-              Filter
-            </Button>
-          </Box>
-        </Menu>
+      <Grid container spacing={4} xs={12} sx={{ justifyContent: 'space-around', marginBottom: 4 }}>
+        <Grid item>
+          <FormControlLabel
+            control={<Switch checked={switchOption?.checked} onChange={handleChangeProjectList} />}
+            label={switchOption?.label}
+          />
+        </Grid>
+        <Grid item>
+          <Button
+            variant={'outlined'}
+            endIcon={
+              <Box display={'flex'} alignItems={'center'}>
+                {numFilters !== 0 ? (
+                  <Chip
+                    size='small'
+                    variant={'filled'}
+                    label={numFilters}
+                    color='primary'
+                    sx={{ fontSize: '12px', borderRadius: '50%', marginRight: '4px' }}
+                  />
+                ) : (
+                  ''
+                )}
+                <FilterMenuOutline />
+              </Box>
+            }
+            onClick={handleDropdownOpen}
+          >
+            Filter
+          </Button>
+
+          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleDropdownClose}>
+            <MenuItemTitle variant={'body1'}>Project Type</MenuItemTitle>
+            <StyledMenuItem>
+              <FormControl fullWidth>
+                <InputLabel>Project Types</InputLabel>
+                <Select
+                  multiple
+                  value={filterOptions.projectType}
+                  input={<OutlinedInput id='select-multiple-chip' label='Project Types' />}
+                  onChange={e => handleFilterChange('projectType', e.target.value as string[])}
+                  renderValue={selected => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map(value => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                >
+                  {projectTypesListing.map(option => (
+                    <MenuItem key={option} value={option}>
+                      <Checkbox checked={filterOptions.projectType.includes(option)} />
+                      <ListItemText primary={option} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </StyledMenuItem>
+            <MenuItemTitle variant={'body1'}>States</MenuItemTitle>
+            <StyledMenuItem>
+              <FormControl fullWidth>
+                <InputLabel>States</InputLabel>
+                <Select
+                  multiple
+                  value={filterOptions.companyState}
+                  input={<OutlinedInput id='select-multiple-chip' label='States' />}
+                  onChange={e => handleFilterChange('companyState', e.target.value as string[])}
+                  renderValue={selected => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map(value => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {statesListing.map(option => (
+                    <MenuItem key={option} value={option}>
+                      <Checkbox checked={filterOptions.companyState.includes(option)} />
+                      <ListItemText primary={option} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </StyledMenuItem>
+            <MenuItemTitle variant={'body1'}>Experience Levels</MenuItemTitle>
+            <StyledMenuItem>
+              <FormControl fullWidth>
+                <InputLabel>Experience Levels</InputLabel>
+                <Select
+                  input={<OutlinedInput id='select-multiple-chip' label='Experience Levels' />}
+                  multiple
+                  value={filterOptions.projectExpLevel}
+                  onChange={e => handleFilterChange('projectExpLevel', e.target.value as string[])}
+                  renderValue={selected => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map(value => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {projectExpLevelListing.map(option => (
+                    <MenuItem key={option} value={option}>
+                      <Checkbox checked={filterOptions.projectExpLevel.includes(option)} />
+                      <ListItemText primary={option} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </StyledMenuItem>
+            <MenuItemTitle variant={'body1'}>Salary</MenuItemTitle>
+            <StyledMenuItem lastchild={true}>
+              <FormControl fullWidth>
+                <CustomSlider
+                  value={filterOptions.projectMinSalary}
+                  valueLabelFormat={valueLabelFormat}
+                  onChange={(event, value) => handleFilterChange('projectMinSalary', value)}
+                  min={0}
+                  max={20000}
+                  step={100}
+                  valueLabelDisplay={'on'}
+                  color={'secondary'}
+                  sx={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}
+                />
+              </FormControl>
+            </StyledMenuItem>
+            <Box display={'flex'} justifyContent={'center'} alignItems={'center'} mb={'12px'}>
+              <Button
+                variant='outlined'
+                color='secondary'
+                onClick={() => handleFilterButtonClick('default')}
+                sx={{ marginRight: 4 }}
+              >
+                Clear
+              </Button>
+
+              <Button variant='contained' color='primary' onClick={() => handleFilterButtonClick('filter')}>
+                Filter
+              </Button>
+            </Box>
+          </Menu>
+        </Grid>
       </Grid>
-    </>
+    </Box>
   )
 }
 

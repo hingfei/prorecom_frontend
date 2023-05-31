@@ -13,9 +13,9 @@ import SearchFilter from '../../views/projects/SearchFilter'
 
 function Projects() {
   const router = useRouter()
-  const [switchOption, setSwitchOption] = useState({checked: true, label: 'Best Match'})
+  const [switchOption, setSwitchOption] = useState({ checked: true, label: 'Best Match' })
   const [loading, setLoading] = useState(true)
-  const [defaultProjectList, setDefaultProjectList] = useState([]);
+  const [defaultProjectList, setDefaultProjectList] = useState([])
   const [project, setProject] = useState<ProjectType>()
   const [projectList, setProjectList] = useState([])
 
@@ -48,14 +48,14 @@ function Projects() {
 
   const handleChangeProjectList = () => {
     if (switchOption.checked) {
-      setSwitchOption({checked: false, label: 'Default'})
+      setSwitchOption({ checked: false, label: 'Default' })
       fetchProject({
         variables: {
           recommendation: false
         }
       })
     } else {
-      setSwitchOption({checked: true, label: 'Best Match'})
+      setSwitchOption({ checked: true, label: 'Best Match' })
       fetchProject({
         variables: {
           recommendation: true
@@ -122,21 +122,18 @@ function Projects() {
       <form style={{ height: '100%' }} onSubmit={handleSubmit(onSubmit)}>
         {projectList.length > 0 ? (
           <Box>
-            <Grid container spacing={6} sx={{ alignItems: 'center', paddingBottom: 6 }}>
-              <SearchFilter
-                onClick={handleSubmit(onSubmit)}
-                handleChangeProjectList={handleChangeProjectList}
-                switchOption={switchOption}
-                defaultProjectList={defaultProjectList}
-                setProjectList={setProjectList}
-              />
-            </Grid>
-
-            <Grid container spacing={6}>
-              <Grid item xs={4.5}>
+            <Grid container spacing={{ xs: 0, lg: 6 }}>
+              <Grid item xs={12} md={4.5}>
+                <SearchFilter
+                  onClick={handleSubmit(onSubmit)}
+                  handleChangeProjectList={handleChangeProjectList}
+                  switchOption={switchOption}
+                  defaultProjectList={defaultProjectList}
+                  setProjectList={setProjectList}
+                />
                 <ProjectListing projectListing={projectList} project={project} onChangeProject={onChangeProject} />
               </Grid>
-              <Grid item xs={7.5}>
+              <Grid item xs={7.5} sx={{ xs: { display: 'none' }, md: { display: 'flex' } }}>
                 <ProjectDetails project={project} />
               </Grid>
             </Grid>
