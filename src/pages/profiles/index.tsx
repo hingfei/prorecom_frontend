@@ -11,12 +11,14 @@ import PasswordSection from '../../views/profiles/Password/PasswordSection'
 import { onError } from '../../@core/utils/response'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import SkillSection from "../../views/profiles/Skill/SkillSection";
-import withAuth from "../../@core/hooks/withAuth";
+import SkillSection from '../../views/profiles/Skill/SkillSection'
+import withAuth from '../../@core/hooks/withAuth'
+import { useAuth } from '../../@core/context/authContext'
 
 const Profile = () => {
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+  const { resetStore } = useAuth()
 
   const { data: userData } = useMeQuery({
     onCompleted: data => {
@@ -25,9 +27,11 @@ const Profile = () => {
     },
     onError: error => {
       console.log(error)
+      resetStore()
       router.push('/401')
       onError(error, undefined)
-    }
+    },
+    fetchPolicy: 'no-cache'
   })
 
   const [fetchJobSeeker, { data }] = useJobSeekerDetailLazyQuery({
@@ -37,7 +41,7 @@ const Profile = () => {
     onError: error => {
       router.push('/404')
       onError(error, undefined)
-    },
+    }
   })
 
   if (loading) {

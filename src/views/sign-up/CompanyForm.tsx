@@ -52,7 +52,7 @@ const CompanyForm = ({
           </Grid>
           <Grid item xs={12} sm={6}>
             <SelectInput
-              selectProps={{ label: 'Company Size' }}
+              selectProps={{ label: 'Enterprise Type' }}
               controllerProps={{
                 control,
                 name: 'companySize'

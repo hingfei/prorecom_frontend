@@ -1,5 +1,5 @@
 import { IconButton, Tooltip } from '@mui/material'
-import { DeleteOutline, PencilOutline, MinusCircleOutline, PlusCircleOutline } from 'mdi-material-ui'
+import { DeleteOutline, SquareEditOutline, MinusCircleOutline, PlusCircleOutline, EyeOutline } from 'mdi-material-ui'
 import { IconButtonProps } from '@mui/material';
 
 export type IconBaseProps = IconButtonProps & { title?: string; children: React.ReactNode };
@@ -14,10 +14,18 @@ const IconBase = ({ title, children, ...props }: IconBaseProps) => {
   )
 }
 
+export const ViewIcon = (props: Omit<IconBaseProps, 'children'>) => {
+  return (
+    <IconBase {...props}>
+      <EyeOutline fontSize='small' />
+    </IconBase>
+  )
+}
+
 export const EditIcon = (props: Omit<IconBaseProps, 'children'>) => {
   return (
     <IconBase {...props}>
-      <PencilOutline fontSize='small' />
+      <SquareEditOutline fontSize='small' />
     </IconBase>
   )
 }

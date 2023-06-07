@@ -10,9 +10,12 @@ import { useRouter } from 'next/router'
 import { FormProvider, useForm } from 'react-hook-form'
 import { getFormInputValues } from '../../@core/utils/get-form-input-values'
 import SearchFilter from '../../views/projects/SearchFilter'
+import { onError } from "../../@core/utils/response";
+import { useAuth } from "../../@core/context/authContext";
 
 function Projects() {
   const router = useRouter()
+  const { resetStore } = useAuth()
   const [switchOption, setSwitchOption] = useState({ checked: true, label: 'Best Match' })
   const [loading, setLoading] = useState(true)
   const [defaultProjectList, setDefaultProjectList] = useState([])
@@ -33,6 +36,15 @@ function Projects() {
       setDefaultProjectList(data?.projectListing)
       setLoading(false)
     },
+    onError: error => {
+      onError(error, undefined)
+      console.log('error', error)
+      if (error.message === 'Invalid token') {
+        resetStore()
+        router.push('/401')
+      }
+      setLoading(false)
+    },
     fetchPolicy: 'no-cache'
   })
 
@@ -42,6 +54,9 @@ function Projects() {
       setProjectList(data?.searchProjects)
       setDefaultProjectList(data?.searchProjects)
       setLoading(false)
+    },
+    onError: error => {
+      console.log(error)
     },
     fetchPolicy: 'no-cache'
   })
@@ -140,21 +155,24 @@ function Projects() {
           </Box>
         ) : (
           <Box height={'100%'}>
-            <Grid container spacing={6} alignItems={'center'}>
-              <SearchFilter
-                onClick={handleSubmit(onSubmit)}
-                handleChangeProjectList={handleChangeProjectList}
-                switchOption={switchOption}
-                defaultProjectList={defaultProjectList}
-                setProjectList={setProjectList}
-              />
+            <Grid container>
+              <Grid item xs={12} md={4.5}>
+                <SearchFilter
+                  onClick={handleSubmit(onSubmit)}
+                  handleChangeProjectList={handleChangeProjectList}
+                  switchOption={switchOption}
+                  defaultProjectList={defaultProjectList}
+                  setProjectList={setProjectList}
+                />
+              </Grid>
             </Grid>
+
             <Box
               display={'flex'}
               alignItems={'center'}
               justifyContent={'center'}
               flexDirection={'column'}
-              height={'100%'}
+              height={'75%'}
             >
               <Box>
                 <Icon sx={{ fontSize: '100px', display: 'initial' }}>

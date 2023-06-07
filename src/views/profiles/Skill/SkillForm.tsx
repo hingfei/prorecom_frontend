@@ -8,7 +8,7 @@ import { MinusIcon, PlusIcon } from '../../../@core/components/icons'
 
 const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
   const dispatch = useAppDispatch()
-  const { control, getValues, setValue } = useFormContext()
+  const { control, setValue } = useFormContext()
 
   const skills = useWatch({
     name: 'skills',
@@ -24,10 +24,9 @@ const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => 
   })
 
   const removeSkill = (index: number) => {
-    const updatedSkills = getValues('skills')
+    const updatedSkills = [...skills]
     updatedSkills.splice(index, 1)
     setValue('skills', updatedSkills)
-    console.log('updated', updatedSkills)
   }
 
   const addSkill = () => {
@@ -45,7 +44,7 @@ const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => 
             container
             mt={6}
             mb={2}
-            key={index}
+            key={`${index}-${skill?.value}`}
             display={'flex'}
             alignItems={'center'}
             justifyContent={'space-between'}

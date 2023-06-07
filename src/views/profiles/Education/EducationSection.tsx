@@ -1,13 +1,13 @@
-import { Box, Button, Card, CardContent, Grid, IconButton, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Grid, Typography } from '@mui/material'
 import { setDrawerState, useAppDispatch } from '../../../store'
 import { DrawerType, eduLevelSelect, fieldStudySelect } from '../../../constants'
 import { styled } from '@mui/material/styles'
 import { BoxProps } from '@mui/material/Box'
 import { EducationType, JobSeekerDetailDocument, useDeleteEducationMutation } from '../../../graphql/api'
-import { MinusCircleOutline, SquareEditOutline } from 'mdi-material-ui'
 import { onCompleted, onError } from '../../../@core/utils/response'
 import { DialogDeleteLayout } from '../../../@core/components/dialog'
 import { useState } from 'react'
+import { EditIcon, MinusIcon } from '../../../@core/components/icons'
 
 // ** Styled Components
 const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -51,9 +51,10 @@ const EducationSection = ({
   }
 
   const [deleteEducationMutation, { loading }] = useDeleteEducationMutation({
-    onCompleted: data => onCompleted(data?.deleteEducation, () => {
-      setDialog(false)
-    }),
+    onCompleted: data =>
+      onCompleted(data?.deleteEducation, () => {
+        setDialog(false)
+      }),
     onError: error => {
       onError(error, undefined)
     },
@@ -141,16 +142,8 @@ const EducationSection = ({
               </Grid>
               <Grid item>
                 <Box display={'flex'} flexDirection={'column'} rowGap={4}>
-                  <IconButton
-                    color='inherit'
-                    aria-haspopup='true'
-                    aria-controls='edit-education'
-                    sx={{
-                      color: 'info.light',
-                      '&:hover': {
-                        color: 'info.dark'
-                      }
-                    }}
+                  <EditIcon
+                    color={'info'}
                     onClick={() =>
                       dispatch(
                         setDrawerState({
@@ -161,27 +154,16 @@ const EducationSection = ({
                       )
                     }
                     disabled={loading}
-                  >
-                    <SquareEditOutline />
-                  </IconButton>
-                  <IconButton
-                    color='inherit'
-                    aria-haspopup='true'
+                  />
+                  <MinusIcon
+                    color={'error'}
                     aria-controls='remove-education'
-                    sx={{
-                      color: 'error.light',
-                      '&:hover': {
-                        color: 'error.dark'
-                      }
-                    }}
                     onClick={e => {
-                      e.stopPropagation();
+                      e.stopPropagation()
                       setDialog(true)
                     }}
                     disabled={loading}
-                  >
-                    <MinusCircleOutline />
-                  </IconButton>
+                  />
                 </Box>
               </Grid>
               <DialogDeleteLayout

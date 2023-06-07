@@ -48,3 +48,36 @@ query jobSeekerDetail($seekerId: Int!) {
     }
   }
 }
+
+query recommendedJobSeekerListing($projectId: Int!) {
+  recommendedJobSeekerListing(projectId: $projectId) {
+    seekerId
+    seekerName
+    seekerAge
+    seekerGender
+    seekerBirthdate
+    seekerPhoneNo
+    seekerStreet
+    seekerCity
+    seekerState
+    seekerResume
+    seekerAbout
+    users {
+      userName
+      userEmail
+    }
+    skills {
+      skillId
+      skillName
+    }
+    educations {
+      educationId
+      educationLevel
+      educationInstitution
+      description
+      fieldOfStudy
+      graduationYear
+      grade
+    }
+  }
+}

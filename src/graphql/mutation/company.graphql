@@ -32,3 +32,15 @@ mutation deleteCompany($companyId: Int!) {
     }
   }
 }
+
+mutation updateCompanyPassword($userId: Int!, $currentPassword: String!, $newPassword: String!) {
+  updateCompanyPassword(userId: $userId, currentPassword: $currentPassword, newPassword: $newPassword) {
+    ... on CompanyResponse {
+      success
+      company {
+        companyId
+      }
+      message
+    }
+  }
+}

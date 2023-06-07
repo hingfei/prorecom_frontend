@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { CompanyProjectListingDocument, useCreateProjectMutation } from '../../../graphql/api'
 import { onCompleted, onError } from '../../../@core/utils/response'
 import { getFormInputValues } from '../../../@core/utils/get-form-input-values'
-import ProjectForm from "src/views/projects/CompanyProject/ProjectForm";
+import ProjectForm from 'src/views/projects/CompanyProject/ProjectForm'
 
 const projectDefaultValues = {
   projectName: null,
@@ -44,7 +44,7 @@ const AddProject = () => {
   const [createProject, { loading }] = useCreateProjectMutation({
     onCompleted: data =>
       onCompleted(data?.createProject, () => {
-        // TODO: ROUTE TO PROJECT DETAIL
+        router.push(`/company-dashboard/${data?.createProject?.project?.projectId}`)
         console.log('project created', data)
       }),
     onError: error => {
@@ -54,12 +54,15 @@ const AddProject = () => {
   })
 
   const onSubmit = (values: any) => {
-    const input = getFormInputValues(values)
-    console.log('input', input)
+    const { skills, ...restValues } = values
+    const skillsArray = skills ? skills.map((skill: any) => parseInt(skill.value)) : []
+    const input = getFormInputValues(restValues)
+
     createProject({
       variables: {
         input: {
           companyId: router.query.id,
+          skills: skillsArray,
           ...input
         }
       }

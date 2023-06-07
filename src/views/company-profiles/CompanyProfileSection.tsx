@@ -1,10 +1,11 @@
 import { Box, Button, Typography } from '@mui/material'
-import { setDrawerState, useAppDispatch } from '../../../store'
-import { DrawerType } from '../../../constants'
+import { setDrawerState, useAppDispatch } from '../../store'
+import { DrawerType } from '../../constants'
 import { styled } from '@mui/material/styles'
 import { BoxProps } from '@mui/material/Box'
-import { generateGenderIcon } from '../../../@core/utils/generate-gender-icon'
 import Avatar from '@mui/material/Avatar'
+import { capitalizeFirstLetter } from '../../@core/utils/capitalize-first-letter'
+import { TypographyProps } from '@mui/material/Typography'
 
 // ** Styled Components
 const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -18,6 +19,22 @@ const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   width: '100%'
+}))
+
+const DescriptionWrapper = styled(Typography)<TypographyProps>(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    textAlign: 'center',
+    width: 'unset'
+  },
+  width: '50%',
+  textAlign: 'right'
+}))
+
+const DescriptionTitleWrapper = styled(Typography)<TypographyProps>(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    alignSelf: 'inherit'
+  },
+  alignSelf: 'flex-start'
 }))
 
 const AddressWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -49,57 +66,52 @@ export const renderUserAvatar = () => {
   )
 }
 
-const PersonalInfoSection = ({ jobSeeker, seekerId }: { jobSeeker: any; seekerId: string | undefined }) => {
+const CompanyProfileSection = ({ company, companyId }: { company: any; companyId: string | undefined }) => {
   const dispatch = useAppDispatch()
+  console.log('company', company)
 
   return (
     <>
       {renderUserAvatar()}
       <Typography variant={'h4'} fontWeight={700} sx={{ my: 4 }}>
-        {jobSeeker?.seekerName ?? ''}
+        {company?.companyName ?? '-'}
       </Typography>
       <Box width={'100%'} display={'flex'} flexDirection={'column'} rowGap={'16px'}>
         <TextBox>
-          <Typography variant='body1'>Age</Typography>
+          <Typography variant='body1'>Founder</Typography>
           <Typography variant={'body1'} fontWeight={600}>
-            {jobSeeker.seekerAge + ' Years old'}
+            {company?.companyFounder ?? '-'}
           </Typography>
         </TextBox>
         <TextBox>
-          <Typography variant='body1'>Phone Number</Typography>
+          <Typography variant='body1'>Enterprise Type</Typography>
           <Typography variant={'body1'} fontWeight={600}>
-            {'+60' + jobSeeker.seekerPhoneNo}
+            {company?.companySize ? `${capitalizeFirstLetter(company?.companySize)} Enterprise` : '-'}
           </Typography>
         </TextBox>
         <TextBox>
           <Typography variant='body1'>Email</Typography>
           <Typography variant={'body1'} fontWeight={600}>
-            {jobSeeker.users?.userEmail}
+            {company.users?.userEmail}
           </Typography>
         </TextBox>
         <TextBox>
-          <Typography variant='body1'>Birth Date</Typography>
-          <Typography variant={'body1'} fontWeight={600}>
-            {jobSeeker.seekerBirthdate}
-          </Typography>
-        </TextBox>
-        <TextBox>
-          <Typography variant='body1'>Gender</Typography>
-          <Typography variant={'body1'} fontWeight={600}>
-            {generateGenderIcon(jobSeeker.seekerGender)}
-          </Typography>
+          <DescriptionTitleWrapper variant='body1'>Company Description</DescriptionTitleWrapper>
+          <DescriptionWrapper variant={'body1'} fontWeight={600}>
+            {company?.companyDesc ?? '-'}
+          </DescriptionWrapper>
         </TextBox>
         <AddressWrapper>
           <Typography variant='body1'>Address</Typography>
           <Box sx={{ display: 'flex', alignItems: { xs: 'center', sm: 'flex-end' }, flexDirection: 'column' }}>
-            <Typography variant={'body1'} fontWeight={600} sx={{ textAlign: { xs: 'center', sm: 'right' } }}>
-              {jobSeeker.seekerStreet}
+            <Typography variant={'body1'} fontWeight={600}>
+              {company.companyStreet}
             </Typography>
             <Typography variant={'body1'} fontWeight={600}>
-              {jobSeeker.seekerCity}
+              {company.companyCity}
             </Typography>
             <Typography variant={'body1'} fontWeight={600}>
-              {jobSeeker.seekerState}
+              {company.companyState}
             </Typography>
           </Box>
         </AddressWrapper>
@@ -113,8 +125,8 @@ const PersonalInfoSection = ({ jobSeeker, seekerId }: { jobSeeker: any; seekerId
           dispatch(
             setDrawerState({
               isOpen: true,
-              type: DrawerType.editJobSeekerForm,
-              content: seekerId
+              type: DrawerType.editCompanyProfile,
+              content: companyId
             })
           )
         }
@@ -125,4 +137,4 @@ const PersonalInfoSection = ({ jobSeeker, seekerId }: { jobSeeker: any; seekerId
   )
 }
 
-export default PersonalInfoSection
+export default CompanyProfileSection

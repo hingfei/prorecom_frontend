@@ -16,140 +16,19 @@ import DataGrid from '../../@core/datagrid'
 import generateSkeletonColumns from '../../@core/utils/generate-skeleton-columns'
 import { setDrawerState, useAppDispatch } from '../../store'
 import { DrawerType } from '../../constants'
-import { DeleteIcon, EditIcon } from '../../@core/components/icons'
+import { DeleteIcon, ViewIcon } from '../../@core/components/icons'
 import { DialogDeleteLayout } from '../../@core/components/dialog'
 import { mapEmptyRows } from '../../@core/utils/map-empty-rows'
-import { capitalizeFirstLetter } from "../../@core/utils/capitalize-first-letter";
-
-const dummyData = [
-  {
-    projectId: '2',
-    projectName: 'Business Development Associate (Corporate Sales)',
-    companyId: '2',
-    projectTypes: 'Full-Time',
-    postDates: '8 days ago',
-    projectMinSalary: 3000,
-    projectMaxSalary: 10000,
-    projectDesc:
-      "Candidates with zero experience are welcome to apply! [ Part of Hiredly's #ZeroHero Campaign - hiredly.com/zerohero ]\n\nWe are opening up an opportunity for business development professionals who want to be part of something bigger than yourself.\n\nIn this role, you will be bridging corporate demand to bring more stable income to our home-chefs.\n\nIf you find meaning in driving impact in your professional life, you are best suited for this role.\n\nWe are looking for candidates with more than 1 year of working experience in related field. However fresh graduates are encouraged to apply if you think you can make the cut.",
-    projectExpLvl: '1 - 3 Years of Experience',
-    projectStatus: "active",
-    skills: [
-      {
-        skillName: 'Business Development'
-      },
-      {
-        skillName: 'Negotiation'
-      },
-      {
-        skillName: 'Presentations'
-      },
-      {
-        skillName: 'Persuasive Communication'
-      },
-      {
-        skillName: 'Organizational '
-      },
-      {
-        skillName: 'Lead Generation'
-      },
-      {
-        skillName: 'Outbound Calls'
-      },
-      {
-        skillName: 'Sales'
-      },
-      {
-        skillName: 'Closing (Sales)'
-      },
-      {
-        skillName: 'Multitasking'
-      }
-    ]
-  },
-  {
-    projectId: '132',
-    projectName: 'Operations Associate',
-    companyId: '2',
-    projectTypes: 'Full-Time',
-    postDates: '2 months ago',
-    projectMinSalary: 2500,
-    projectMaxSalary: 3500,
-    projectDesc:
-      'Join us in a meaningful career, knowing that every second spent on your work is directly contributing to empowering local moms and pops to make a living from home selling food & groceries.\n\nIf you are someone who is compassionate, obsessed with “making it right”, join us as a Operation Associate.\n\nJob Title: Operations Executive (Sales Support)\n\nWe are looking for an experienced and detail-oriented Operations Executive to join our dynamic team. As an Operations Executive, you will be responsible for supporting the Sales team in a range of activities. Your role will involve everything from logistics planning and arrangement to simple marketing tasks, as well as responding to client requests and ensuring that all documentation and data entry tasks are completed accurately and on time.',
-    projectStatus: "active",
-    projectExpLvl: '4 - 8 Years of Experience',
-    skills: []
-  },
-  {
-    projectId: '133',
-    projectName: 'Operations Associate 2',
-    companyId: '2',
-    projectTypes: 'Full-Time',
-    postDates: '2 months ago',
-    projectMinSalary: 2500,
-    projectMaxSalary: 3500,
-    projectStatus: "active",
-    projectExpLvl: '4 - 8 Years of Experience',
-    skills: []
-  },
-  {
-    projectId: '134',
-    projectName: 'Operations Associate 3',
-    companyId: '2',
-    projectTypes: 'Full-Time',
-    postDates: '2 months ago',
-    projectMinSalary: 2500,
-    projectMaxSalary: 3500,
-    projectStatus: "active",
-    projectExpLvl: '4 - 8 Years of Experience',
-    skills: []
-  },
-  {
-    projectId: '135',
-    projectName: 'Operations Associate 4',
-    companyId: '2',
-    projectTypes: 'Full-Time',
-    postDates: '2 months ago',
-    projectMinSalary: 2500,
-    projectMaxSalary: 3500,
-    projectStatus: "closed",
-    projectExpLvl: '4 - 8 Years of Experience',
-    skills: []
-  },
-  {
-    projectId: '136',
-    projectName: 'Operations Associate 5',
-    companyId: '2',
-    projectTypes: 'Full-Time',
-    postDates: '2 months ago',
-    projectMinSalary: 2500,
-    projectMaxSalary: 3500,
-    projectStatus: "active",
-    projectExpLvl: '4 - 8 Years of Experience',
-    skills: []
-  },
-  {
-    projectId: '137',
-    projectName: 'Operations Associate 6',
-    companyId: '2',
-    projectTypes: 'Full-Time',
-    postDates: '2 months ago',
-    projectMinSalary: 2500,
-    projectMaxSalary: 3500,
-    projectStatus: "closed",
-    projectExpLvl: '4 - 8 Years of Experience',
-    skills: []
-  }
-]
+import { capitalizeFirstLetter } from '../../@core/utils/capitalize-first-letter'
+import { useAuth } from '../../@core/context/authContext'
 
 type ProjectListingCellType = {
   row: NonNullable<ProjectListingQuery['projectListing']>[0]
 }
 
 const ActionsRow = ({ row }: ProjectListingCellType) => {
+  const router = useRouter()
   const [dialog, setDialog] = useState(false)
-  const dispatch = useAppDispatch()
 
   const [projectDelete, { loading }] = useDeleteProjectMutation({
     variables: {
@@ -163,19 +42,13 @@ const ActionsRow = ({ row }: ProjectListingCellType) => {
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <EditIcon
-          title='Edit'
+        <ViewIcon
+          title='View'
           onClick={e => {
             e.stopPropagation()
-            dispatch(
-              setDrawerState({
-                isOpen: true,
-                type: DrawerType.editProject,
-                content: { user_id: row?.projectId }
-              })
-            )
+            router.push(`/company-dashboard/${row?.projectId}`)
           }}
-          color={'info'}
+          color={'primary'}
         />
         <DeleteIcon
           title='Delete'
@@ -245,7 +118,7 @@ const columns = [
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant='body2' fontWeight={600}>
-            {capitalizeFirstLetter(row?.projectStatus) ?? '-'}
+            {row?.projectStatus ? capitalizeFirstLetter(row?.projectStatus) : '-'}
           </Typography>
         </Box>
       )
@@ -281,6 +154,7 @@ const CompanyDashboard = () => {
   const [loading, setLoading] = useState(true)
   const skeletonColumns = generateSkeletonColumns(columns)
   const router = useRouter()
+  const { resetStore } = useAuth()
 
   const { data: userData } = useMeQuery({
     onCompleted: data => {
@@ -289,9 +163,11 @@ const CompanyDashboard = () => {
     },
     onError: error => {
       console.log(error)
+      resetStore()
       router.push('/401')
       onError(error, undefined)
-    }
+    },
+    fetchPolicy: 'no-cache'
   })
 
   const [fetchProject, { data }] = useCompanyProjectListingLazyQuery({
@@ -312,13 +188,22 @@ const CompanyDashboard = () => {
 
   return (
     <Grid container spacing={6}>
-      <PageHeader title={'Project Management'} linkTitle={'Add Project'} onLinkClick={() => router.push({ pathname: '/projects/add-project', query: { id: userData?.me?.userId } }) }/>
+      <PageHeader
+        title={'Project Management'}
+        linkTitle={'Add Project'}
+        onLinkClick={() =>
+          router.push({
+            pathname: '/projects/add-project',
+            query: { id: userData?.me?.userId }
+          })
+        }
+      />
       <DataGrid
-        key={`data-grid${dummyData.length}`}
+        key={`data-grid${data?.companyProjectListing.length}`}
         columns={loading ? skeletonColumns : columns}
-        rows={loading ? mapEmptyRows() : dummyData || []}
+        rows={loading ? mapEmptyRows() : data?.companyProjectListing || []}
         getRowId={row => (loading ? row?.id : `${row?.projectId}-${row?.projectName}`)}
-        rowCount={dummyData.length}
+        rowCount={data?.companyProjectListing.length}
         listingTitle={''}
       />
     </Grid>

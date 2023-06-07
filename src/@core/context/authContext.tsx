@@ -14,6 +14,7 @@ type AuthContextType = {
   logout: () => Promise<void>
   fetchMe: () => Promise<void>
   setIsInitialized: (value: boolean) => void
+  resetStore: () => void
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -23,7 +24,8 @@ export const AuthContext = createContext<AuthContextType>({
   handleLogin: async () => {},
   logout: async () => {},
   fetchMe: () => Promise.resolve(),
-  setIsInitialized: () => Boolean
+  setIsInitialized: () => Boolean,
+  resetStore: () => {}
 })
 
 type Props = {
@@ -50,9 +52,6 @@ export const AuthProvider = ({ children }: Props) => {
       setIsInitialized(false)
       if (!window.localStorage.getItem('userData')) {
         await window.localStorage.setItem('userData', JSON.stringify(data?.me))
-        // const returnUrl = router.query.returnUrl;
-        // const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/';
-        // router.replace(redirectURL as string);
       }
     },
     onError: error => {
@@ -112,7 +111,9 @@ export const AuthProvider = ({ children }: Props) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isInitialized, fetchMeLoading, fetchMe, isAuthenticated, handleLogin, logout }}>
+    <AuthContext.Provider
+      value={{ isInitialized, fetchMeLoading, fetchMe, isAuthenticated, handleLogin, logout, resetStore }}
+    >
       {children}
     </AuthContext.Provider>
   )

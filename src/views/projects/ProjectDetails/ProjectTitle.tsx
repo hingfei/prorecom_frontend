@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import Chip from '@mui/material/Chip'
 import { ProjectType } from '../../../graphql/api'
+import { capitalizeFirstLetter } from "../../../@core/utils/capitalize-first-letter";
 
 const ProjectTitle = ({ project }: { project: ProjectType | undefined }) => {
   return (
@@ -17,7 +18,7 @@ const ProjectTitle = ({ project }: { project: ProjectType | undefined }) => {
         <Typography variant={'body1'}>{project?.company?.companyFounder}</Typography>
       </Box>
       <Typography variant={'body2'} pb={2}>
-        {project?.company?.companySize ? `${project?.company?.companySize} employer` : ''}
+        {project?.company?.companySize ? `${capitalizeFirstLetter(project?.company?.companySize)} enterprise` : ''}
       </Typography>
       <Box pb={5}>
         <Typography variant={'body2'}>{project?.company?.companyStreet}</Typography>

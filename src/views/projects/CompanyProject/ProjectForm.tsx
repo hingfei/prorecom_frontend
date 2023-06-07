@@ -1,15 +1,39 @@
-import { Button, ButtonProps, Grid } from '@mui/material'
-import { useFormContext } from 'react-hook-form'
+import { Box, Button, ButtonProps, Card, CardContent, CardHeader, Grid } from '@mui/material'
+import { useFormContext, useWatch } from 'react-hook-form'
 import { SelectInput, TextInput } from '../../../@core/components/custom-inputs'
 import { projectExpLevelListing, projectStatusListing, projectTypesListing } from '../../../constants'
 import { useRouter } from 'next/router'
+import { useSkillListingQuery } from '../../../graphql/api'
+import DropdownSkeleton from '../../../@core/components/skeleton/DropdownSkeleton'
+import { MinusIcon, PlusIcon } from '../../../@core/components/icons'
 
 const ProjectForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
   const router = useRouter()
-  const { control } = useFormContext()
+  const { control, setValue } = useFormContext()
+
+  const skills = useWatch({
+    name: 'skills',
+    defaultValue: []
+  })
 
   const onCancel = () => {
-    router.push('/company-dashboard')
+    router.back()
+  }
+
+  const { data, loading } = useSkillListingQuery({
+    fetchPolicy: 'no-cache'
+  })
+
+  const removeSkill = (index: number) => {
+    const updatedSkills = [...skills]
+    updatedSkills.splice(index, 1)
+    setValue('skills', updatedSkills)
+  }
+
+  const addSkill = () => {
+    const newSkills = [...skills, { value: '' }]
+    setValue('skills', newSkills)
+    console.log('updated', newSkills)
   }
 
   return (
@@ -114,11 +138,61 @@ const ProjectForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) =
           isNumber
         />
       </Grid>
+      <Grid item xs={12}>
+        <Card>
+          <CardHeader
+            title='Skills Required'
+            titleTypographyProps={{
+              color: 'rgba(58, 53, 65, 0.68)',
+              fontWeight: '400 !important',
+              fontSize: '18px !important'
+            }}
+          />
+
+          <CardContent>
+            {loading ? (
+              <DropdownSkeleton />
+            ) : skills.length > 0 ? (
+              skills.map((skill: any, index: number) => (
+                <Grid
+                  container
+                  mt={6}
+                  mb={2}
+                  key={`${index}-${skill.value}`}
+                  display={'flex'}
+                  alignItems={'center'}
+                  justifyContent={'space-between'}
+                >
+                  <Grid item xs={10} sm={11}>
+                    <SelectInput
+                      controllerProps={{
+                        control,
+                        name: `skills[${index}]`
+                      }}
+                      selectProps={{ label: `Skill ${index + 1}` }}
+                      selectData={data?.skillListing?.map(item => ({
+                        label: item?.skillName,
+                        value: item?.skillId
+                      }))}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <MinusIcon color={'error'} onClick={() => removeSkill(index)} aria-controls='remove-skill' />
+                  </Grid>
+                </Grid>
+              ))
+            ) : (
+              ''
+            )}
+            <Box display='flex' justifyContent='center' mt={6} mb={2}>
+              <PlusIcon color='info' onClick={addSkill} aria-controls='add-skill' />
+            </Box>
+          </CardContent>
+        </Card>
+      </Grid>
+
       <Grid item my={10}>
-        <Button
-          variant='contained'
-          {...props}
-        >
+        <Button variant='contained' {...props}>
           {isEdit ? 'Save' : 'Add'}
         </Button>
       </Grid>

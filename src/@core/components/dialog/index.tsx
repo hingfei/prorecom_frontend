@@ -24,7 +24,7 @@ export const DialogLayoutBase = ({
     <Fragment>
       <Dialog open={isOpen} onClose={onClose} fullWidth={true} maxWidth='sm' {...dialogProps}>
         <DialogTitle sx={{ pb: 0 }} {...dialogTitleProps}>
-          <Typography variant='h5' fontWeight={600} sx={{ mb: 3, lineHeight: '2rem' }}>
+          <Typography variant={'h5'} fontWeight={600} sx={{ mb: 3, lineHeight: '2rem' }}>
             {dialogTitle}
           </Typography>
         </DialogTitle>

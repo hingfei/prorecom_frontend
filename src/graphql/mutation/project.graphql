@@ -1,13 +1,9 @@
 mutation createProject($input: CreateProjectInput!) {
   createProject (input: $input) {
-    ...on ProjectResponse {
+    ...on ProjectModifyResponse {
       success
       project {
         projectId
-        company {
-          companyId
-          companyName
-        }
       }
       message
     }
@@ -16,7 +12,7 @@ mutation createProject($input: CreateProjectInput!) {
 
 mutation updateProject($input: UpdateProjectInput!) {
   updateProject (input: $input) {
-    ...on ProjectResponse {
+    ...on ProjectModifyResponse {
       success
       project {
         projectId
@@ -28,7 +24,7 @@ mutation updateProject($input: UpdateProjectInput!) {
 
 mutation deleteProject($projectId: Int!) {
   deleteProject(projectId: $projectId) {
-    ...on ProjectResponse {
+    ...on ProjectModifyResponse {
       success
       message
     }

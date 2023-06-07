@@ -7,9 +7,10 @@ import { perfectScrollbarRef } from 'src/@core/utils/perfect-scrollbar'
 import EditEducationForm from '../../../views/profiles/Education/EditEducationForm'
 import EditPersonalInfoForm from '../../../views/profiles/PersonalInfo/EditPersonalInfoForm'
 import EditAboutForm from '../../../views/profiles/About/EditAboutForm'
-import EditPasswordForm from "../../../views/profiles/Password/EditPasswordForm";
-import EditSkillForm from "../../../views/profiles/Skill/EditSkillForm";
-import AddEducationForm from "../../../views/profiles/Education/AddEducationForm";
+import EditPasswordForm from '../../../views/profiles/Password/EditPasswordForm'
+import EditSkillForm from '../../../views/profiles/Skill/EditSkillForm'
+import AddEducationForm from '../../../views/profiles/Education/AddEducationForm'
+import EditCompanyProfileForm from "../../../views/company-profiles/EditCompanyProfileForm";
 
 const Drawer = styled(MuiDrawer)<DrawerProps>(({ theme }) => ({
   zIndex: theme.zIndex.drawer,
@@ -49,6 +50,8 @@ const DrawerBase = ({ onCloseCallback }: { onCloseCallback?: () => void }) => {
         return <EditPasswordForm />
       case DrawerType.editSkillForm:
         return <EditSkillForm />
+      case DrawerType.editCompanyProfile:
+        return <EditCompanyProfileForm />
       default:
         return null
     }
