@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles'
 import { BoxProps } from '@mui/material/Box'
 import { generateGenderIcon } from '../../../@core/utils/generate-gender-icon'
 import Avatar from '@mui/material/Avatar'
+import dayjs from "dayjs";
 
 // ** Styled Components
 const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -78,9 +79,9 @@ const PersonalInfoSection = ({ jobSeeker, seekerId }: { jobSeeker: any; seekerId
           </Typography>
         </TextBox>
         <TextBox>
-          <Typography variant='body1'>Birth Date</Typography>
+          <Typography variant='body1'>Date of Birth</Typography>
           <Typography variant={'body1'} fontWeight={600}>
-            {jobSeeker.seekerBirthdate}
+            {dayjs(jobSeeker.seekerBirthdate).format('DD MMM YYYY') }
           </Typography>
         </TextBox>
         <TextBox>

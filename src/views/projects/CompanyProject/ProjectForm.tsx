@@ -1,6 +1,6 @@
 import { Box, Button, ButtonProps, Card, CardContent, CardHeader, Grid } from '@mui/material'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { SelectInput, TextInput } from '../../../@core/components/custom-inputs'
+import { CalendarInput, SelectInput, TextInput } from '../../../@core/components/custom-inputs'
 import { projectExpLevelListing, projectStatusListing, projectTypesListing } from '../../../constants'
 import { useRouter } from 'next/router'
 import { useSkillListingQuery } from '../../../graphql/api'
@@ -89,12 +89,13 @@ const ProjectForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) =
       </Grid>
       {/*TODO: TO BE REMOVED, AUTOMATICALLY SET CURRENT DATE*/}
       <Grid item xs={12} sm={6} md={3}>
-        <TextInput
-          inputProps={{ label: 'Date' }}
+        <CalendarInput
           controllerProps={{
             control,
             name: 'postDates'
           }}
+          label='Date'
+          isRequired
         />
       </Grid>
 

@@ -13,9 +13,10 @@ import {
   TextField,
   Typography
 } from '@mui/material'
-import { EyeOffOutline, EyeOutline } from 'mdi-material-ui'
+import { CalendarOutline, EyeOffOutline, EyeOutline } from 'mdi-material-ui'
 import { useController } from 'react-hook-form'
 import {
+  CalendarInputType,
   CheckboxInputType,
   FormControlBaseType,
   PasswordInputType,
@@ -23,7 +24,11 @@ import {
   SwitchInputType, TextInputIconType,
   TextInputType
 } from './index.d'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import dayjs, { Dayjs } from "dayjs";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 // import DatePicker from 'react-datepicker';
 // import { DateTimePicker, DateTimePickerProps } from '@mui/x-date-pickers/DateTimePicker';
 // import { LocalizationProvider, TimePicker } from '@mui/lab';
@@ -207,60 +212,70 @@ export const CheckboxInput = ({ controllerProps, checkboxProps, label, onChangeC
   )
 }
 
-// export const CalendarInput = ({ controllerProps, label, minDate, datePickerProps }: CalendarInputType) => {
-//   const datePickerRef = useRef<DatePicker | null>(null);
-//   const {
-//     field: { onChange, value },
-//     fieldState: { error }
-//   } = useController({
-//     ...controllerProps
-//   });
-//
-//   return (
-//     <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message}>
-//       <DatePicker
-//         ref={datePickerRef}
-//         selected={!!value ? new Date(value) : ('' as any)}
-//         onChange={(date: Date) => {
-//           const dateString = date?.toISOString();
-//           const newDateString = dateString?.substring(0, dateString.indexOf('T'));
-//           onChange(newDateString);
-//         }}
-//         placeholderText='Click to select a date'
-//         dateFormat={'dd/MM/yyyy'}
-//         portalId='react-datepicker-portal'
-//         shouldCloseOnSelect
-//         showMonthDropdown
-//         showYearDropdown
-//         minDate={minDate}
-//         maxDate={new Date()}
-//         customInput={
-//           <TextField
-//             label={label}
-//             fullWidth
-//             InputProps={{
-//               endAdornment: (
-//                 <InputAdornment position='end'>
-//                   <IconButton
-//                     component='button'
-//                     edge='end'
-//                     onClick={(e: any) => {
-//                       e.stopPropagation();
-//                       datePickerRef.current?.setOpen(!datePickerRef.current?.isCalendarOpen());
-//                     }}
-//                   >
-//                     <CalendarOutline />
-//                   </IconButton>
-//                 </InputAdornment>
-//               )
-//             }}
-//           />
-//         }
-//         {...datePickerProps}
-//       />
-//     </FormControlBase>
-//   );
-// };
+export const CalendarInput = ({ controllerProps, label, minDate, disabled, datePickerProps, isRequired }: CalendarInputType) => {
+  const {
+    field: { onChange, value },
+    fieldState: { error }
+  } = useController({
+    ...controllerProps
+  });
+
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl]: any = useState(null);
+
+  const handleClick = (event: MouseEvent) => {
+    setOpen(true);
+    setAnchorEl(event?.currentTarget);
+    if (open) {
+      event.stopPropagation();
+    }
+  };
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs as any}>
+      <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message}>
+        <DatePicker
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          label={label}
+          inputFormat={'MM-DD-YYYY'}
+          views={['year', 'month', 'day']}
+          value={value}
+          maxDate={dayjs()}
+          onChange={(input: any) => {
+            const convertDate = input ? dayjs(input)?.format('MM-DD-YYYY') : null;
+            if (convertDate) {
+              onChange(convertDate);
+            } else {
+              onChange(null);
+            }
+          }}
+          PopperProps={{
+            placement: 'bottom',
+            anchorEl: anchorEl
+          }}
+          renderInput={({ inputProps, ...restParams }) => (
+            <TextField
+              {...restParams}
+              inputProps={{
+                ...inputProps,
+                placeholder: 'MM-DD-YYYY'
+              }}
+              error={Boolean(error)}
+              required={isRequired}
+              onClick={(event: any) => (!disabled ? handleClick(event) : null)}
+              inputRef={inputRef => (!open ? inputRef?.blur() : false)}
+              focused={open}
+            />
+          )}
+          disabled={disabled}
+          {...datePickerProps}
+        />
+      </FormControlBase>
+    </LocalizationProvider>
+  );
+};
 
 export const SwitchInput = ({
   controllerProps,

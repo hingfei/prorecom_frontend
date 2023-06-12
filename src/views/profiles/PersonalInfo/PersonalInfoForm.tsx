@@ -1,7 +1,7 @@
 import { Box, Button, ButtonProps, Grid } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
 import { closeDrawerState, useAppDispatch } from '../../../store'
-import { SelectInput, TextInput } from '../../../@core/components/custom-inputs'
+import { CalendarInput, SelectInput, TextInput } from '../../../@core/components/custom-inputs'
 import { genderSelect, statesListing } from "../../../constants";
 
 const PersonalInfoForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
@@ -55,12 +55,13 @@ const PersonalInfoForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean
         />
       </Grid>
       <Grid item mt={6} mb={2}>
-        <TextInput
-          inputProps={{ label: 'Birth Date', placeholder: 'DD/MM/YYYY' }}
+        <CalendarInput
           controllerProps={{
             control,
             name: 'seekerBirthdate'
           }}
+          label='Date of Birth'
+          isRequired
         />
       </Grid>
       <Grid item mt={6} mb={2}>

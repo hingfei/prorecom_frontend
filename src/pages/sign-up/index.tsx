@@ -61,7 +61,7 @@ const RegisterPage = () => {
 
   const onSubmit = (values: any) => {
     const input = getFormInputValues(values)
-
+    console.log(input)
     if (selected === 'job_seeker') {
       createJobSeeker({
         variables: {
