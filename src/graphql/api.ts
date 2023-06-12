@@ -311,6 +311,7 @@ export type Query = {
   projectDetail?: Maybe<ProjectType>;
   projectListing: Array<ProjectType>;
   recommendedJobSeekerListing: Array<JobSeekerType>;
+  searchJobSeekers: Array<JobSeekerType>;
   searchProjects: Array<ProjectType>;
   skillListing: Array<SkillType>;
   userDetail?: Maybe<User>;
@@ -345,6 +346,11 @@ export type QueryProjectListingArgs = {
 
 export type QueryRecommendedJobSeekerListingArgs = {
   projectId: Scalars['Int'];
+};
+
+
+export type QuerySearchJobSeekersArgs = {
+  searchKeyword: Scalars['String'];
 };
 
 
@@ -612,6 +618,13 @@ export type RecommendedJobSeekerListingQueryVariables = Exact<{
 
 
 export type RecommendedJobSeekerListingQuery = { __typename?: 'Query', recommendedJobSeekerListing: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
+
+export type SearchJobSeekersQueryVariables = Exact<{
+  searchKeyword: Scalars['String'];
+}>;
+
+
+export type SearchJobSeekersQuery = { __typename?: 'Query', searchJobSeekers: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
 
 export type SkillListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1719,6 +1732,68 @@ export function useRecommendedJobSeekerListingLazyQuery(baseOptions?: Apollo.Laz
 export type RecommendedJobSeekerListingQueryHookResult = ReturnType<typeof useRecommendedJobSeekerListingQuery>;
 export type RecommendedJobSeekerListingLazyQueryHookResult = ReturnType<typeof useRecommendedJobSeekerListingLazyQuery>;
 export type RecommendedJobSeekerListingQueryResult = Apollo.QueryResult<RecommendedJobSeekerListingQuery, RecommendedJobSeekerListingQueryVariables>;
+export const SearchJobSeekersDocument = gql`
+    query searchJobSeekers($searchKeyword: String!) {
+  searchJobSeekers(searchKeyword: $searchKeyword) {
+    seekerId
+    seekerName
+    seekerAge
+    seekerGender
+    seekerBirthdate
+    seekerPhoneNo
+    seekerStreet
+    seekerCity
+    seekerState
+    seekerResume
+    seekerAbout
+    users {
+      userName
+      userEmail
+    }
+    skills {
+      skillId
+      skillName
+    }
+    educations {
+      educationId
+      educationLevel
+      educationInstitution
+      description
+      fieldOfStudy
+      graduationYear
+      grade
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchJobSeekersQuery__
+ *
+ * To run a query within a React component, call `useSearchJobSeekersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchJobSeekersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchJobSeekersQuery({
+ *   variables: {
+ *      searchKeyword: // value for 'searchKeyword'
+ *   },
+ * });
+ */
+export function useSearchJobSeekersQuery(baseOptions: Apollo.QueryHookOptions<SearchJobSeekersQuery, SearchJobSeekersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchJobSeekersQuery, SearchJobSeekersQueryVariables>(SearchJobSeekersDocument, options);
+      }
+export function useSearchJobSeekersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchJobSeekersQuery, SearchJobSeekersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchJobSeekersQuery, SearchJobSeekersQueryVariables>(SearchJobSeekersDocument, options);
+        }
+export type SearchJobSeekersQueryHookResult = ReturnType<typeof useSearchJobSeekersQuery>;
+export type SearchJobSeekersLazyQueryHookResult = ReturnType<typeof useSearchJobSeekersLazyQuery>;
+export type SearchJobSeekersQueryResult = Apollo.QueryResult<SearchJobSeekersQuery, SearchJobSeekersQueryVariables>;
 export const SkillListingDocument = gql`
     query skillListing {
   skillListing {

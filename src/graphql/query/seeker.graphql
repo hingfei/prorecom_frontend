@@ -81,3 +81,36 @@ query recommendedJobSeekerListing($projectId: Int!) {
     }
   }
 }
+
+query searchJobSeekers($searchKeyword: String!) {
+  searchJobSeekers(searchKeyword: $searchKeyword) {
+    seekerId
+    seekerName
+    seekerAge
+    seekerGender
+    seekerBirthdate
+    seekerPhoneNo
+    seekerStreet
+    seekerCity
+    seekerState
+    seekerResume
+    seekerAbout
+    users {
+      userName
+      userEmail
+    }
+    skills {
+      skillId
+      skillName
+    }
+    educations {
+      educationId
+      educationLevel
+      educationInstitution
+      description
+      fieldOfStudy
+      graduationYear
+      grade
+    }
+  }
+}
