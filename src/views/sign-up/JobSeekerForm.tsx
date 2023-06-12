@@ -1,5 +1,5 @@
 import { useTheme } from '@mui/material/styles'
-import { SelectInput, TextInput } from 'src/@core/components/custom-inputs'
+import { CalendarInput, SelectInput, TextInput } from 'src/@core/components/custom-inputs'
 import { Box, Button, Grid, Typography } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
 import { genderSelect, statesListing } from "../../constants";
@@ -66,15 +66,13 @@ const JobSeekerForm = ({
         </Grid>
         <Grid container spacing={4} mb={4}>
           <Grid item xs={12} sm={6}>
-            <TextInput
-              inputProps={{
-                label: 'Birth Date',
-                placeholder: 'DD/MM/YYYY'
-              }}
+            <CalendarInput
               controllerProps={{
                 control,
                 name: 'seekerBirthdate'
               }}
+              label='Date of Birth'
+              isRequired
             />
           </Grid>
           <Grid item xs={12} sm={6}>

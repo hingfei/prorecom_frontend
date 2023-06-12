@@ -24,7 +24,7 @@ function Projects() {
 
   const formMethods = useForm()
 
-  const { handleSubmit, setValue } = formMethods
+  const { handleSubmit, setValue, reset } = formMethods
 
   const [fetchProject, { loading: fetchLoading }] = useProjectListingLazyQuery({
     variables: {
@@ -34,6 +34,7 @@ function Projects() {
       setProject(data?.projectListing[0])
       setProjectList(data?.projectListing)
       setDefaultProjectList(data?.projectListing)
+      reset({searchKeyword: null})
       setLoading(false)
     },
     onError: error => {
@@ -53,6 +54,9 @@ function Projects() {
       setProject(data.searchProjects[0])
       setProjectList(data?.searchProjects)
       setDefaultProjectList(data?.searchProjects)
+      if (switchOption.checked) {
+        setSwitchOption({ checked: false, label: 'Default' })
+      }
       setLoading(false)
     },
     onError: error => {
@@ -148,7 +152,7 @@ function Projects() {
                 />
                 <ProjectListing projectListing={projectList} project={project} onChangeProject={onChangeProject} />
               </Grid>
-              <Grid item xs={7.5} sx={{ xs: { display: 'none' }, md: { display: 'flex' } }}>
+              <Grid item xs={7.5} sx={{ display: { xs: 'none', md: 'flex' } }}>
                 <ProjectDetails project={project} />
               </Grid>
             </Grid>

@@ -1,22 +1,21 @@
 import { styled } from '@mui/material/styles'
-import { Box, Button, Card, CardContent, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
-import Chip from '@mui/material/Chip'
-import { RhombusMedium } from 'mdi-material-ui'
+import { Box, Card, CardContent } from '@mui/material'
 import { ReactNode } from 'react'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 import { ProjectType } from '../../../graphql/api'
-import ProjectTitle from "./ProjectTitle";
-import ProjectDescription from "./ProjectDescription";
-import ProjectRequirement from "./ProjectRequirement";
-import ProjectSkills from "./ProjectSkills";
-import ProjectExperience from "./ProjectExperience";
+import ProjectTitle from './ProjectTitle'
+import ProjectDescription from './ProjectDescription'
+import ProjectRequirement from './ProjectRequirement'
+import ProjectSkills from './ProjectSkills'
+import ProjectExperience from './ProjectExperience'
 
 const PerfectScrollbar = styled(PerfectScrollbarComponent)({
   maxHeight: '117vh',
   padding: '0 16px',
   '& .MuiMenuItem-root:last-of-type': {
     border: 0
-  }
+  },
+  width: '100%'
 })
 
 const ScrollWrapper = ({ children }: { children: ReactNode }) => {
@@ -33,7 +32,7 @@ const ProjectDetails = ({ project }: { project: ProjectType | undefined }) => {
           </Box>
 
           <Box mb={10} paddingX={8}>
-            <ProjectDescription projectDesc={project?.projectDesc}/>
+            <ProjectDescription projectDesc={project?.projectDesc} />
           </Box>
 
           <Box mb={10} paddingX={8}>

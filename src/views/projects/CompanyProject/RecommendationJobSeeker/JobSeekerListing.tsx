@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react'
 import { Box, CardContent, Typography } from '@mui/material'
-import Chip from '@mui/material/Chip'
 import { styled, useTheme } from '@mui/material/styles'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 import Card, { CardProps } from '@mui/material/Card'
-import { JobSeekerType } from "../../../../graphql/api";
+import { JobSeekerType } from '../../../../graphql/api'
+import { MapMarkerOutline, PhoneOutline } from 'mdi-material-ui'
 
 // ** Styled Components
 const StyledCard = styled(Card)<CardProps>(({ theme }) => ({
@@ -29,11 +29,11 @@ const ScrollWrapper = ({ children }: { children: ReactNode }) => {
 const JobSeekerListing = ({
   jobSeekerList,
   jobSeeker,
-  onChangeProject
+  onChangeJobSeeker
 }: {
   jobSeekerList: any
   jobSeeker: JobSeekerType | undefined
-  onChangeProject: (item: any) => void
+  onChangeJobSeeker: (item: any) => void
 }) => {
   const theme = useTheme()
 
@@ -49,34 +49,22 @@ const JobSeekerListing = ({
                 ? `1px solid ${theme.palette.primary.main}`
                 : `1px solid ${theme.palette.grey[300]}`
           }}
-          onClick={() => onChangeProject(item)}
+          onClick={() => onChangeJobSeeker(item)}
         >
-          <CardContent sx={{ paddingX: 6, paddingY: 5 }}>
-            <Typography variant={'h6'} fontWeight={700}>
+          <CardContent sx={{ paddingX: 6, paddingY: 4 }}>
+            <Typography variant={'h6'} fontWeight={700} mb={2}>
               {item.seekerName}
             </Typography>
-            {/*<Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={5}>*/}
-            {/*  <Typography variant={'body2'}>{item.company?.companyName}</Typography>*/}
-            {/*  <Typography variant={'body2'}>{item.company?.companyState}</Typography>*/}
-            {/*</Box>*/}
-            {/*<Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>*/}
-            {/*  <Chip*/}
-            {/*    size='medium'*/}
-            {/*    variant='outlined'*/}
-            {/*    label={item.projectTypes}*/}
-            {/*    color='primary'*/}
-            {/*    sx={{ fontSize: '13px', fontWeight: 500, borderRadius: '18px' }}*/}
-            {/*  />*/}
-            {/*  {item?.projectMinSalary != null && item?.projectMaxSalary != null ? (*/}
-            {/*    <Typography variant={'body2'}>*/}
-            {/*      RM{item?.projectMinSalary} - RM{item?.projectMaxSalary}*/}
-            {/*    </Typography>*/}
-            {/*  ) : item?.projectMinSalary != null && item?.projectMaxSalary == null ? (*/}
-            {/*    <Typography variant={'body2'}>RM{item?.projectMinSalary}</Typography>*/}
-            {/*  ) : (*/}
-            {/*    <Typography variant={'body2'}>Undisclosed</Typography>*/}
-            {/*  )}*/}
-            {/*</Box>*/}
+            <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+              <Box display={'flex'} alignItems={'center'}>
+                <PhoneOutline fontSize={'small'} sx={{ mr: 1 }} />
+                <Typography variant={'body2'}>+60{item.seekerPhoneNo}</Typography>
+              </Box>
+              <Box display={'flex'} alignItems={'center'}>
+                <MapMarkerOutline fontSize={'small'} sx={{ mr: 1 }} />
+                <Typography variant={'body2'}>{item.seekerState}</Typography>
+              </Box>
+            </Box>
           </CardContent>
         </StyledCard>
       ))}

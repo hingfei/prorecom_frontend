@@ -5,6 +5,7 @@ import { styled, useTheme } from '@mui/material/styles'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 import Card, { CardProps } from '@mui/material/Card'
 import { ProjectType } from '../../graphql/api'
+import { CurrencyUsd, Domain, MapMarkerOutline } from 'mdi-material-ui'
 
 // ** Styled Components
 const StyledCard = styled(Card)<CardProps>(({ theme }) => ({
@@ -56,8 +57,14 @@ const ProjectListing = ({
               {item.projectName}
             </Typography>
             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={5}>
-              <Typography variant={'body2'}>{item.company?.companyName}</Typography>
-              <Typography variant={'body2'}>{item.company?.companyState}</Typography>
+              <Box display={'flex'} alignItems={'center'}>
+                <Domain fontSize={'small'} sx={{ mr: 1 }} />
+                <Typography variant={'body2'}>{item.company?.companyName}</Typography>
+              </Box>
+              <Box display={'flex'} alignItems={'center'}>
+                <MapMarkerOutline fontSize={'small'} sx={{ mr: 1 }} />
+                <Typography variant={'body2'}>{item.company?.companyState}</Typography>
+              </Box>
             </Box>
             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
               <Chip
@@ -67,15 +74,18 @@ const ProjectListing = ({
                 color='primary'
                 sx={{ fontSize: '13px', fontWeight: 500, borderRadius: '18px' }}
               />
-              {item?.projectMinSalary != null && item?.projectMaxSalary != null ? (
-                <Typography variant={'body2'}>
-                  RM{item?.projectMinSalary} - RM{item?.projectMaxSalary}
-                </Typography>
-              ) : item?.projectMinSalary != null && item?.projectMaxSalary == null ? (
-                <Typography variant={'body2'}>RM{item?.projectMinSalary}</Typography>
-              ) : (
-                <Typography variant={'body2'}>Undisclosed</Typography>
-              )}
+              <Box display={'flex'} alignItems={'center'}>
+                <CurrencyUsd fontSize={'small'} sx={{ mr: 1 }} />
+                {item?.projectMinSalary != null && item?.projectMaxSalary != null ? (
+                  <Typography variant={'body2'}>
+                    RM{item?.projectMinSalary} - RM{item?.projectMaxSalary}
+                  </Typography>
+                ) : item?.projectMinSalary != null && item?.projectMaxSalary == null ? (
+                  <Typography variant={'body2'}>RM{item?.projectMinSalary}</Typography>
+                ) : (
+                  <Typography variant={'body2'}>Undisclosed</Typography>
+                )}
+              </Box>
             </Box>
           </CardContent>
         </StyledCard>

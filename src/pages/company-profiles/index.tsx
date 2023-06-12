@@ -44,16 +44,18 @@ const CompanyProfile = () => {
   }
 
   return (
-    <Grid container spacing={6}>
-      <PageHeader title={'Profile'} />
+    <Grid container spacing={6} justifyContent={'center'}>
       <Grid item xs={12}>
+        <PageHeader title={'Profile'} />
+      </Grid>
+      <Grid item xs={12} sm={10} lg={8}>
         <Card>
           <CardContent sx={{ py: 10, display: 'flex', alignItems: 'center', flexDirection: 'column', rowGap: '6px' }}>
             <CompanyProfileSection companyId={data?.companyDetail?.companyId} company={data?.companyDetail} />
           </CardContent>
         </Card>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={10} lg={8}>
         <Card>
           <CardContent sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', rowGap: '6px' }}>
             <CompanyPasswordSection companyId={data?.companyDetail?.companyId}  />

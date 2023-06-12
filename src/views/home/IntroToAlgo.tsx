@@ -3,6 +3,8 @@ import { styled } from '@mui/material/styles'
 import { Box, Button, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { Check } from 'mdi-material-ui/'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { useAuth } from '../../@core/context/authContext'
 
 const Img = styled('img')(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -12,6 +14,23 @@ const Img = styled('img')(({ theme }) => ({
 
 const IntroToAlgo = () => {
   const router = useRouter()
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const { isAuthenticated: useAuthAuthenticated, logout, handleLogin } = useAuth()
+
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!useAuthAuthenticated) {
+        setIsAuthenticated(false)
+      } else {
+        const data = window.localStorage.getItem('userData')
+        if (data) {
+          setIsAuthenticated(true)
+        }
+      }
+    }
+
+    checkAuth()
+  }, [logout, handleLogin])
 
   return (
     <Grid container spacing={6} sx={{ alignItems: 'center' }}>
@@ -42,11 +61,7 @@ const IntroToAlgo = () => {
                     Unleashing Your Potential
                   </Typography>
                 }
-                secondary={
-                  <Typography variant={'body1'}>
-                    Analyzing and Matching Your Skills
-                  </Typography>
-                }
+                secondary={<Typography variant={'body1'}>Analyzing and Matching Your Skills</Typography>}
               />
             </ListItem>
             <ListItem>
@@ -59,11 +74,7 @@ const IntroToAlgo = () => {
                     Crafting Your Perfect Profile
                   </Typography>
                 }
-                secondary={
-                  <Typography variant={'body1'}>
-                    Skill Extraction and Curation
-                  </Typography>
-                }
+                secondary={<Typography variant={'body1'}>Skill Extraction and Curation</Typography>}
               />
             </ListItem>
             <ListItem>
@@ -76,23 +87,21 @@ const IntroToAlgo = () => {
                     Discover Your Dream Project
                   </Typography>
                 }
-                secondary={
-                  <Typography variant={'body1'}>
-                    Skill Matching and Recommendation
-                  </Typography>
-                }
+                secondary={<Typography variant={'body1'}>Skill Matching and Recommendation</Typography>}
               />
             </ListItem>
           </List>
         </Box>
-        <Button
-          variant={'outlined'}
-          size={'large'}
-          sx={{ alignSelf: { xs: 'center', md: 'flex-start' } }}
-          onClick={() => router.push('/sign-up')}
-        >
-          Get started now
-        </Button>
+        {!isAuthenticated && (
+          <Button
+            variant={'outlined'}
+            size={'large'}
+            sx={{ alignSelf: { xs: 'center', md: 'flex-start' } }}
+            onClick={() => router.push('/sign-up')}
+          >
+            Get started now
+          </Button>
+        )}
       </Grid>
     </Grid>
   )
