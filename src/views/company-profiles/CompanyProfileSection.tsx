@@ -76,7 +76,13 @@ const CompanyProfileSection = ({ company, companyId }: { company: any; companyId
       <Typography variant={'h4'} fontWeight={700} sx={{ my: 4 }}>
         {company?.companyName ?? '-'}
       </Typography>
-      <Box width={'100%'} display={'flex'} flexDirection={'column'} rowGap={'16px'}>
+      <Box
+        width={'100%'}
+        display={'flex'}
+        flexDirection={'column'}
+        rowGap={'16px'}
+        sx={{ padding: { md: '0 25px', lg: '0 50px' } }}
+      >
         <TextBox>
           <Typography variant='body1'>Founder</Typography>
           <Typography variant={'body1'} fontWeight={600}>
