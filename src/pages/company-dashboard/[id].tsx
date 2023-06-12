@@ -24,16 +24,9 @@ const CompanyProjectDetails = ({ projectId, ssrData }: { projectId: number; ssrD
     fetchPolicy: 'cache-and-network'
   })
 
-  const { data: seekerListing, loading: seekerLoading } = useRecommendedJobSeekerListingQuery({
-    variables: {
-      projectId: projectId
-    },
-    fetchPolicy: 'no-cache'
-  })
-
   const data = csrData == undefined ? ssrData : csrData
 
-  return (loading || seekerLoading) ? (
+  return (loading) ? (
     <Spinner/>
   ) : (
     <Grid container spacing={6}>
@@ -52,7 +45,7 @@ const CompanyProjectDetails = ({ projectId, ssrData }: { projectId: number; ssrD
       </Grid>
       <PageHeader title={'Potential Candidates'}/>
       <Grid item xs={12}>
-        <RecommendedJobSeekerSection seekerListing={seekerListing}/>
+        <RecommendedJobSeekerSection projectId={projectId} />
       </Grid>
     </Grid>
   )
