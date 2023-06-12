@@ -8,6 +8,8 @@ import { onCompleted, onError } from '../../../@core/utils/response'
 import { DialogDeleteLayout } from '../../../@core/components/dialog'
 import { useState } from 'react'
 import { EditIcon, MinusIcon } from '../../../@core/components/icons'
+import { convertEducLevel } from "../../../@core/utils/convert-educ-level";
+import { convertFieldofStudy } from "../../../@core/utils/convert-field-study";
 
 // ** Styled Components
 const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -31,24 +33,6 @@ const EducationSection = ({
 }) => {
   const [dialog, setDialog] = useState(false)
   const dispatch = useAppDispatch()
-
-  const convertEducLevel = (level: number) => {
-    const result = eduLevelSelect.find(item => item.value === level)
-    if (result) {
-      return result.label
-    }
-
-    return '-'
-  }
-
-  const convertFieldofStudy = (field: number) => {
-    const result = fieldStudySelect.find(item => item.value === field)
-    if (result) {
-      return result.label
-    }
-
-    return '-'
-  }
 
   const [deleteEducationMutation, { loading }] = useDeleteEducationMutation({
     onCompleted: data =>
