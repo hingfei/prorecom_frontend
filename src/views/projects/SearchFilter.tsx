@@ -213,7 +213,7 @@ const SearchFilter = ({
         </Grid>
       </Grid>
 
-      <Grid container spacing={4} xs={12} sx={{ justifyContent: 'space-around', marginBottom: 4 }}>
+      <Grid container spacing={4} maxWidth sx={{ justifyContent: 'space-around', marginBottom: 4 }}>
         <Grid item>
           <FormControlLabel
             control={<Switch checked={switchOption?.checked} onChange={handleChangeProjectList} />}

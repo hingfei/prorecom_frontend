@@ -1,6 +1,6 @@
 import { Box, Button, ButtonProps, Card, CardContent, CardHeader, Grid } from '@mui/material'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { CalendarInput, SelectInput, TextInput } from '../../../@core/components/custom-inputs'
+import { CalendarInput, SelectInput, SwitchInput, TextInput } from '../../../@core/components/custom-inputs'
 import { projectExpLevelListing, projectStatusListing, projectTypesListing } from '../../../constants'
 import { useRouter } from 'next/router'
 import { useSkillListingQuery } from '../../../graphql/api'
@@ -33,7 +33,6 @@ const ProjectForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) =
   const addSkill = () => {
     const newSkills = [...skills, { value: '' }]
     setValue('skills', newSkills)
-    console.log('updated', newSkills)
   }
 
   return (
@@ -48,7 +47,7 @@ const ProjectForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) =
           isRequired
         />
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid item xs={12} sm={6}>
         <SelectInput
           selectProps={{ label: 'Project Type' }}
           controllerProps={{
@@ -62,18 +61,7 @@ const ProjectForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) =
           isRequired
         />
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
-        <SelectInput
-          selectProps={{ label: 'Project Status' }}
-          controllerProps={{
-            control,
-            name: 'projectStatus'
-          }}
-          selectData={projectStatusListing}
-          isRequired
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid item xs={12} sm={6}>
         <SelectInput
           selectProps={{ label: 'Experience Level' }}
           controllerProps={{
@@ -84,17 +72,6 @@ const ProjectForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) =
             label: item,
             value: item
           }))}
-          isRequired
-        />
-      </Grid>
-      {/*TODO: TO BE REMOVED, AUTOMATICALLY SET CURRENT DATE*/}
-      <Grid item xs={12} sm={6} md={3}>
-        <CalendarInput
-          controllerProps={{
-            control,
-            name: 'postDates'
-          }}
-          label='Date'
           isRequired
         />
       </Grid>
@@ -159,7 +136,7 @@ const ProjectForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) =
                   container
                   mt={6}
                   mb={2}
-                  key={`${index}-${skill.value}`}
+                  key={`${index}-${skill?.value}`}
                   display={'flex'}
                   alignItems={'center'}
                   justifyContent={'space-between'}
@@ -190,6 +167,19 @@ const ProjectForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) =
             </Box>
           </CardContent>
         </Card>
+      </Grid>
+      <Grid item xs={12}>
+        <SwitchInput
+          controllerProps={{
+            control,
+            name: 'projectStatus'
+          }}
+          checkedValue={true}
+          checkedLabel={'Active'}
+          unCheckedValue={false}
+          unCheckedLabel={'Closed'}
+          label={'Project Status'}
+        />
       </Grid>
 
       <Grid item my={10}>

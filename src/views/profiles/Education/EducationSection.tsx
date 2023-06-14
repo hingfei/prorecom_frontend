@@ -1,6 +1,6 @@
 import { Box, Button, Card, CardContent, Grid, Typography } from '@mui/material'
 import { setDrawerState, useAppDispatch } from '../../../store'
-import { DrawerType, eduLevelSelect, fieldStudySelect } from '../../../constants'
+import { DrawerType } from '../../../constants'
 import { styled } from '@mui/material/styles'
 import { BoxProps } from '@mui/material/Box'
 import { EducationType, JobSeekerDetailDocument, useDeleteEducationMutation } from '../../../graphql/api'
@@ -8,8 +8,8 @@ import { onCompleted, onError } from '../../../@core/utils/response'
 import { DialogDeleteLayout } from '../../../@core/components/dialog'
 import { useState } from 'react'
 import { EditIcon, MinusIcon } from '../../../@core/components/icons'
-import { convertEducLevel } from "../../../@core/utils/convert-educ-level";
-import { convertFieldofStudy } from "../../../@core/utils/convert-field-study";
+import { convertEducLevel } from '../../../@core/utils/convert-educ-level'
+import { convertFieldofStudy } from '../../../@core/utils/convert-field-study'
 
 // ** Styled Components
 const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -26,10 +26,12 @@ const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
 
 const EducationSection = ({
   educations,
-  seekerId
+  seekerId,
+  viewOnly
 }: {
   educations: Array<EducationType> | undefined
   seekerId: string | undefined
+  viewOnly: boolean
 }) => {
   const [dialog, setDialog] = useState(false)
   const dispatch = useAppDispatch()
@@ -59,20 +61,22 @@ const EducationSection = ({
         <Typography variant={'h5'} fontWeight={700}>
           Education
         </Typography>
-        <Button
-          variant={'contained'}
-          onClick={() =>
-            dispatch(
-              setDrawerState({
-                isOpen: true,
-                type: DrawerType.addEducationForm,
-                content: seekerId
-              })
-            )
-          }
-        >
-          Add
-        </Button>
+        {!viewOnly && (
+          <Button
+            variant={'contained'}
+            onClick={() =>
+              dispatch(
+                setDrawerState({
+                  isOpen: true,
+                  type: DrawerType.addEducationForm,
+                  content: seekerId
+                })
+              )
+            }
+          >
+            Add
+          </Button>
+        )}
       </Box>
       {educations && educations.length > 0 ? (
         educations.map((education, index) => {

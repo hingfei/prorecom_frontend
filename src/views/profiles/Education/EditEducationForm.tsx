@@ -12,7 +12,7 @@ const EditEducationForm = () => {
   const [loading, setLoading] = useState(true)
   const { isOpen, content } = useAppSelector(state => state.drawer)
   const dispatch = useAppDispatch()
-  console.log("content", content)
+
   const formMethods = useForm()
 
   const {
@@ -23,7 +23,6 @@ const EditEducationForm = () => {
   } = formMethods
 
   const resetValue = (jobSeekerDetail: any) => {
-    console.log(jobSeekerDetail.educations)
     const edu = jobSeekerDetail.educations.find(item => item.educationId == content.eduId)
 
     const formValues = {
@@ -36,7 +35,6 @@ const EditEducationForm = () => {
       grade: edu?.grade
     }
 
-    console.log({ formValues })
     reset(formValues)
     setLoading(false)
   }
@@ -69,7 +67,6 @@ const EditEducationForm = () => {
 
   const onSubmit = (values: any) => {
     const input = getFormInputValues(values)
-    console.log('input', input)
 
     updateJobSeeker({
       variables: {

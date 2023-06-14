@@ -15,7 +15,7 @@ import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 
 // ** Icons Imports
-import CogOutline from 'mdi-material-ui/CogOutline'
+import FileDocumentOutline from 'mdi-material-ui/FileDocumentOutline'
 import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
@@ -139,12 +139,14 @@ const UserDropdown = ({
         {/*  </Box>*/}
         {/*</MenuItem>*/}
         <Divider />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <CogOutline sx={{ marginRight: 2 }} />
-            Settings
-          </Box>
-        </MenuItem>
+        {userType === 'job_seekers' && (
+          <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/applications-history')}>
+            <Box sx={styles}>
+              <FileDocumentOutline sx={{ marginRight: 2 }} />
+              Applications History
+            </Box>
+          </MenuItem>
+        )}
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
             <HelpCircleOutline sx={{ marginRight: 2 }} />

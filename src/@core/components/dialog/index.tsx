@@ -105,4 +105,41 @@ export const DialogDeleteLayout = ({
   )
 }
 
+export const DialogApplicationLayout = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  dialogTitle,
+  children,
+  dialogContext,
+  disabled,
+  buttonTitle
+}: DialogPropsType & { dialogContext?: string }) => {
+  return (
+    <DialogLayoutBase
+      isOpen={isOpen}
+      onClose={onClose}
+      dialogTitle={dialogTitle || 'Applications'}
+      onSubmit={onSubmit}
+      dialogProps={{ maxWidth: 'md' }}
+      dialogTitleProps={{ sx: { pb: 0 } }}
+      dialogActionsProps={{ sx: {} }}
+      dialogContentProps={{ sx: { pt: 0, overflowY: 'unset' } }}
+      action={
+        <>
+          <Button onClick={onClose} color='secondary' variant='outlined'>
+            Cancel
+          </Button>
+        </>
+      }
+    >
+      {children || (
+        <Typography variant='body2' sx={{ mb: 3, lineHeight: '2rem' }}>
+          {dialogContext}
+        </Typography>
+      )}
+    </DialogLayoutBase>
+  )
+}
+
 export default DialogLayoutBase

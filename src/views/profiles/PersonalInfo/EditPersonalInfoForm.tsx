@@ -23,9 +23,9 @@ const EditPersonalInfoForm = () => {
   } = formMethods
 
   const resetValue = (jobSeekerDetail: any) => {
-    console.log(jobSeekerDetail)
     const formValues = {
       seekerName: jobSeekerDetail?.seekerName,
+      seekerIsOpenForWork: jobSeekerDetail?.seekerIsOpenForWork,
       seekerAge: jobSeekerDetail?.seekerAge,
       seekerPhoneNo: jobSeekerDetail?.seekerPhoneNo,
       userEmail: jobSeekerDetail?.users.userEmail,
@@ -36,7 +36,6 @@ const EditPersonalInfoForm = () => {
       seekerState: jobSeekerDetail?.seekerState
     }
 
-    console.log({ formValues })
     reset(formValues)
     setLoading(false)
   }
@@ -69,13 +68,12 @@ const EditPersonalInfoForm = () => {
 
   const onSubmit = (values: any) => {
     const input = getFormInputValues(values)
-    console.log('input', input)
 
     updateJobSeeker({
       variables: {
         input: {
-          ...input,
-          seekerId: data?.jobSeekerDetail?.seekerId
+          seekerId: data?.jobSeekerDetail?.seekerId,
+          ...input
         }
       }
     })

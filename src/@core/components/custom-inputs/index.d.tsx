@@ -36,7 +36,7 @@ export type TextInputIconType = {
 };
 
 export type SelectDataType = {
-  value?: string | number;
+  value?: string | number | boolean;
   label?: string;
 };
 

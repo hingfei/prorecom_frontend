@@ -12,7 +12,6 @@ import ProjectForm from 'src/views/projects/CompanyProject/ProjectForm'
 const projectDefaultValues = {
   projectName: null,
   projectTypes: null,
-  postDates: null,
   projectMinSalary: null,
   projectMaxSalary: null,
   projectDesc: null,
@@ -44,8 +43,7 @@ const AddProject = () => {
   const [createProject, { loading }] = useCreateProjectMutation({
     onCompleted: data =>
       onCompleted(data?.createProject, () => {
-        router.push(`/company-dashboard/${data?.createProject?.project?.projectId}`)
-        console.log('project created', data)
+        router.push(`/projects/${data?.createProject?.project?.projectId}`)
       }),
     onError: error => {
       onError(error, undefined, setError)

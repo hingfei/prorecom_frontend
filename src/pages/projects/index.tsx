@@ -1,6 +1,12 @@
 import { Box, Grid, Icon, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { ProjectType, useProjectListingLazyQuery, useSearchProjectsLazyQuery } from '../../graphql/api'
+import {
+  ProjectType,
+  useGetJobSeekerApplicationsQuery,
+  useJobSeekerDetailLazyQuery,
+  useProjectListingLazyQuery,
+  useSearchProjectsLazyQuery
+} from '../../graphql/api'
 import Spinner from '../../@core/components/spinner'
 import withAuth from '../../@core/hooks/withAuth'
 import ProjectDetails from '../../views/projects/ProjectDetails/ProjectDetails'
@@ -10,8 +16,8 @@ import { useRouter } from 'next/router'
 import { FormProvider, useForm } from 'react-hook-form'
 import { getFormInputValues } from '../../@core/utils/get-form-input-values'
 import SearchFilter from '../../views/projects/SearchFilter'
-import { onError } from "../../@core/utils/response";
-import { useAuth } from "../../@core/context/authContext";
+import { onError } from '../../@core/utils/response'
+import { useAuth } from '../../@core/context/authContext'
 
 function Projects() {
   const router = useRouter()
@@ -21,6 +27,8 @@ function Projects() {
   const [defaultProjectList, setDefaultProjectList] = useState([])
   const [project, setProject] = useState<ProjectType>()
   const [projectList, setProjectList] = useState([])
+  const [applications, setApplications] = useState([])
+  const [jobSeeker, setJobSeeker] = useState(null)
 
   const formMethods = useForm()
 
@@ -34,12 +42,12 @@ function Projects() {
       setProject(data?.projectListing[0])
       setProjectList(data?.projectListing)
       setDefaultProjectList(data?.projectListing)
-      reset({searchKeyword: null})
+      reset({ searchKeyword: null })
       setLoading(false)
     },
     onError: error => {
       onError(error, undefined)
-      console.log('error', error)
+
       if (error.message === 'Invalid token') {
         resetStore()
         router.push('/401')
@@ -60,9 +68,29 @@ function Projects() {
       setLoading(false)
     },
     onError: error => {
-      console.log(error)
+      // console.log(error)
     },
     fetchPolicy: 'no-cache'
+  })
+
+  const { loading: applicationLoading } = useGetJobSeekerApplicationsQuery({
+    onCompleted: async data => {
+      setApplications(data?.getJobSeekerApplications)
+    },
+    onError: error => {
+      onError(error, undefined)
+    },
+    fetchPolicy: 'no-cache'
+  })
+
+  const [fetchJobSeeker, { loading: seekerLoading }] = useJobSeekerDetailLazyQuery({
+    onCompleted: async data => {
+      setJobSeeker(data?.jobSeekerDetail)
+    },
+    onError: error => {
+      onError(error, undefined)
+    },
+    fetchPolicy: 'cache-and-network'
   })
 
   const handleChangeProjectList = () => {
@@ -85,8 +113,17 @@ function Projects() {
 
   useEffect(() => {
     setLoading(true)
+    const data = window.localStorage.getItem('userData')
+    if (data) {
+      const userData = JSON.parse(data)
+      fetchJobSeeker({
+        variables: {
+          seekerId: parseInt(userData?.userId)
+        }
+      })
+    }
+
     if (router.query.keywords) {
-      console.log('keywords', router.query.keywords)
       setValue('searchKeyword', router.query.keywords.toString())
       searchProject({
         variables: {
@@ -102,7 +139,7 @@ function Projects() {
     }
   }, [])
 
-  if (loading || fetchLoading || searchLoading) {
+  if (loading || fetchLoading || searchLoading || applicationLoading || seekerLoading) {
     return <Spinner />
   }
 
@@ -127,7 +164,7 @@ function Projects() {
       }
     } else {
       const input = getFormInputValues(values)
-      console.log('input', input)
+
       searchProject({
         variables: {
           searchKeyword: input.searchKeyword
@@ -153,7 +190,7 @@ function Projects() {
                 <ProjectListing projectListing={projectList} project={project} onChangeProject={onChangeProject} />
               </Grid>
               <Grid item xs={7.5} sx={{ display: { xs: 'none', md: 'flex' } }}>
-                <ProjectDetails project={project} />
+                <ProjectDetails project={project} applications={applications} jobSeeker={jobSeeker} />
               </Grid>
             </Grid>
           </Box>

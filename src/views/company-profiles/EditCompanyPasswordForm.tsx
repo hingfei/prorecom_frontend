@@ -40,7 +40,6 @@ const EditPasswordForm = () => {
 
   const onSubmit = (values: any) => {
     const input = getFormInputValues(values)
-    console.log('input', input)
 
     updateCompanyPassword({
       variables: {

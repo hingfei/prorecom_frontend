@@ -1,0 +1,19 @@
+mutation createApplication($projectId: Int!) {
+  createApplication(projectId: $projectId) {
+    ...on ApplicationResponse {
+      success
+      projectApplicationId
+      message
+    }
+  }
+}
+
+mutation updateApplication($input:  UpdateApplicationInput!) {
+  updateApplication(input: $input) {
+    ...on ApplicationResponse {
+      success
+      projectApplicationId
+      message
+    }
+  }
+}

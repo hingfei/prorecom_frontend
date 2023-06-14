@@ -61,6 +61,15 @@ query projectDetail($projectId: Int!) {
       skillId
       skillName
     }
+    projectApplications {
+      projectApplicationId
+      seekerId
+      projectId
+      applicationStatus
+      jobSeeker {
+        seekerId
+      }
+    }
   }
 }
 
@@ -102,6 +111,9 @@ query companyProjectListing($companyId: Int!) {
     projectId
     projectName
     companyId
+    company {
+      companyName
+    }
     projectTypes
     postDates
     projectMinSalary
@@ -113,6 +125,16 @@ query companyProjectListing($companyId: Int!) {
     skills {
       skillId
       skillName
+    }
+    projectApplications {
+      projectApplicationId
+      seekerId
+      projectId
+      applicationStatus
+      jobSeeker {
+        seekerId
+        seekerName
+      }
     }
   }
 }

@@ -17,11 +17,9 @@ const CompanyProfile = () => {
 
   const { data: userData } = useMeQuery({
     onCompleted: data => {
-      console.log('data,', data)
       fetchCompany({ variables: { companyId: parseInt(data?.me?.userId) } })
     },
     onError: error => {
-      console.log(error)
       resetStore()
       router.push('/401')
       onError(error, undefined)

@@ -43,7 +43,6 @@ function RecommendedJobSeekerSection({ projectId }: { projectId: number }) {
     },
     onError: error => {
       onError(error, undefined)
-      console.log('error', error)
       if (error.message === 'Invalid token') {
         resetStore()
         router.push('/401')
@@ -90,7 +89,7 @@ function RecommendedJobSeekerSection({ projectId }: { projectId: number }) {
       fetchJobSeeker()
     } else {
       const input = getFormInputValues(values)
-      console.log('input', input)
+
       searchJobSeeker({
         variables: {
           searchKeyword: input.searchKeyword

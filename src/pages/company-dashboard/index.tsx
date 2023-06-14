@@ -1,29 +1,193 @@
-import { Box, Grid, Typography } from '@mui/material'
 import {
   CompanyProjectListingDocument,
-  ProjectListingQuery,
+  CompanyProjectListingQuery,
   useCompanyProjectListingLazyQuery,
   useDeleteProjectMutation,
-  useMeQuery
+  useMeQuery,
+  useSendNotificationMutation,
+  useUpdateApplicationMutation
 } from '../../graphql/api'
 import Spinner from '../../@core/components/spinner'
 import PageHeader from '../../@core/components/page-header'
 import { onCompleted, onError } from '../../@core/utils/response'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import withAuth from '../../@core/hooks/withAuth'
 import DataGrid from '../../@core/datagrid'
 import generateSkeletonColumns from '../../@core/utils/generate-skeleton-columns'
-import { setDrawerState, useAppDispatch } from '../../store'
-import { DrawerType } from '../../constants'
-import { DeleteIcon, ViewIcon } from '../../@core/components/icons'
-import { DialogDeleteLayout } from '../../@core/components/dialog'
+import { CheckIcon, CloseIcon, DeleteIcon, ViewIcon } from '../../@core/components/icons'
+import { DialogApplicationLayout, DialogDeleteLayout } from '../../@core/components/dialog'
 import { mapEmptyRows } from '../../@core/utils/map-empty-rows'
-import { capitalizeFirstLetter } from '../../@core/utils/capitalize-first-letter'
 import { useAuth } from '../../@core/context/authContext'
+import dayjs from 'dayjs'
+import {
+  Box,
+  Button,
+  Chip,
+  Grid,
+  Icon,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography
+} from '@mui/material'
+import { AlertCircleOutline } from 'mdi-material-ui'
+import Link from 'next/link'
+import { capitalizeFirstLetter } from '../../@core/utils/capitalize-first-letter'
 
 type ProjectListingCellType = {
-  row: NonNullable<ProjectListingQuery['projectListing']>[0]
+  row: NonNullable<CompanyProjectListingQuery['companyProjectListing']>[0]
+}
+
+const ApplicationRow = ({ row }: ProjectListingCellType) => {
+  const [dialog, setDialog] = useState(false)
+
+  const [updateApplicationMutation, { loading }] = useUpdateApplicationMutation({
+    onCompleted: data => {
+      onCompleted(data?.updateApplication, undefined)
+    },
+    onError: error => {
+      onError(error, undefined)
+    },
+    refetchQueries: [CompanyProjectListingDocument]
+  })
+
+  const [sendNotif] = useSendNotificationMutation()
+
+  const handleClick = (applicationId: string, status: string, seekerId: string) => {
+    updateApplicationMutation({
+      variables: {
+        input: {
+          projectApplicationId: applicationId,
+          applicationStatus: status
+        }
+      }
+    })
+    sendNotif({
+      variables: {
+        input: {
+          senderId: parseInt(row?.companyId),
+          receiverId: parseInt(seekerId),
+          message: `${row?.company?.companyName} has responded to your applications`
+        }
+      }
+    })
+  }
+
+  return (
+    <>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Tooltip title={'View'}>
+          <Chip
+            onClick={e => {
+              e.stopPropagation()
+              setDialog(true)
+            }}
+            size='medium'
+            variant='outlined'
+            label={row?.projectApplications?.length > 0 ? row?.projectApplications?.length : 0}
+            color={row?.projectApplications?.length > 0 ? 'primary' : 'secondary'}
+            sx={{ fontWeight: 500 }}
+          />
+        </Tooltip>
+      </Box>
+      <DialogApplicationLayout isOpen={dialog} onClose={() => setDialog(false)}>
+        {row?.projectApplications?.length > 0 ? (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography color={'#3A3541DE'} fontWeight={500} textTransform={'uppercase'}>
+                    Seeker Name
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color={'#3A3541DE'} fontWeight={500} textTransform={'uppercase'}>
+                    Application Status
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color={'#3A3541DE'} fontWeight={500} textTransform={'uppercase'}>
+                    Actions
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {row?.projectApplications.map(application => (
+                <TableRow key={application?.projectApplicationId}>
+                  <TableCell>
+                    <Link href={{ pathname: 'profiles', query: { id: application?.seekerId } }} passHref>
+                      <a target='_blank' style={{ textDecoration: 'unset' }}>
+                        <Button variant={'text'}>
+                          <Typography variant='body2' fontWeight={600}>
+                            {application?.jobSeeker?.seekerName}
+                          </Typography>
+                        </Button>
+                      </a>
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      size='medium'
+                      variant='outlined'
+                      label={capitalizeFirstLetter(application?.applicationStatus)}
+                      color={
+                        application?.applicationStatus === 'accepted'
+                          ? 'success'
+                          : application?.applicationStatus === 'rejected'
+                          ? 'error'
+                          : 'secondary'
+                      }
+                      sx={{ fontWeight: 500 }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    {application?.applicationStatus === 'pending' ? (
+                      <Box sx={{ display: 'flex', columnGap: 4 }}>
+                        <CheckIcon
+                          title={'Accept'}
+                          color={'primary'}
+                          onClick={() =>
+                            handleClick(application?.projectApplicationId, 'accepted', application?.seekerId)
+                          }
+                          disabled={loading}
+                        />
+                        <CloseIcon
+                          title={'Reject'}
+                          color={'error'}
+                          onClick={() =>
+                            handleClick(application?.projectApplicationId, 'rejected', application?.seekerId)
+                          }
+                          disabled={loading}
+                        />
+                      </Box>
+                    ) : (
+                      ''
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <Box display={'flex'} alignItems={'center'} justifyContent={'center'} flexDirection={'column'} height={'75%'}>
+            <Box>
+              <Icon sx={{ fontSize: '100px', display: 'initial' }}>
+                <AlertCircleOutline sx={{ fontSize: '100px' }} />
+              </Icon>
+            </Box>
+            <Typography variant={'h5'} fontWeight={600}>
+              Opps! No applicant applied to this project.
+            </Typography>
+          </Box>
+        )}
+      </DialogApplicationLayout>
+    </>
+  )
 }
 
 const ActionsRow = ({ row }: ProjectListingCellType) => {
@@ -46,7 +210,7 @@ const ActionsRow = ({ row }: ProjectListingCellType) => {
           title='View'
           onClick={e => {
             e.stopPropagation()
-            router.push(`/company-dashboard/${row?.projectId}`)
+            router.push(`/projects/${row?.projectId}`)
           }}
           color={'primary'}
         />
@@ -73,7 +237,7 @@ const ActionsRow = ({ row }: ProjectListingCellType) => {
 
 const columns = [
   {
-    flex: 0.1,
+    flex: 0.08,
     minWidth: 200,
     field: 'projectName',
     headerName: 'Project Name',
@@ -89,7 +253,7 @@ const columns = [
     }
   },
   {
-    flex: 0.15,
+    flex: 0.1,
     minWidth: 200,
     field: 'projectDesc',
     headerName: 'Project Description',
@@ -109,6 +273,14 @@ const columns = [
     }
   },
   {
+    flex: 0.05,
+    minWidth: 100,
+    field: 'projectApplications',
+    headerName: 'Applicants',
+    sortable: false,
+    renderCell: ({ row }: ProjectListingCellType) => <ApplicationRow row={row} />
+  },
+  {
     flex: 0.04,
     minWidth: 100,
     field: 'projectStatus',
@@ -117,15 +289,19 @@ const columns = [
     renderCell: ({ row }: ProjectListingCellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography variant='body2' fontWeight={600}>
-            {row?.projectStatus ? capitalizeFirstLetter(row?.projectStatus) : '-'}
-          </Typography>
+          <Chip
+            size='medium'
+            variant='outlined'
+            label={row?.projectStatus ? 'Active' : 'Closed'}
+            color={row?.projectStatus ? 'primary' : 'secondary'}
+            sx={{ fontWeight: 500 }}
+          />
         </Box>
       )
     }
   },
   {
-    flex: 0.05,
+    flex: 0.04,
     minWidth: 100,
     field: 'postDates',
     headerName: 'Post Date',
@@ -134,7 +310,7 @@ const columns = [
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant='body2' fontWeight={600}>
-            {row?.postDates ?? '-'}
+            {dayjs(row?.postDates).format('DD MMM YYYY')}
           </Typography>
         </Box>
       )
@@ -158,11 +334,9 @@ const CompanyDashboard = () => {
 
   const { data: userData } = useMeQuery({
     onCompleted: data => {
-      console.log('data,', data)
       fetchProject({ variables: { companyId: parseInt(data?.me?.userId) } })
     },
     onError: error => {
-      console.log(error)
       resetStore()
       router.push('/401')
       onError(error, undefined)

@@ -23,12 +23,10 @@ const EditAboutForm = () => {
   } = formMethods
 
   const resetValue = (jobSeekerDetail: any) => {
-    console.log(jobSeekerDetail)
     const formValues = {
       seekerAbout: jobSeekerDetail?.seekerAbout,
     }
 
-    console.log({ formValues })
     reset(formValues)
     setLoading(false)
   }
@@ -61,7 +59,6 @@ const EditAboutForm = () => {
 
   const onSubmit = (values: any) => {
     const input = getFormInputValues(values)
-    console.log('input', input)
 
     updateJobSeeker({
       variables: {

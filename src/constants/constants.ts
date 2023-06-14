@@ -114,10 +114,22 @@ export const projectExpLevelListing = [
 export const projectStatusListing = [
   {
     label: 'Active',
-    value: 'active'
+    value: true
   },
   {
     label: 'Closed',
-    value: 'closed'
+    value: false
   }
 ]
+
+export const openForWorkStatusListing = [
+  {
+    label: 'Open For Work',
+    value: true
+  },
+  {
+    label: 'Closed For Work',
+    value: false
+  }
+]
+

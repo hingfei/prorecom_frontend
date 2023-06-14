@@ -13,10 +13,29 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
   Upload: any;
 };
 
 export type AddUserResponse = User | UserExists;
+
+export type ApplicationResponse = {
+  __typename?: 'ApplicationResponse';
+  message?: Maybe<Scalars['String']>;
+  projectApplicationId?: Maybe<Scalars['Int']>;
+  success: Scalars['Boolean'];
+};
+
+export type ApplicationType = {
+  __typename?: 'ApplicationType';
+  applicationDate?: Maybe<Scalars['String']>;
+  applicationStatus?: Maybe<Scalars['String']>;
+  jobSeeker?: Maybe<JobSeekerType>;
+  project?: Maybe<ProjectType>;
+  projectApplicationId: Scalars['ID'];
+  projectId: Scalars['ID'];
+  seekerId: Scalars['ID'];
+};
 
 export type AuthResponse = {
   __typename?: 'AuthResponse';
@@ -78,14 +97,13 @@ export type CreateJobSeekerInput = {
 
 export type CreateProjectInput = {
   companyId: Scalars['ID'];
-  postDates?: InputMaybe<Scalars['String']>;
   projectDesc?: InputMaybe<Scalars['String']>;
   projectExpLvl?: InputMaybe<Scalars['String']>;
   projectMaxSalary?: InputMaybe<Scalars['Int']>;
   projectMinSalary?: InputMaybe<Scalars['Int']>;
   projectName: Scalars['String'];
   projectReq?: InputMaybe<Scalars['String']>;
-  projectStatus?: InputMaybe<Scalars['String']>;
+  projectStatus?: InputMaybe<Scalars['Boolean']>;
   projectTypes?: InputMaybe<Scalars['String']>;
   skills: Array<Scalars['Int']>;
 };
@@ -135,6 +153,7 @@ export type JobSeekerType = {
   seekerCity?: Maybe<Scalars['String']>;
   seekerGender?: Maybe<Scalars['String']>;
   seekerId: Scalars['ID'];
+  seekerIsOpenForWork?: Maybe<Scalars['Boolean']>;
   seekerName?: Maybe<Scalars['String']>;
   seekerPhoneNo?: Maybe<Scalars['Int']>;
   seekerResume?: Maybe<Scalars['Upload']>;
@@ -146,6 +165,7 @@ export type JobSeekerType = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createApplication: ApplicationResponse;
   createCompany: CompanyResponse;
   createJobSeeker: JobSeekerResponse;
   createProject: ProjectModifyResponse;
@@ -156,12 +176,20 @@ export type Mutation = {
   deleteProject: ProjectModifyResponse;
   deleteUser: DeleteUserResponse;
   login: AuthResponse;
+  markNotificationAsRead: NotificationResponse;
+  sendNotification: NotificationResponse;
+  updateApplication: ApplicationResponse;
   updateCompany: CompanyResponse;
   updateCompanyPassword: CompanyResponse;
   updateJobSeeker: JobSeekerResponse;
   updateJobSeekerPassword: JobSeekerResponse;
   updateProject: ProjectModifyResponse;
   updateUser: UpdateUserResponse;
+};
+
+
+export type MutationCreateApplicationArgs = {
+  projectId: Scalars['Int'];
 };
 
 
@@ -218,6 +246,21 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationMarkNotificationAsReadArgs = {
+  notificationId: Scalars['Int'];
+};
+
+
+export type MutationSendNotificationArgs = {
+  input: SendNotificationInput;
+};
+
+
+export type MutationUpdateApplicationArgs = {
+  input: UpdateApplicationInput;
+};
+
+
 export type MutationUpdateCompanyArgs = {
   input: UpdateCompanyInput;
 };
@@ -254,6 +297,32 @@ export type MutationUpdateUserArgs = {
   userName?: InputMaybe<Scalars['String']>;
 };
 
+export type NotificationResponse = {
+  __typename?: 'NotificationResponse';
+  message?: Maybe<Scalars['String']>;
+  notificationId: Scalars['Int'];
+  success: Scalars['Boolean'];
+};
+
+export type NotificationType = {
+  __typename?: 'NotificationType';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  isRead?: Maybe<Scalars['Boolean']>;
+  message?: Maybe<Scalars['String']>;
+  notificationId: Scalars['ID'];
+  receiverId: Scalars['ID'];
+  senderId: Scalars['ID'];
+};
+
+export type ProjectApplicationType = {
+  __typename?: 'ProjectApplicationType';
+  applicationStatus?: Maybe<Scalars['String']>;
+  jobSeeker?: Maybe<JobSeekerType>;
+  projectApplicationId: Scalars['ID'];
+  projectId: Scalars['ID'];
+  seekerId: Scalars['ID'];
+};
+
 export type ProjectListingType = {
   __typename?: 'ProjectListingType';
   companyId: Scalars['ID'];
@@ -287,6 +356,7 @@ export type ProjectType = {
   company?: Maybe<CompanyType>;
   companyId: Scalars['ID'];
   postDates?: Maybe<Scalars['String']>;
+  projectApplications: Array<ProjectApplicationType>;
   projectDesc?: Maybe<Scalars['String']>;
   projectExpLvl?: Maybe<Scalars['String']>;
   projectId: Scalars['ID'];
@@ -294,7 +364,7 @@ export type ProjectType = {
   projectMinSalary?: Maybe<Scalars['Int']>;
   projectName: Scalars['String'];
   projectReq?: Maybe<Scalars['String']>;
-  projectStatus?: Maybe<Scalars['String']>;
+  projectStatus?: Maybe<Scalars['Boolean']>;
   projectTypes?: Maybe<Scalars['String']>;
   skills: Array<SkillType>;
 };
@@ -305,6 +375,9 @@ export type Query = {
   companyListing: Array<CompanyType>;
   companyProjectListing: Array<Maybe<ProjectType>>;
   educationListing: Array<EducationType>;
+  getJobSeekerApplications: Array<ApplicationType>;
+  getProjectApplications: Array<ApplicationType>;
+  getUserNotifications: UserNotificationCountType;
   jobSeekerDetail?: Maybe<JobSeekerType>;
   jobSeekerListing: Array<JobSeekerType>;
   me: UserType;
@@ -326,6 +399,16 @@ export type QueryCompanyDetailArgs = {
 
 export type QueryCompanyProjectListingArgs = {
   companyId: Scalars['Int'];
+};
+
+
+export type QueryGetProjectApplicationsArgs = {
+  projectId: Scalars['ID'];
+};
+
+
+export type QueryGetUserNotificationsArgs = {
+  unreadOnly?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -363,10 +446,21 @@ export type QueryUserDetailArgs = {
   userId: Scalars['Int'];
 };
 
+export type SendNotificationInput = {
+  message: Scalars['String'];
+  receiverId: Scalars['Int'];
+  senderId: Scalars['Int'];
+};
+
 export type SkillType = {
   __typename?: 'SkillType';
   skillId: Scalars['ID'];
   skillName?: Maybe<Scalars['String']>;
+};
+
+export type UpdateApplicationInput = {
+  applicationStatus?: InputMaybe<Scalars['String']>;
+  projectApplicationId: Scalars['ID'];
 };
 
 export type UpdateCompanyInput = {
@@ -392,6 +486,7 @@ export type UpdateJobSeekerInput = {
   seekerCity?: InputMaybe<Scalars['String']>;
   seekerGender?: InputMaybe<Scalars['String']>;
   seekerId: Scalars['ID'];
+  seekerIsOpenForWork?: InputMaybe<Scalars['Boolean']>;
   seekerName?: InputMaybe<Scalars['String']>;
   seekerPhoneNo?: InputMaybe<Scalars['Int']>;
   seekerResume?: InputMaybe<Scalars['Upload']>;
@@ -410,7 +505,7 @@ export type UpdateProjectInput = {
   projectMinSalary?: InputMaybe<Scalars['Int']>;
   projectName?: InputMaybe<Scalars['String']>;
   projectReq?: InputMaybe<Scalars['String']>;
-  projectStatus?: InputMaybe<Scalars['String']>;
+  projectStatus?: InputMaybe<Scalars['Boolean']>;
   projectTypes?: InputMaybe<Scalars['String']>;
   skills?: InputMaybe<Array<Scalars['Int']>>;
 };
@@ -441,6 +536,12 @@ export type UserNotFound = {
   message: Scalars['String'];
 };
 
+export type UserNotificationCountType = {
+  __typename?: 'UserNotificationCountType';
+  notifications: Array<NotificationType>;
+  unreadCount: Scalars['Int'];
+};
+
 export type UserType = {
   __typename?: 'UserType';
   password: Scalars['String'];
@@ -454,6 +555,20 @@ export type UserUpdateMessage = {
   __typename?: 'UserUpdateMessage';
   message: Scalars['String'];
 };
+
+export type CreateApplicationMutationVariables = Exact<{
+  projectId: Scalars['Int'];
+}>;
+
+
+export type CreateApplicationMutation = { __typename?: 'Mutation', createApplication: { __typename?: 'ApplicationResponse', success: boolean, projectApplicationId?: number | null, message?: string | null } };
+
+export type UpdateApplicationMutationVariables = Exact<{
+  input: UpdateApplicationInput;
+}>;
+
+
+export type UpdateApplicationMutation = { __typename?: 'Mutation', updateApplication: { __typename?: 'ApplicationResponse', success: boolean, projectApplicationId?: number | null, message?: string | null } };
 
 export type CreateCompanyMutationVariables = Exact<{
   input: CreateCompanyInput;
@@ -491,6 +606,20 @@ export type DeleteEducationMutationVariables = Exact<{
 
 
 export type DeleteEducationMutation = { __typename?: 'Mutation', deleteEducation: { __typename?: 'EducationResponse', message?: string | null, success: boolean } };
+
+export type SendNotificationMutationVariables = Exact<{
+  input: SendNotificationInput;
+}>;
+
+
+export type SendNotificationMutation = { __typename?: 'Mutation', sendNotification: { __typename?: 'NotificationResponse', success: boolean, notificationId: number, message?: string | null } };
+
+export type MarkNotificationAsReadMutationVariables = Exact<{
+  notificationId: Scalars['Int'];
+}>;
+
+
+export type MarkNotificationAsReadMutation = { __typename?: 'Mutation', markNotificationAsRead: { __typename?: 'NotificationResponse', success: boolean, notificationId: number, message?: string | null } };
 
 export type CreateProjectMutationVariables = Exact<{
   input: CreateProjectInput;
@@ -560,6 +689,11 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', success: boolean, token?: string | null, message?: string | null, user?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null } };
 
+export type GetJobSeekerApplicationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetJobSeekerApplicationsQuery = { __typename?: 'Query', getJobSeekerApplications: Array<{ __typename?: 'ApplicationType', projectApplicationId: string, seekerId: string, projectId: string, applicationStatus?: string | null, applicationDate?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerName?: string | null } | null, project?: { __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> } | null }> };
+
 export type CompanyListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -572,33 +706,40 @@ export type CompanyDetailQueryVariables = Exact<{
 
 export type CompanyDetailQuery = { __typename?: 'Query', companyDetail?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null, projects?: Array<{ __typename?: 'ProjectListingType', projectId: string, projectName: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, projectStatus: string }> | null } | null };
 
+export type GetUserNotificationsQueryVariables = Exact<{
+  unreadOnly: Scalars['Boolean'];
+}>;
+
+
+export type GetUserNotificationsQuery = { __typename?: 'Query', getUserNotifications: { __typename?: 'UserNotificationCountType', unreadCount: number, notifications: Array<{ __typename?: 'NotificationType', notificationId: string, senderId: string, receiverId: string, message?: string | null, isRead?: boolean | null, createdAt?: any | null }> } };
+
 export type ProjectListingQueryVariables = Exact<{
   recommendation: Scalars['Boolean'];
 }>;
 
 
-export type ProjectListingQuery = { __typename?: 'Query', projectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
+export type ProjectListingQuery = { __typename?: 'Query', projectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
 
 export type ProjectDetailQueryVariables = Exact<{
   projectId: Scalars['Int'];
 }>;
 
 
-export type ProjectDetailQuery = { __typename?: 'Query', projectDetail?: { __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> } | null };
+export type ProjectDetailQuery = { __typename?: 'Query', projectDetail?: { __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, projectApplications: Array<{ __typename?: 'ProjectApplicationType', projectApplicationId: string, seekerId: string, projectId: string, applicationStatus?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string } | null }> } | null };
 
 export type SearchProjectsQueryVariables = Exact<{
   searchKeyword: Scalars['String'];
 }>;
 
 
-export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: string | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
+export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
 
 export type CompanyProjectListingQueryVariables = Exact<{
   companyId: Scalars['Int'];
 }>;
 
 
-export type CompanyProjectListingQuery = { __typename?: 'Query', companyProjectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: string | null, projectExpLvl?: string | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> } | null> };
+export type CompanyProjectListingQuery = { __typename?: 'Query', companyProjectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyName?: string | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, projectApplications: Array<{ __typename?: 'ProjectApplicationType', projectApplicationId: string, seekerId: string, projectId: string, applicationStatus?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null } | null }> } | null> };
 
 export type JobSeekerListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -610,21 +751,21 @@ export type JobSeekerDetailQueryVariables = Exact<{
 }>;
 
 
-export type JobSeekerDetailQuery = { __typename?: 'Query', jobSeekerDetail?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> } | null };
+export type JobSeekerDetailQuery = { __typename?: 'Query', jobSeekerDetail?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, seekerIsOpenForWork?: boolean | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> } | null };
 
 export type RecommendedJobSeekerListingQueryVariables = Exact<{
   projectId: Scalars['Int'];
 }>;
 
 
-export type RecommendedJobSeekerListingQuery = { __typename?: 'Query', recommendedJobSeekerListing: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
+export type RecommendedJobSeekerListingQuery = { __typename?: 'Query', recommendedJobSeekerListing: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, seekerIsOpenForWork?: boolean | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
 
 export type SearchJobSeekersQueryVariables = Exact<{
   searchKeyword: Scalars['String'];
 }>;
 
 
-export type SearchJobSeekersQuery = { __typename?: 'Query', searchJobSeekers: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
+export type SearchJobSeekersQuery = { __typename?: 'Query', searchJobSeekers: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, seekerIsOpenForWork?: boolean | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
 
 export type SkillListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -649,6 +790,80 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, userType: string, password: string } };
 
 
+export const CreateApplicationDocument = gql`
+    mutation createApplication($projectId: Int!) {
+  createApplication(projectId: $projectId) {
+    ... on ApplicationResponse {
+      success
+      projectApplicationId
+      message
+    }
+  }
+}
+    `;
+export type CreateApplicationMutationFn = Apollo.MutationFunction<CreateApplicationMutation, CreateApplicationMutationVariables>;
+
+/**
+ * __useCreateApplicationMutation__
+ *
+ * To run a mutation, you first call `useCreateApplicationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateApplicationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createApplicationMutation, { data, loading, error }] = useCreateApplicationMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useCreateApplicationMutation(baseOptions?: Apollo.MutationHookOptions<CreateApplicationMutation, CreateApplicationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateApplicationMutation, CreateApplicationMutationVariables>(CreateApplicationDocument, options);
+      }
+export type CreateApplicationMutationHookResult = ReturnType<typeof useCreateApplicationMutation>;
+export type CreateApplicationMutationResult = Apollo.MutationResult<CreateApplicationMutation>;
+export type CreateApplicationMutationOptions = Apollo.BaseMutationOptions<CreateApplicationMutation, CreateApplicationMutationVariables>;
+export const UpdateApplicationDocument = gql`
+    mutation updateApplication($input: UpdateApplicationInput!) {
+  updateApplication(input: $input) {
+    ... on ApplicationResponse {
+      success
+      projectApplicationId
+      message
+    }
+  }
+}
+    `;
+export type UpdateApplicationMutationFn = Apollo.MutationFunction<UpdateApplicationMutation, UpdateApplicationMutationVariables>;
+
+/**
+ * __useUpdateApplicationMutation__
+ *
+ * To run a mutation, you first call `useUpdateApplicationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateApplicationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateApplicationMutation, { data, loading, error }] = useUpdateApplicationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateApplicationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateApplicationMutation, UpdateApplicationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateApplicationMutation, UpdateApplicationMutationVariables>(UpdateApplicationDocument, options);
+      }
+export type UpdateApplicationMutationHookResult = ReturnType<typeof useUpdateApplicationMutation>;
+export type UpdateApplicationMutationResult = Apollo.MutationResult<UpdateApplicationMutation>;
+export type UpdateApplicationMutationOptions = Apollo.BaseMutationOptions<UpdateApplicationMutation, UpdateApplicationMutationVariables>;
 export const CreateCompanyDocument = gql`
     mutation createCompany($input: CreateCompanyInput!) {
   createCompany(input: $input) {
@@ -846,6 +1061,80 @@ export function useDeleteEducationMutation(baseOptions?: Apollo.MutationHookOpti
 export type DeleteEducationMutationHookResult = ReturnType<typeof useDeleteEducationMutation>;
 export type DeleteEducationMutationResult = Apollo.MutationResult<DeleteEducationMutation>;
 export type DeleteEducationMutationOptions = Apollo.BaseMutationOptions<DeleteEducationMutation, DeleteEducationMutationVariables>;
+export const SendNotificationDocument = gql`
+    mutation sendNotification($input: SendNotificationInput!) {
+  sendNotification(input: $input) {
+    ... on NotificationResponse {
+      success
+      notificationId
+      message
+    }
+  }
+}
+    `;
+export type SendNotificationMutationFn = Apollo.MutationFunction<SendNotificationMutation, SendNotificationMutationVariables>;
+
+/**
+ * __useSendNotificationMutation__
+ *
+ * To run a mutation, you first call `useSendNotificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendNotificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendNotificationMutation, { data, loading, error }] = useSendNotificationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSendNotificationMutation(baseOptions?: Apollo.MutationHookOptions<SendNotificationMutation, SendNotificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendNotificationMutation, SendNotificationMutationVariables>(SendNotificationDocument, options);
+      }
+export type SendNotificationMutationHookResult = ReturnType<typeof useSendNotificationMutation>;
+export type SendNotificationMutationResult = Apollo.MutationResult<SendNotificationMutation>;
+export type SendNotificationMutationOptions = Apollo.BaseMutationOptions<SendNotificationMutation, SendNotificationMutationVariables>;
+export const MarkNotificationAsReadDocument = gql`
+    mutation markNotificationAsRead($notificationId: Int!) {
+  markNotificationAsRead(notificationId: $notificationId) {
+    ... on NotificationResponse {
+      success
+      notificationId
+      message
+    }
+  }
+}
+    `;
+export type MarkNotificationAsReadMutationFn = Apollo.MutationFunction<MarkNotificationAsReadMutation, MarkNotificationAsReadMutationVariables>;
+
+/**
+ * __useMarkNotificationAsReadMutation__
+ *
+ * To run a mutation, you first call `useMarkNotificationAsReadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMarkNotificationAsReadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [markNotificationAsReadMutation, { data, loading, error }] = useMarkNotificationAsReadMutation({
+ *   variables: {
+ *      notificationId: // value for 'notificationId'
+ *   },
+ * });
+ */
+export function useMarkNotificationAsReadMutation(baseOptions?: Apollo.MutationHookOptions<MarkNotificationAsReadMutation, MarkNotificationAsReadMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MarkNotificationAsReadMutation, MarkNotificationAsReadMutationVariables>(MarkNotificationAsReadDocument, options);
+      }
+export type MarkNotificationAsReadMutationHookResult = ReturnType<typeof useMarkNotificationAsReadMutation>;
+export type MarkNotificationAsReadMutationResult = Apollo.MutationResult<MarkNotificationAsReadMutation>;
+export type MarkNotificationAsReadMutationOptions = Apollo.BaseMutationOptions<MarkNotificationAsReadMutation, MarkNotificationAsReadMutationVariables>;
 export const CreateProjectDocument = gql`
     mutation createProject($input: CreateProjectInput!) {
   createProject(input: $input) {
@@ -1225,6 +1514,74 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const GetJobSeekerApplicationsDocument = gql`
+    query getJobSeekerApplications {
+  getJobSeekerApplications {
+    projectApplicationId
+    seekerId
+    projectId
+    applicationStatus
+    applicationDate
+    jobSeeker {
+      seekerName
+    }
+    project {
+      projectId
+      projectName
+      companyId
+      company {
+        companyId
+        companyName
+        companyFounder
+        companySize
+        companyDesc
+        companyStreet
+        companyCity
+        companyState
+      }
+      projectTypes
+      postDates
+      projectMinSalary
+      projectMaxSalary
+      projectDesc
+      projectReq
+      projectStatus
+      projectExpLvl
+      skills {
+        skillId
+        skillName
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetJobSeekerApplicationsQuery__
+ *
+ * To run a query within a React component, call `useGetJobSeekerApplicationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetJobSeekerApplicationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetJobSeekerApplicationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetJobSeekerApplicationsQuery(baseOptions?: Apollo.QueryHookOptions<GetJobSeekerApplicationsQuery, GetJobSeekerApplicationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetJobSeekerApplicationsQuery, GetJobSeekerApplicationsQueryVariables>(GetJobSeekerApplicationsDocument, options);
+      }
+export function useGetJobSeekerApplicationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetJobSeekerApplicationsQuery, GetJobSeekerApplicationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetJobSeekerApplicationsQuery, GetJobSeekerApplicationsQueryVariables>(GetJobSeekerApplicationsDocument, options);
+        }
+export type GetJobSeekerApplicationsQueryHookResult = ReturnType<typeof useGetJobSeekerApplicationsQuery>;
+export type GetJobSeekerApplicationsLazyQueryHookResult = ReturnType<typeof useGetJobSeekerApplicationsLazyQuery>;
+export type GetJobSeekerApplicationsQueryResult = Apollo.QueryResult<GetJobSeekerApplicationsQuery, GetJobSeekerApplicationsQueryVariables>;
 export const CompanyListingDocument = gql`
     query companyListing {
   companyListing {
@@ -1327,6 +1684,49 @@ export function useCompanyDetailLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type CompanyDetailQueryHookResult = ReturnType<typeof useCompanyDetailQuery>;
 export type CompanyDetailLazyQueryHookResult = ReturnType<typeof useCompanyDetailLazyQuery>;
 export type CompanyDetailQueryResult = Apollo.QueryResult<CompanyDetailQuery, CompanyDetailQueryVariables>;
+export const GetUserNotificationsDocument = gql`
+    query getUserNotifications($unreadOnly: Boolean!) {
+  getUserNotifications(unreadOnly: $unreadOnly) {
+    unreadCount
+    notifications {
+      notificationId
+      senderId
+      receiverId
+      message
+      isRead
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserNotificationsQuery__
+ *
+ * To run a query within a React component, call `useGetUserNotificationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserNotificationsQuery({
+ *   variables: {
+ *      unreadOnly: // value for 'unreadOnly'
+ *   },
+ * });
+ */
+export function useGetUserNotificationsQuery(baseOptions: Apollo.QueryHookOptions<GetUserNotificationsQuery, GetUserNotificationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserNotificationsQuery, GetUserNotificationsQueryVariables>(GetUserNotificationsDocument, options);
+      }
+export function useGetUserNotificationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserNotificationsQuery, GetUserNotificationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserNotificationsQuery, GetUserNotificationsQueryVariables>(GetUserNotificationsDocument, options);
+        }
+export type GetUserNotificationsQueryHookResult = ReturnType<typeof useGetUserNotificationsQuery>;
+export type GetUserNotificationsLazyQueryHookResult = ReturnType<typeof useGetUserNotificationsLazyQuery>;
+export type GetUserNotificationsQueryResult = Apollo.QueryResult<GetUserNotificationsQuery, GetUserNotificationsQueryVariables>;
 export const ProjectListingDocument = gql`
     query projectListing($recommendation: Boolean!) {
   projectListing(recommendation: $recommendation) {
@@ -1419,6 +1819,15 @@ export const ProjectDetailDocument = gql`
     skills {
       skillId
       skillName
+    }
+    projectApplications {
+      projectApplicationId
+      seekerId
+      projectId
+      applicationStatus
+      jobSeeker {
+        seekerId
+      }
     }
   }
 }
@@ -1519,6 +1928,9 @@ export const CompanyProjectListingDocument = gql`
     projectId
     projectName
     companyId
+    company {
+      companyName
+    }
     projectTypes
     postDates
     projectMinSalary
@@ -1530,6 +1942,16 @@ export const CompanyProjectListingDocument = gql`
     skills {
       skillId
       skillName
+    }
+    projectApplications {
+      projectApplicationId
+      seekerId
+      projectId
+      applicationStatus
+      jobSeeker {
+        seekerId
+        seekerName
+      }
     }
   }
 }
@@ -1619,6 +2041,7 @@ export const JobSeekerDetailDocument = gql`
     seekerState
     seekerResume
     seekerAbout
+    seekerIsOpenForWork
     users {
       userId
       userName
@@ -1684,6 +2107,7 @@ export const RecommendedJobSeekerListingDocument = gql`
     seekerState
     seekerResume
     seekerAbout
+    seekerIsOpenForWork
     users {
       userName
       userEmail
@@ -1746,6 +2170,7 @@ export const SearchJobSeekersDocument = gql`
     seekerState
     seekerResume
     seekerAbout
+    seekerIsOpenForWork
     users {
       userName
       userEmail

@@ -92,7 +92,6 @@ const LoginPage = () => {
 
   const onSubmit = async (values: any) => {
     const input = getFormInputValues(values)
-    console.log('input', input)
 
     await handleLogin(input.userName, input.password)
   }

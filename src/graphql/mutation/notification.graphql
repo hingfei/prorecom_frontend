@@ -1,0 +1,19 @@
+mutation sendNotification($input: SendNotificationInput!) {
+  sendNotification (input: $input) {
+    ...on NotificationResponse {
+      success
+      notificationId
+      message
+    }
+  }
+}
+
+mutation markNotificationAsRead($notificationId: Int!) {
+  markNotificationAsRead (notificationId: $notificationId) {
+    ...on NotificationResponse {
+      success
+      notificationId
+      message
+    }
+  }
+}

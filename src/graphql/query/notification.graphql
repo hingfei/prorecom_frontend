@@ -1,0 +1,13 @@
+query getUserNotifications($unreadOnly: Boolean!) {
+  getUserNotifications(unreadOnly: $unreadOnly) {
+    unreadCount
+    notifications {
+      notificationId
+      senderId
+      receiverId
+      message
+      isRead
+      createdAt
+    }
+  }
+}

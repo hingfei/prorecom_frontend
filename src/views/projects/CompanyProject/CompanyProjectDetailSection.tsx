@@ -1,6 +1,5 @@
-import { Box, Card, CardContent, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
+import { Box, Card, CardContent, Grid, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { capitalizeFirstLetter } from '../../../@core/utils/capitalize-first-letter'
 import { RhombusMedium } from 'mdi-material-ui'
 import React from 'react'
 
@@ -38,15 +37,19 @@ const TitleWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   rowGap: theme.spacing(4),
-  paddingRight: theme.spacing(10),
+  // paddingRight: theme.spacing(10),
   borderRight: `1px solid ${theme.palette.divider}`
 }))
 
 const ContentWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  rowGap: theme.spacing(4),
-  paddingLeft: theme.spacing(10)
+  rowGap: theme.spacing(4)
+  // paddingLeft: theme.spacing(10)
+}))
+
+const RowWrapper = styled(Grid)(({ theme }) => ({
+  borderRight: `1px solid ${theme.palette.divider}`
 }))
 
 const CompanyProjectDetailsSection = ({ project }: { project: any }) => {
@@ -55,71 +58,149 @@ const CompanyProjectDetailsSection = ({ project }: { project: any }) => {
       <CardContent>
         {/* Desktop View */}
         <DesktopViewBox>
-          <TitleWrapper>
-            <Typography variant='body1'>Project Title</Typography>
-            <Typography variant='body1'>Project Type</Typography>
-            <Typography variant='body1'>Project Status</Typography>
-            <Typography variant='body1'>Project Experience Level</Typography>
-            <Typography variant='body1'>Project Date</Typography>
-            <Typography variant='body1'>Project Description</Typography>
-            <Typography variant='body1'>Project Requirements</Typography>
-            <Typography variant='body1'>Project Minimum Salary (RM)</Typography>
-            <Typography variant='body1'>Project Maximum Salary (RM)</Typography>
-            <Typography variant='body1' sx={{ alignSelf: { xs: 'center', sm: 'flex-start' } }}>
-              Project Skills Required
-            </Typography>
-          </TitleWrapper>
-          <ContentWrapper>
-            <Typography variant={'body1'} fontWeight={600}>
-              {project?.projectName ?? '-'}
-            </Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {project?.projectTypes ?? '-'}
-            </Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {project?.projectStatus ? capitalizeFirstLetter(project?.projectStatus) : '-'}
-            </Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {project?.projectExpLvl ?? '-'}
-            </Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {project?.postDates ?? '-'}
-            </Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {project?.projectDesc ?? '-'}
-            </Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {project?.projectReq ?? '-'}
-            </Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {project?.projectMinSalary ?? '-'}
-            </Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {project?.projectMaxSalary ?? '-'}
-            </Typography>
-            {project?.skills && project?.skills.length > 0 ? (
-              <List sx={{ paddingTop: 0 }}>
-                {project?.skills.map(skill => {
-                  return (
-                    <ListItem key={skill.skillId} sx={{ paddingTop: 0 }}>
-                      <ListItemIcon>
-                        <RhombusMedium />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={
-                          <Typography variant={'body1'} fontWeight={500}>
-                            {skill.skillName}
-                          </Typography>
-                        }
-                      />
-                    </ListItem>
-                  )
-                })}
-              </List>
-            ) : (
-              ''
-            )}
-          </ContentWrapper>
+          <Grid container spacing={4}>
+            <Grid item xs={12}>
+              <Grid container spacing={4}>
+                <RowWrapper item sm={4} md={3} lg={2.5}>
+                  <Typography variant='body1'>Project Title</Typography>
+                </RowWrapper>
+                <Grid item sm={8} md={9}>
+                  <Typography variant={'body1'} fontWeight={600}>
+                    {project?.projectName ?? '-'}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={4}>
+                <RowWrapper item sm={4} md={3} lg={2.5}>
+                  <Typography variant='body1'>Project Type</Typography>
+                </RowWrapper>
+                <Grid item sm={8} md={9}>
+                  <Typography variant={'body1'} fontWeight={600}>
+                    {project?.projectTypes ?? '-'}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={4}>
+                <RowWrapper item sm={4} md={3} lg={2.5}>
+                  <Typography variant='body1'>Project Status</Typography>
+                </RowWrapper>
+                <Grid item sm={8} md={9}>
+                  <Typography variant={'body1'} fontWeight={600}>
+                    {project?.projectStatus ? 'Active' : 'Closed'}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={4}>
+                <RowWrapper item sm={4} md={3} lg={2.5}>
+                  <Typography variant='body1'>Project Experience Level</Typography>
+                </RowWrapper>
+                <Grid item sm={8} md={9}>
+                  <Typography variant={'body1'} fontWeight={600}>
+                    {project?.projectExpLvl ?? '-'}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={4}>
+                <RowWrapper item sm={4} md={3} lg={2.5}>
+                  <Typography variant='body1'>Project Date</Typography>
+                </RowWrapper>
+                <Grid item sm={8} md={9}>
+                  <Typography variant={'body1'} fontWeight={600}>
+                    {project?.postDates ?? '-'}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={4}>
+                <RowWrapper item sm={4} md={3} lg={2.5}>
+                  <Typography variant='body1'>Project Description</Typography>
+                </RowWrapper>
+                <Grid item sm={8} md={9}>
+                  <Typography variant={'body1'} fontWeight={600}>
+                    {project?.projectDesc ?? '-'}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={4}>
+                <RowWrapper item sm={4} md={3} lg={2.5}>
+                  <Typography variant='body1'>Project Requirements</Typography>
+                </RowWrapper>
+                <Grid item sm={8} md={9}>
+                  <Typography variant={'body1'} fontWeight={600}>
+                    {project?.projectReq ?? '-'}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={4}>
+                <RowWrapper item sm={4} md={3} lg={2.5}>
+                  <Typography variant='body1'>Project Minimum Salary (RM)</Typography>
+                </RowWrapper>
+                <Grid item sm={8} md={9}>
+                  <Typography variant={'body1'} fontWeight={600}>
+                    {project?.projectMinSalary ?? '-'}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={4}>
+                <RowWrapper item sm={4} md={3} lg={2.5}>
+                  <Typography variant='body1'>Project Maximum Salary (RM)</Typography>
+                </RowWrapper>
+                <Grid item sm={8} md={9}>
+                  <Typography variant={'body1'} fontWeight={600}>
+                    {project?.projectMaxSalary ?? '-'}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={4}>
+                <RowWrapper item sm={4} md={3} lg={2.5}>
+                  <Typography variant='body1' sx={{ alignSelf: { xs: 'center', sm: 'flex-start' } }}>
+                    Project Skills Required
+                  </Typography>
+                </RowWrapper>
+                <Grid item sm={8} md={9}>
+                  {project?.skills && project?.skills.length > 0 ? (
+                    <List sx={{ paddingTop: 0 }}>
+                      {project?.skills.map(skill => {
+                        return (
+                          <ListItem key={skill.skillId} sx={{ paddingTop: 0 }}>
+                            <ListItemIcon>
+                              <RhombusMedium />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary={
+                                <Typography variant={'body1'} fontWeight={500}>
+                                  {skill.skillName}
+                                </Typography>
+                              }
+                            />
+                          </ListItem>
+                        )
+                      })}
+                    </List>
+                  ) : (
+                    ''
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
         </DesktopViewBox>
 
         {/* Mobile View */}
@@ -139,7 +220,7 @@ const CompanyProjectDetailsSection = ({ project }: { project: any }) => {
           <TextBox>
             <Typography variant='body1'>Project Status</Typography>
             <Typography variant={'body1'} fontWeight={600}>
-              {project?.projectStatus ? capitalizeFirstLetter(project?.projectStatus) : '-'}
+              {project?.projectStatus ? 'Active' : 'Closed'}
             </Typography>
           </TextBox>
           <TextBox>

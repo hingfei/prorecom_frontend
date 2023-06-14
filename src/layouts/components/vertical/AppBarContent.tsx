@@ -12,7 +12,6 @@ import { useRouter } from 'next/router'
 import { useAuth } from '../../../@core/context/authContext'
 import { useEffect, useState } from 'react'
 import { BriefcaseOutline, ViewDashboardOutline } from 'mdi-material-ui'
-import ModeToggler from "../../../@core/layouts/components/shared-components/ModeToggler";
 
 interface Props {
   hidden: boolean
@@ -72,26 +71,6 @@ const AppBarContent = (props: Props) => {
             <img src='/images/prorecom_title.png' alt='pro_recom' width={230} height={'auto'} />
           </StyledLink>
         </Link>
-        {/*{hidden ? (*/}
-        {/*  <IconButton*/}
-        {/*    color='inherit'*/}
-        {/*    onClick={toggleNavVisibility}*/}
-        {/*    sx={{ ml: -2.75, ...(hiddenSm ? {} : { mr: 3.5 }) }}*/}
-        {/*  >*/}
-        {/*    <Menu />*/}
-        {/*  </IconButton>*/}
-        {/*) : null}*/}
-        {/*<TextField*/}
-        {/*  size='small'*/}
-        {/*  sx={{ '& .MuiOutlinedInput-root': { borderRadius: 4 } }}*/}
-        {/*  InputProps={{*/}
-        {/*    startAdornment: (*/}
-        {/*      <InputAdornment position='start'>*/}
-        {/*        <Magnify fontSize='small' />*/}
-        {/*      </InputAdornment>*/}
-        {/*    )*/}
-        {/*  }}*/}
-        {/*/>*/}
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
         {!isAuthenticated ? (

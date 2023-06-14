@@ -22,13 +22,21 @@ const ScrollWrapper = ({ children }: { children: ReactNode }) => {
   return <PerfectScrollbar options={{ wheelPropagation: false, suppressScrollX: true }}>{children}</PerfectScrollbar>
 }
 
-const ProjectDetails = ({ project }: { project: ProjectType | undefined }) => {
+const ProjectDetails = ({
+  project,
+  applications,
+  jobSeeker
+}: {
+  project: ProjectType | undefined
+  applications: any
+  jobSeeker: any
+}) => {
   return (
     <ScrollWrapper>
       <Card sx={{ borderColor: 'primary.main', borderWidth: 1, borderStyle: 'solid' }}>
         <CardContent>
           <Box mb={14}>
-            <ProjectTitle project={project} />
+            <ProjectTitle project={project} applications={applications} jobSeeker={jobSeeker} />
           </Box>
 
           <Box mb={10} paddingX={8}>

@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from '@mui/material'
 import { useAppDispatch } from '../../../store'
 
-const ResumeSection = ({ jobSeeker, seekerId }: { jobSeeker: any; seekerId: string | undefined }) => {
+const ResumeSection = ({ jobSeeker, seekerId, viewOnly }: { jobSeeker: any; seekerId: string | undefined; viewOnly: boolean }) => {
   const dispatch = useAppDispatch()
 
   return (
@@ -10,9 +10,11 @@ const ResumeSection = ({ jobSeeker, seekerId }: { jobSeeker: any; seekerId: stri
         <Typography variant={'h5'} fontWeight={700}>
           Resume
         </Typography>
-        <Button variant={'contained'} disabled>
-          Edit
-        </Button>
+        {!viewOnly && (
+          <Button variant={'contained'} disabled>
+            Edit
+          </Button>
+        )}
       </Box>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={1}>
         {jobSeeker?.seekerResume ? (

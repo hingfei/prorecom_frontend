@@ -21,7 +21,6 @@ const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const JobSeekerEducationSection = ({ educations }: { educations: Array<EducationType> | undefined }) => {
-  console.log(educations)
   return (
     <Card>
       <CardContent sx={{ padding: '24px 36px !important' }}>

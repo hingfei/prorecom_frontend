@@ -23,7 +23,6 @@ const EditCompanyProfileForm = () => {
   } = formMethods
 
   const resetValue = (companyDetail: any) => {
-    console.log(companyDetail)
     const formValues = {
       companyName: companyDetail?.companyName,
       companyFounder: companyDetail?.companyFounder,
@@ -35,7 +34,6 @@ const EditCompanyProfileForm = () => {
       companyState: companyDetail?.companyState
     }
 
-    console.log({ formValues })
     reset(formValues)
     setLoading(false)
   }
@@ -68,7 +66,6 @@ const EditCompanyProfileForm = () => {
 
   const onSubmit = (values: any) => {
     const input = getFormInputValues(values)
-    console.log('input', input)
 
     updateCompany({
       variables: {

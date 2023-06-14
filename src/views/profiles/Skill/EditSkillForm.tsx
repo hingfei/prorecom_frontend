@@ -23,13 +23,11 @@ const EditSkillForm = () => {
   } = formMethods
 
   const resetValue = (jobSeekerDetail: any) => {
-    console.log(jobSeekerDetail)
     const skillList = jobSeekerDetail?.skills.map(item => item.skillId)
     const formValues = {
       skills: skillList
     }
 
-    console.log({ formValues })
     reset(formValues)
     setLoading(false)
   }
@@ -63,7 +61,6 @@ const EditSkillForm = () => {
   const onSubmit = (values: any) => {
     const input = getFormInputValues(values)
     const skillsArray = input.skills.map((skill: any) => parseInt(skill.value))
-    console.log(skillsArray)
 
     updateJobSeeker({
       variables: {

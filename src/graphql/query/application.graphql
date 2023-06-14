@@ -1,0 +1,39 @@
+query getJobSeekerApplications {
+  getJobSeekerApplications {
+    projectApplicationId
+    seekerId
+    projectId
+    applicationStatus
+    applicationDate
+    jobSeeker{
+      seekerName
+    }
+    project {
+      projectId
+      projectName
+      companyId
+      company {
+        companyId
+        companyName
+        companyFounder
+        companySize
+        companyDesc
+        companyStreet
+        companyCity
+        companyState
+      }
+      projectTypes
+      postDates
+      projectMinSalary
+      projectMaxSalary
+      projectDesc
+      projectReq
+      projectStatus
+      projectExpLvl
+      skills {
+        skillId
+        skillName
+      }
+    }
+  }
+}

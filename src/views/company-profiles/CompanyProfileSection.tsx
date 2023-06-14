@@ -21,13 +21,20 @@ const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%'
 }))
 
+const DescriptionBox = styled(Typography)<TypographyProps>(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  }
+}))
+
 const DescriptionWrapper = styled(Typography)<TypographyProps>(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     textAlign: 'center',
     width: 'unset'
-  },
-  width: '50%',
-  textAlign: 'right'
+  }
 }))
 
 const DescriptionTitleWrapper = styled(Typography)<TypographyProps>(({ theme }) => ({
@@ -68,7 +75,6 @@ export const renderUserAvatar = () => {
 
 const CompanyProfileSection = ({ company, companyId }: { company: any; companyId: string | undefined }) => {
   const dispatch = useAppDispatch()
-  console.log('company', company)
 
   return (
     <>
@@ -101,26 +107,24 @@ const CompanyProfileSection = ({ company, companyId }: { company: any; companyId
             {company.users?.userEmail}
           </Typography>
         </TextBox>
-        <TextBox>
+        {/*<TextBox>*/}
+        {/*  <DescriptionTitleWrapper variant='body1'>Company Description</DescriptionTitleWrapper>*/}
+        {/*  <DescriptionWrapper variant={'body1'} fontWeight={600}>*/}
+        {/*    {company?.companyDesc ?? '-'}*/}
+        {/*  </DescriptionWrapper>*/}
+        {/*</TextBox>*/}
+        <DescriptionBox>
           <DescriptionTitleWrapper variant='body1'>Company Description</DescriptionTitleWrapper>
           <DescriptionWrapper variant={'body1'} fontWeight={600}>
             {company?.companyDesc ?? '-'}
           </DescriptionWrapper>
-        </TextBox>
-        <AddressWrapper>
-          <Typography variant='body1'>Address</Typography>
-          <Box sx={{ display: 'flex', alignItems: { xs: 'center', sm: 'flex-end' }, flexDirection: 'column' }}>
-            <Typography variant={'body1'} fontWeight={600}>
-              {company.companyStreet}
-            </Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {company.companyCity}
-            </Typography>
-            <Typography variant={'body1'} fontWeight={600}>
-              {company.companyState}
-            </Typography>
-          </Box>
-        </AddressWrapper>
+        </DescriptionBox>
+        <DescriptionBox>
+          <DescriptionTitleWrapper variant='body1'>Address</DescriptionTitleWrapper>
+          <DescriptionWrapper variant={'body1'} fontWeight={600}>
+            {company.companyStreet}, {company.companyCity}, {company.companyState}
+          </DescriptionWrapper>
+        </DescriptionBox>
       </Box>
 
       <Button

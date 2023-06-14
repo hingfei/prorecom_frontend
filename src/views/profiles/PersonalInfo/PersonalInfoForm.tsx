@@ -1,8 +1,8 @@
 import { Box, Button, ButtonProps, Grid } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
 import { closeDrawerState, useAppDispatch } from '../../../store'
-import { CalendarInput, SelectInput, TextInput } from '../../../@core/components/custom-inputs'
-import { genderSelect, statesListing } from "../../../constants";
+import { CalendarInput, SelectInput, SwitchInput, TextInput } from '../../../@core/components/custom-inputs'
+import { genderSelect, statesListing } from '../../../constants'
 
 const PersonalInfoForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
   const dispatch = useAppDispatch()
@@ -111,7 +111,19 @@ const PersonalInfoForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean
           }))}
         />
       </Grid>
-
+      <Grid item mt={6} mb={2}>
+        <SwitchInput
+          controllerProps={{
+            control,
+            name: 'seekerIsOpenForWork'
+          }}
+          checkedValue={true}
+          checkedLabel={'Open For Work'}
+          unCheckedValue={false}
+          unCheckedLabel={'Closed For Work'}
+          label={'Availability For Work'}
+        />
+      </Grid>
 
       <Box display='flex' justifyContent='center' py={10}>
         <Button

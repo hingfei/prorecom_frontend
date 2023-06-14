@@ -47,7 +47,6 @@ export const AuthProvider = ({ children }: Props) => {
 
   const [fetchMe, { loading: fetchMeLoading }] = useMeLazyQuery({
     onCompleted: async data => {
-      console.log('data,', data)
       setIsAuthenticated(true)
       setIsInitialized(false)
       if (!window.localStorage.getItem('userData')) {
@@ -55,7 +54,6 @@ export const AuthProvider = ({ children }: Props) => {
       }
     },
     onError: error => {
-      console.log(error)
       router.push('/401')
       onError(error, undefined)
       resetStore()
@@ -66,7 +64,6 @@ export const AuthProvider = ({ children }: Props) => {
     onCompleted: data => {
       onCompleted(data.login, () => {
         if (data.login.success) {
-          console.log('data', data)
           window.localStorage.setItem(authConfig.storageTokenKeyName, data?.login?.token || '')
           window.localStorage.setItem('userData', JSON.stringify(data?.login?.user))
           setCookies(authConfig.storageTokenKeyName, `Bearer ${data?.login?.token}`)

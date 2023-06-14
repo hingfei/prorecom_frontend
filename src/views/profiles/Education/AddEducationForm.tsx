@@ -50,7 +50,7 @@ const AddEducationForm = () => {
 
   const onSubmit = (values: any) => {
     const input = getFormInputValues(values)
-    console.log('input', input)
+
     updateJobSeeker({
       variables: {
         input: {

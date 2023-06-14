@@ -5,7 +5,9 @@ import { styled } from '@mui/material/styles'
 import { BoxProps } from '@mui/material/Box'
 import { generateGenderIcon } from '../../../@core/utils/generate-gender-icon'
 import Avatar from '@mui/material/Avatar'
-import dayjs from "dayjs";
+import dayjs from 'dayjs'
+import Chip from '@mui/material/Chip'
+import React from 'react'
 
 // ** Styled Components
 const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -50,15 +52,22 @@ export const renderUserAvatar = () => {
   )
 }
 
-const PersonalInfoSection = ({ jobSeeker, seekerId }: { jobSeeker: any; seekerId: string | undefined }) => {
+const PersonalInfoSection = ({ jobSeeker, seekerId, viewOnly }: { jobSeeker: any; seekerId: string | undefined; viewOnly: boolean }) => {
   const dispatch = useAppDispatch()
 
   return (
     <>
       {renderUserAvatar()}
-      <Typography variant={'h4'} fontWeight={700} sx={{ my: 4 }}>
+      <Typography variant={'h4'} fontWeight={700} sx={{ mt: 4, mb: 2 }}>
         {jobSeeker?.seekerName ?? ''}
       </Typography>
+      <Chip
+        size='medium'
+        variant='outlined'
+        label={jobSeeker?.seekerIsOpenForWork ? 'Open For Work' : 'Closed For Work'}
+        color={jobSeeker?.seekerIsOpenForWork ? 'info' : 'secondary'}
+        sx={{ fontSize: '13px', fontWeight: 500, borderRadius: '18px', mb: 4 }}
+      />
       <Box width={'100%'} display={'flex'} flexDirection={'column'} rowGap={'16px'}>
         <TextBox>
           <Typography variant='body1'>Age</Typography>
@@ -81,7 +90,7 @@ const PersonalInfoSection = ({ jobSeeker, seekerId }: { jobSeeker: any; seekerId
         <TextBox>
           <Typography variant='body1'>Date of Birth</Typography>
           <Typography variant={'body1'} fontWeight={600}>
-            {dayjs(jobSeeker.seekerBirthdate).format('DD MMM YYYY') }
+            {dayjs(jobSeeker.seekerBirthdate).format('DD MMM YYYY')}
           </Typography>
         </TextBox>
         <TextBox>
@@ -105,23 +114,24 @@ const PersonalInfoSection = ({ jobSeeker, seekerId }: { jobSeeker: any; seekerId
           </Box>
         </AddressWrapper>
       </Box>
-
-      <Button
-        variant={'contained'}
-        size='large'
-        sx={{ mt: 5, mb: 4 }}
-        onClick={() =>
-          dispatch(
-            setDrawerState({
-              isOpen: true,
-              type: DrawerType.editJobSeekerForm,
-              content: seekerId
-            })
-          )
-        }
-      >
-        Edit
-      </Button>
+      {!viewOnly && (
+        <Button
+          variant={'contained'}
+          size='large'
+          sx={{ mt: 5, mb: 4 }}
+          onClick={() =>
+            dispatch(
+              setDrawerState({
+                isOpen: true,
+                type: DrawerType.editJobSeekerForm,
+                content: seekerId
+              })
+            )
+          }
+        >
+          Edit
+        </Button>
+      )}
     </>
   )
 }

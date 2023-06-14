@@ -23,7 +23,6 @@ const EditProject = () => {
   } = formMethods
 
   const resetValue = (projectDetail: any) => {
-    console.log(projectDetail)
     const skillList = projectDetail?.skills.map(item => item.skillId)
 
     const formValues = {
@@ -52,8 +51,7 @@ const EditProject = () => {
   const [updateProject, { loading: updateLoading }] = useUpdateProjectMutation({
     onCompleted: data =>
       onCompleted(data?.updateProject, () => {
-        router.push(`/company-dashboard/${data?.updateProject?.project?.projectId}`)
-        console.log('project updated', data)
+        router.push(`/projects/${data?.updateProject?.project?.projectId}`)
       }),
     onError: error => {
       onError(error, undefined, setError)
@@ -65,7 +63,7 @@ const EditProject = () => {
     const { skills, ...restValues } = values
     const skillsArray = skills ? skills.map((skill: any) => parseInt(skill.value)) : []
     const input = getFormInputValues(restValues)
-    console.log(input)
+
     updateProject({
       variables: {
         input: {

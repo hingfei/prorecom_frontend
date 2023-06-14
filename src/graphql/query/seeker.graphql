@@ -26,6 +26,7 @@ query jobSeekerDetail($seekerId: Int!) {
     seekerState
     seekerResume
     seekerAbout
+    seekerIsOpenForWork
     users {
       userId
       userName
@@ -62,6 +63,7 @@ query recommendedJobSeekerListing($projectId: Int!) {
     seekerState
     seekerResume
     seekerAbout
+    seekerIsOpenForWork
     users {
       userName
       userEmail
@@ -95,6 +97,7 @@ query searchJobSeekers($searchKeyword: String!) {
     seekerState
     seekerResume
     seekerAbout
+    seekerIsOpenForWork
     users {
       userName
       userEmail

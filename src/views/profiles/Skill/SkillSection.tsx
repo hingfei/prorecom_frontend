@@ -5,7 +5,15 @@ import { SkillType } from '../../../graphql/api'
 import { RhombusMedium } from 'mdi-material-ui'
 import { DrawerType } from '../../../constants'
 
-const SkillSection = ({ skills, seekerId }: { skills: Array<SkillType> | undefined; seekerId: string | undefined }) => {
+const SkillSection = ({
+  skills,
+  seekerId,
+  viewOnly
+}: {
+  skills: Array<SkillType> | undefined
+  seekerId: string | undefined
+  viewOnly: boolean
+}) => {
   const dispatch = useAppDispatch()
 
   return (
@@ -14,20 +22,22 @@ const SkillSection = ({ skills, seekerId }: { skills: Array<SkillType> | undefin
         <Typography variant={'h5'} fontWeight={700}>
           Skill
         </Typography>
-        <Button
-          variant={'contained'}
-          onClick={() =>
-            dispatch(
-              setDrawerState({
-                isOpen: true,
-                type: DrawerType.editSkillForm,
-                content: seekerId
-              })
-            )
-          }
-        >
-          Edit
-        </Button>
+        {!viewOnly && (
+          <Button
+            variant={'contained'}
+            onClick={() =>
+              dispatch(
+                setDrawerState({
+                  isOpen: true,
+                  type: DrawerType.editSkillForm,
+                  content: seekerId
+                })
+              )
+            }
+          >
+            Edit
+          </Button>
+        )}
       </Box>
       {skills && skills.length > 0 ? (
         <List>

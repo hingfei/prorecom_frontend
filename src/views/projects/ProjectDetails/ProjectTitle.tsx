@@ -1,18 +1,66 @@
 import React from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import Chip from '@mui/material/Chip'
-import { ProjectType } from '../../../graphql/api'
+import {
+  GetJobSeekerApplicationsDocument,
+  ProjectListingDocument,
+  ProjectType,
+  useCreateApplicationMutation,
+  useSendNotificationMutation
+} from '../../../graphql/api'
 import { capitalizeFirstLetter } from '../../../@core/utils/capitalize-first-letter'
 import { CalendarMonthOutline, CurrencyUsd, Domain, MapMarkerOutline } from 'mdi-material-ui'
+import { onCompleted, onError } from '../../../@core/utils/response'
+import dayjs from "dayjs";
 
-const ProjectTitle = ({ project }: { project: ProjectType | undefined }) => {
+const ProjectTitle = ({
+  project,
+  applications,
+  jobSeeker
+}: {
+  project: ProjectType | undefined
+  applications: any
+  jobSeeker: any
+}) => {
+  const isProjectApplied = applications.some(
+    application => parseInt(application.projectId) === parseInt(project?.projectId)
+  )
+
+  const [createApplication, { loading }] = useCreateApplicationMutation({
+    variables: {
+      projectId: parseInt(project?.projectId)
+    },
+    onCompleted: data => {
+      sendNotif({
+        variables: {
+          input: {
+            senderId: parseInt(jobSeeker?.seekerId),
+            receiverId: parseInt(project?.companyId),
+            message: `${jobSeeker?.seekerName} has applied ${project?.projectName}`
+          }
+        }
+      })
+      onCompleted(data?.createApplication, undefined)
+    },
+    onError: error => onError(error),
+    refetchQueries: [ProjectListingDocument, GetJobSeekerApplicationsDocument]
+  })
+
+  const [sendNotif] = useSendNotificationMutation()
+
+  const handleApply = () => {
+    createApplication()
+  }
+
   return (
     <>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={3}>
         <Typography variant={'h5'} fontWeight={700}>
           {project?.projectName ?? '-'}
         </Typography>
-        <Button variant={'contained'}>Apply</Button>
+        <Button variant={'contained'} onClick={handleApply} disabled={loading || isProjectApplied}>
+          {isProjectApplied ? 'Applied' : 'Apply'}
+        </Button>
       </Box>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={1}>
         <Box display={'flex'} alignItems={'center'}>
@@ -62,9 +110,7 @@ const ProjectTitle = ({ project }: { project: ProjectType | undefined }) => {
       </Box>
       <Box display={'flex'} alignItems={'center'} justifyContent={'end'}>
         <CalendarMonthOutline fontSize={'small'} sx={{ mr: 1 }} />
-        <Typography variant={'body2'}>
-          {project?.postDates}
-        </Typography>
+        <Typography variant={'body2'}>{dayjs(project?.postDates).format('DD MMM YYYY')}</Typography>
       </Box>
     </>
   )

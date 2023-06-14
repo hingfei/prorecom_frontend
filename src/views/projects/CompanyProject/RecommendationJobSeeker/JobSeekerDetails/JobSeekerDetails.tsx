@@ -23,7 +23,6 @@ const ScrollWrapper = ({ children }: { children: ReactNode }) => {
 }
 
 const JobSeekerDetails = ({ jobSeeker }: { jobSeeker: JobSeekerType | undefined }) => {
-  console.log(jobSeeker)
   return (
     <ScrollWrapper>
       <Card sx={{ borderColor: 'primary.main', borderWidth: 1, borderStyle: 'solid' }}>
