@@ -1,5 +1,5 @@
-mutation createApplication($projectId: Int!) {
-  createApplication(projectId: $projectId) {
+mutation createApplication($userId: Int, $projectId: Int!, $applicationIsInvited: Boolean) {
+  createApplication(userId: $userId, projectId: $projectId, applicationIsInvited: $applicationIsInvited) {
     ...on ApplicationResponse {
       success
       projectApplicationId

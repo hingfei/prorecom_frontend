@@ -2,6 +2,8 @@ import { Box, Grid, Icon, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import {
   JobSeekerType,
+  ProjectApplicationType,
+  ProjectType,
   useRecommendedJobSeekerListingLazyQuery,
   useSearchJobSeekersLazyQuery
 } from '../../../../graphql/api'
@@ -16,7 +18,15 @@ import { useAuth } from '../../../../@core/context/authContext'
 import { getFormInputValues } from '../../../../@core/utils/get-form-input-values'
 import SearchJobSeeker from './SearchJobSeeker'
 
-function RecommendedJobSeekerSection({ projectId }: { projectId: number }) {
+function RecommendedJobSeekerSection({
+  projectId,
+  applications,
+  project
+}: {
+  projectId: number
+  applications: Array<ProjectApplicationType> | undefined
+  project: ProjectType
+}) {
   const router = useRouter()
   const { resetStore } = useAuth()
   const [switchOption, setSwitchOption] = useState({ checked: true, label: 'Best Match', disabled: true })
@@ -121,7 +131,7 @@ function RecommendedJobSeekerSection({ projectId }: { projectId: number }) {
                 />
               </Grid>
               <Grid item xs={7.5} md={7.5} sx={{ display: { xs: 'none', md: 'flex' } }}>
-                <JobSeekerDetails jobSeeker={jobSeeker} />
+                <JobSeekerDetails jobSeeker={jobSeeker} applications={applications} project={project} />
               </Grid>
             </Grid>
           </Box>

@@ -82,7 +82,7 @@ const EducationSection = ({
         educations.map((education, index) => {
           return (
             <Grid key={index} container display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-              <Grid item xs={10} sm={11}>
+              <Grid item xs>
                 <Card sx={{ marginBottom: 4 }}>
                   <CardContent>
                     <Box width={'100%'} display={'flex'} flexDirection={'column'} rowGap={'16px'}>
@@ -128,32 +128,34 @@ const EducationSection = ({
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid item>
-                <Box display={'flex'} flexDirection={'column'} rowGap={4}>
-                  <EditIcon
-                    color={'info'}
-                    onClick={() =>
-                      dispatch(
-                        setDrawerState({
-                          isOpen: true,
-                          type: DrawerType.editEducationForm,
-                          content: { seekerId: seekerId, eduId: education.educationId }
-                        })
-                      )
-                    }
-                    disabled={loading}
-                  />
-                  <MinusIcon
-                    color={'error'}
-                    aria-controls='remove-education'
-                    onClick={e => {
-                      e.stopPropagation()
-                      setDialog(true)
-                    }}
-                    disabled={loading}
-                  />
-                </Box>
-              </Grid>
+              {!viewOnly && (
+                <Grid item xs={2} sm={1}>
+                  <Box display={'flex'} flexDirection={'column'} alignItems={'center'} rowGap={4}>
+                    <EditIcon
+                      color={'info'}
+                      onClick={() =>
+                        dispatch(
+                          setDrawerState({
+                            isOpen: true,
+                            type: DrawerType.editEducationForm,
+                            content: { seekerId: seekerId, eduId: education.educationId }
+                          })
+                        )
+                      }
+                      disabled={loading}
+                    />
+                    <MinusIcon
+                      color={'error'}
+                      aria-controls='remove-education'
+                      onClick={e => {
+                        e.stopPropagation()
+                        setDialog(true)
+                      }}
+                      disabled={loading}
+                    />
+                  </Box>
+                </Grid>
+              )}
               <DialogDeleteLayout
                 isOpen={dialog}
                 onClose={() => setDialog(false)}

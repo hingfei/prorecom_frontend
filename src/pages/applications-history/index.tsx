@@ -1,7 +1,12 @@
-import { GetJobSeekerApplicationsQuery, useGetJobSeekerApplicationsQuery } from '../../graphql/api'
+import {
+  GetJobSeekerApplicationsDocument,
+  GetJobSeekerApplicationsQuery,
+  useGetJobSeekerApplicationsQuery,
+  useSendNotificationMutation,
+  useUpdateApplicationMutation
+} from '../../graphql/api'
 import Spinner from '../../@core/components/spinner'
-import { onError } from '../../@core/utils/response'
-import { useRouter } from 'next/router'
+import { onCompleted, onError } from '../../@core/utils/response'
 import withAuth from '../../@core/hooks/withAuth'
 import { Box, Button, Grid, Typography } from '@mui/material'
 import PageHeader from '../../@core/components/page-header'
@@ -11,11 +16,67 @@ import generateSkeletonColumns from '../../@core/utils/generate-skeleton-columns
 import { capitalizeFirstLetter } from '../../@core/utils/capitalize-first-letter'
 import Chip from '@mui/material/Chip'
 import React from 'react'
-import Link from "next/link";
-import dayjs from "dayjs";
+import Link from 'next/link'
+import dayjs from 'dayjs'
+import { CheckIcon, CloseIcon } from '../../@core/components/icons'
 
 type ApplicationHistoryCellType = {
   row: NonNullable<GetJobSeekerApplicationsQuery['getJobSeekerApplications']>[0]
+}
+
+const ActionsRow = ({ row }: ApplicationHistoryCellType) => {
+  const [updateApplicationMutation, { loading }] = useUpdateApplicationMutation({
+    onCompleted: data => {
+      onCompleted(data?.updateApplication, undefined)
+    },
+    onError: error => {
+      onError(error, undefined)
+    },
+    refetchQueries: [GetJobSeekerApplicationsDocument]
+  })
+
+  const [sendNotif] = useSendNotificationMutation()
+
+  const handleClick = (applicationId: string, status: string, seekerId: string) => {
+    updateApplicationMutation({
+      variables: {
+        input: {
+          projectApplicationId: applicationId,
+          applicationStatus: status
+        }
+      }
+    })
+    sendNotif({
+      variables: {
+        input: {
+          senderId: parseInt(seekerId),
+          receiverId: parseInt(row?.project?.companyId),
+          message: `${row?.jobSeeker?.seekerName} has responded to your invitation`
+        }
+      }
+    })
+  }
+
+  return (
+    <>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', columnGap: 4 }}>
+          <CheckIcon
+            title={'Accept'}
+            color={'primary'}
+            onClick={() => handleClick(row?.projectApplicationId, 'accepted', row?.seekerId)}
+            disabled={loading}
+          />
+          <CloseIcon
+            title={'Reject'}
+            color={'error'}
+            onClick={() => handleClick(row?.projectApplicationId, 'rejected', row?.seekerId)}
+            disabled={loading}
+          />
+        </Box>
+      </Box>
+    </>
+  )
 }
 
 const columns = [
@@ -29,7 +90,7 @@ const columns = [
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Link href={`/projects/${row?.projectId}`} passHref>
-            <a target='_blank' style={{textDecoration: 'unset'}}>
+            <a target='_blank' style={{ textDecoration: 'unset' }}>
               <Button variant={'text'}>
                 <Typography variant='body2' fontWeight={600}>
                   {row?.project?.projectName ?? '-'}
@@ -67,7 +128,7 @@ const columns = [
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant='body2' fontWeight={600}>
-            {dayjs(row?.applicationDate).format('DD MMM YYYY')  ?? '-'}
+            {dayjs(row?.applicationDate).format('DD MMM YYYY') ?? '-'}
           </Typography>
         </Box>
       )
@@ -80,7 +141,9 @@ const columns = [
     headerName: 'Status',
     sortable: false,
     renderCell: ({ row }: ApplicationHistoryCellType) => {
-      return (
+      return row.applicationStatus === 'pending' && row.applicationIsInvited ? (
+        <ActionsRow row={row} />
+      ) : (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Chip
             size='medium'

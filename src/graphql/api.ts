@@ -29,6 +29,7 @@ export type ApplicationResponse = {
 export type ApplicationType = {
   __typename?: 'ApplicationType';
   applicationDate?: Maybe<Scalars['String']>;
+  applicationIsInvited?: Maybe<Scalars['Boolean']>;
   applicationStatus?: Maybe<Scalars['String']>;
   jobSeeker?: Maybe<JobSeekerType>;
   project?: Maybe<ProjectType>;
@@ -189,7 +190,9 @@ export type Mutation = {
 
 
 export type MutationCreateApplicationArgs = {
+  applicationIsInvited?: InputMaybe<Scalars['Boolean']>;
   projectId: Scalars['Int'];
+  userId?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -316,6 +319,7 @@ export type NotificationType = {
 
 export type ProjectApplicationType = {
   __typename?: 'ProjectApplicationType';
+  applicationIsInvited?: Maybe<Scalars['Boolean']>;
   applicationStatus?: Maybe<Scalars['String']>;
   jobSeeker?: Maybe<JobSeekerType>;
   projectApplicationId: Scalars['ID'];
@@ -557,7 +561,9 @@ export type UserUpdateMessage = {
 };
 
 export type CreateApplicationMutationVariables = Exact<{
+  userId?: InputMaybe<Scalars['Int']>;
   projectId: Scalars['Int'];
+  applicationIsInvited?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -692,7 +698,7 @@ export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Au
 export type GetJobSeekerApplicationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetJobSeekerApplicationsQuery = { __typename?: 'Query', getJobSeekerApplications: Array<{ __typename?: 'ApplicationType', projectApplicationId: string, seekerId: string, projectId: string, applicationStatus?: string | null, applicationDate?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerName?: string | null } | null, project?: { __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> } | null }> };
+export type GetJobSeekerApplicationsQuery = { __typename?: 'Query', getJobSeekerApplications: Array<{ __typename?: 'ApplicationType', projectApplicationId: string, seekerId: string, projectId: string, applicationStatus?: string | null, applicationDate?: string | null, applicationIsInvited?: boolean | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerName?: string | null } | null, project?: { __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> } | null }> };
 
 export type CompanyListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -725,7 +731,7 @@ export type ProjectDetailQueryVariables = Exact<{
 }>;
 
 
-export type ProjectDetailQuery = { __typename?: 'Query', projectDetail?: { __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, projectApplications: Array<{ __typename?: 'ProjectApplicationType', projectApplicationId: string, seekerId: string, projectId: string, applicationStatus?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string } | null }> } | null };
+export type ProjectDetailQuery = { __typename?: 'Query', projectDetail?: { __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, projectApplications: Array<{ __typename?: 'ProjectApplicationType', projectApplicationId: string, seekerId: string, projectId: string, applicationStatus?: string | null, applicationIsInvited?: boolean | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string } | null }> } | null };
 
 export type SearchProjectsQueryVariables = Exact<{
   searchKeyword: Scalars['String'];
@@ -739,7 +745,7 @@ export type CompanyProjectListingQueryVariables = Exact<{
 }>;
 
 
-export type CompanyProjectListingQuery = { __typename?: 'Query', companyProjectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyName?: string | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, projectApplications: Array<{ __typename?: 'ProjectApplicationType', projectApplicationId: string, seekerId: string, projectId: string, applicationStatus?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null } | null }> } | null> };
+export type CompanyProjectListingQuery = { __typename?: 'Query', companyProjectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyName?: string | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, projectApplications: Array<{ __typename?: 'ProjectApplicationType', projectApplicationId: string, seekerId: string, projectId: string, applicationStatus?: string | null, applicationIsInvited?: boolean | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null } | null }> } | null> };
 
 export type JobSeekerListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -791,8 +797,12 @@ export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserType', use
 
 
 export const CreateApplicationDocument = gql`
-    mutation createApplication($projectId: Int!) {
-  createApplication(projectId: $projectId) {
+    mutation createApplication($userId: Int, $projectId: Int!, $applicationIsInvited: Boolean) {
+  createApplication(
+    userId: $userId
+    projectId: $projectId
+    applicationIsInvited: $applicationIsInvited
+  ) {
     ... on ApplicationResponse {
       success
       projectApplicationId
@@ -816,7 +826,9 @@ export type CreateApplicationMutationFn = Apollo.MutationFunction<CreateApplicat
  * @example
  * const [createApplicationMutation, { data, loading, error }] = useCreateApplicationMutation({
  *   variables: {
+ *      userId: // value for 'userId'
  *      projectId: // value for 'projectId'
+ *      applicationIsInvited: // value for 'applicationIsInvited'
  *   },
  * });
  */
@@ -1522,6 +1534,7 @@ export const GetJobSeekerApplicationsDocument = gql`
     projectId
     applicationStatus
     applicationDate
+    applicationIsInvited
     jobSeeker {
       seekerName
     }
@@ -1825,6 +1838,7 @@ export const ProjectDetailDocument = gql`
       seekerId
       projectId
       applicationStatus
+      applicationIsInvited
       jobSeeker {
         seekerId
       }
@@ -1948,6 +1962,7 @@ export const CompanyProjectListingDocument = gql`
       seekerId
       projectId
       applicationStatus
+      applicationIsInvited
       jobSeeker {
         seekerId
         seekerName

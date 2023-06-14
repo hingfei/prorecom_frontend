@@ -127,8 +127,8 @@ export const DialogApplicationLayout = ({
       dialogContentProps={{ sx: { pt: 0, overflowY: 'unset' } }}
       action={
         <>
-          <Button onClick={onClose} color='secondary' variant='outlined'>
-            Cancel
+          <Button onClick={onClose} color='error' variant='outlined'>
+            Close
           </Button>
         </>
       }

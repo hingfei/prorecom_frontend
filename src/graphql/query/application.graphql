@@ -5,6 +5,7 @@ query getJobSeekerApplications {
     projectId
     applicationStatus
     applicationDate
+    applicationIsInvited
     jobSeeker{
       seekerName
     }

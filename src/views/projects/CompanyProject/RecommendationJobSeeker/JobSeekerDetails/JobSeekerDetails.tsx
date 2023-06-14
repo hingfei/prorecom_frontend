@@ -2,12 +2,12 @@ import { styled } from '@mui/material/styles'
 import { Box, Card, CardContent } from '@mui/material'
 import { ReactNode } from 'react'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
-import { JobSeekerType } from '../../../../../graphql/api'
+import { JobSeekerType, ProjectApplicationType, ProjectType } from '../../../../../graphql/api'
 import JobSeekerPersonalInfoSection from './JobSeekerPersonalInfoSection'
-import JobSeekerAboutSection from "./JobSeekerAboutSection";
-import JobSeekerEducationSection from "./JobSeekerEducationSection";
-import JobSeekerSkillsSection from "./JobSeekerSkillsSection";
-import JobSeekerResumeSection from "./JobSeekerResumeSection";
+import JobSeekerAboutSection from './JobSeekerAboutSection'
+import JobSeekerEducationSection from './JobSeekerEducationSection'
+import JobSeekerSkillsSection from './JobSeekerSkillsSection'
+import JobSeekerResumeSection from './JobSeekerResumeSection'
 
 const PerfectScrollbar = styled(PerfectScrollbarComponent)({
   maxHeight: '117vh',
@@ -22,17 +22,25 @@ const ScrollWrapper = ({ children }: { children: ReactNode }) => {
   return <PerfectScrollbar options={{ wheelPropagation: false, suppressScrollX: true }}>{children}</PerfectScrollbar>
 }
 
-const JobSeekerDetails = ({ jobSeeker }: { jobSeeker: JobSeekerType | undefined }) => {
+const JobSeekerDetails = ({
+  jobSeeker,
+  applications,
+  project
+}: {
+  jobSeeker: JobSeekerType | undefined
+  applications: Array<ProjectApplicationType>
+  project: ProjectType
+}) => {
   return (
     <ScrollWrapper>
       <Card sx={{ borderColor: 'primary.main', borderWidth: 1, borderStyle: 'solid' }}>
         <CardContent>
           <Box mb={14}>
-            <JobSeekerPersonalInfoSection jobSeeker={jobSeeker} />
+            <JobSeekerPersonalInfoSection jobSeeker={jobSeeker} applications={applications} project={project} />
           </Box>
 
           <Box mb={10} paddingX={8}>
-            <JobSeekerAboutSection seekerAbout={jobSeeker?.seekerAbout} gender={jobSeeker?.seekerGender}/>
+            <JobSeekerAboutSection seekerAbout={jobSeeker?.seekerAbout} gender={jobSeeker?.seekerGender} />
           </Box>
 
           <Box mb={10} paddingX={8}>

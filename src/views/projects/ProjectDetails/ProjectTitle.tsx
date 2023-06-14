@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import Chip from '@mui/material/Chip'
 import {
   GetJobSeekerApplicationsDocument,
   ProjectListingDocument,
-  ProjectType,
+  ProjectType, SearchProjectsDocument,
   useCreateApplicationMutation,
   useSendNotificationMutation
 } from '../../../graphql/api'
 import { capitalizeFirstLetter } from '../../../@core/utils/capitalize-first-letter'
 import { CalendarMonthOutline, CurrencyUsd, Domain, MapMarkerOutline } from 'mdi-material-ui'
 import { onCompleted, onError } from '../../../@core/utils/response'
-import dayjs from "dayjs";
+import dayjs from 'dayjs'
 
 const ProjectTitle = ({
   project,
@@ -22,9 +22,8 @@ const ProjectTitle = ({
   applications: any
   jobSeeker: any
 }) => {
-  const isProjectApplied = applications.some(
-    application => parseInt(application.projectId) === parseInt(project?.projectId)
-  )
+  const [buttonTitle, setButtonTitle] = useState('Apply')
+  const [isProjectApplied, setIsProjectApplied] = useState(false)
 
   const [createApplication, { loading }] = useCreateApplicationMutation({
     variables: {
@@ -40,10 +39,12 @@ const ProjectTitle = ({
           }
         }
       })
+      setButtonTitle('Applied')
+      setIsProjectApplied(true)
       onCompleted(data?.createApplication, undefined)
     },
     onError: error => onError(error),
-    refetchQueries: [ProjectListingDocument, GetJobSeekerApplicationsDocument]
+    refetchQueries: [ProjectListingDocument, GetJobSeekerApplicationsDocument, SearchProjectsDocument]
   })
 
   const [sendNotif] = useSendNotificationMutation()
@@ -52,6 +53,25 @@ const ProjectTitle = ({
     createApplication()
   }
 
+  useEffect(() => {
+    applications.some(application => {
+      if (parseInt(application.projectId) === parseInt(project?.projectId)) {
+        if (application.applicationIsInvited) {
+          setButtonTitle('Invited')
+        } else {
+          setButtonTitle('Applied')
+        }
+        setIsProjectApplied(true)
+
+        return true
+      }
+      setButtonTitle('Apply')
+      setIsProjectApplied(false)
+
+      return false
+    })
+  }, [project])
+
   return (
     <>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={3}>
@@ -59,7 +79,7 @@ const ProjectTitle = ({
           {project?.projectName ?? '-'}
         </Typography>
         <Button variant={'contained'} onClick={handleApply} disabled={loading || isProjectApplied}>
-          {isProjectApplied ? 'Applied' : 'Apply'}
+          {buttonTitle}
         </Button>
       </Box>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={1}>

@@ -2,6 +2,7 @@ import { Box, Card, CardContent, Grid, List, ListItem, ListItemIcon, ListItemTex
 import { styled } from '@mui/material/styles'
 import { RhombusMedium } from 'mdi-material-ui'
 import React from 'react'
+import dayjs from "dayjs";
 
 // ** Styled Components
 const TextBox = styled(Box)(({ theme }) => ({
@@ -114,7 +115,7 @@ const CompanyProjectDetailsSection = ({ project }: { project: any }) => {
                 </RowWrapper>
                 <Grid item sm={8} md={9}>
                   <Typography variant={'body1'} fontWeight={600}>
-                    {project?.postDates ?? '-'}
+                    {dayjs(project?.postDates).format('DD MMM YYYY')}
                   </Typography>
                 </Grid>
               </Grid>

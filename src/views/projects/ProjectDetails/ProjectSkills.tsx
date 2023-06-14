@@ -10,7 +10,7 @@ const ProjectSkills = ({ project }: { project: ProjectType | undefined }) => {
         <Box display={'flex'} alignItems={'center'}>
           <CogOutline sx={{ mr: 2 }} />
           <Typography variant={'h6'} fontWeight={600}>
-            SkillsRequired
+            Skills Required
           </Typography>
         </Box>
         <List>

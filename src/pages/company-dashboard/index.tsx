@@ -146,7 +146,11 @@ const ApplicationRow = ({ row }: ProjectListingCellType) => {
                     />
                   </TableCell>
                   <TableCell>
-                    {application?.applicationStatus === 'pending' ? (
+                    {application?.applicationStatus === 'pending' && application?.applicationIsInvited ? (
+                      <Typography variant='body2' fontWeight={600}>
+                        Invitation has been sent
+                      </Typography>
+                    ) : application?.applicationStatus === 'pending' && !application?.applicationIsInvited ? (
                       <Box sx={{ display: 'flex', columnGap: 4 }}>
                         <CheckIcon
                           title={'Accept'}
@@ -166,7 +170,9 @@ const ApplicationRow = ({ row }: ProjectListingCellType) => {
                         />
                       </Box>
                     ) : (
-                      ''
+                      <Typography variant='body2' fontWeight={600}>
+                        No actions can be performed
+                      </Typography>
                     )}
                   </TableCell>
                 </TableRow>

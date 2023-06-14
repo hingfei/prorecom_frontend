@@ -66,6 +66,7 @@ query projectDetail($projectId: Int!) {
       seekerId
       projectId
       applicationStatus
+      applicationIsInvited
       jobSeeker {
         seekerId
       }
@@ -131,6 +132,7 @@ query companyProjectListing($companyId: Int!) {
       seekerId
       projectId
       applicationStatus
+      applicationIsInvited
       jobSeeker {
         seekerId
         seekerName

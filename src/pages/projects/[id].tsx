@@ -59,7 +59,11 @@ const CompanyProjectDetails = ({ projectId, ssrData }: { projectId: number; ssrD
         <>
           <PageHeader title={'Potential Candidates'} />
           <Grid item xs={12}>
-            <RecommendedJobSeekerSection projectId={projectId} />
+            <RecommendedJobSeekerSection
+              projectId={projectId}
+              applications={data?.projectDetail?.projectApplications}
+              project={data?.projectDetail}
+            />
           </Grid>
         </>
       )}
