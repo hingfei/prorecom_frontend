@@ -60,6 +60,7 @@ export type CompanyType = {
   companyFounder?: Maybe<Scalars['String']>;
   companyId: Scalars['ID'];
   companyName?: Maybe<Scalars['String']>;
+  companyProfilePic?: Maybe<Scalars['String']>;
   companySize?: Maybe<Scalars['String']>;
   companyState?: Maybe<Scalars['String']>;
   companyStreet?: Maybe<Scalars['String']>;
@@ -157,7 +158,8 @@ export type JobSeekerType = {
   seekerIsOpenForWork?: Maybe<Scalars['Boolean']>;
   seekerName?: Maybe<Scalars['String']>;
   seekerPhoneNo?: Maybe<Scalars['Int']>;
-  seekerResume?: Maybe<Scalars['Upload']>;
+  seekerProfilePic?: Maybe<Scalars['String']>;
+  seekerResume?: Maybe<Scalars['String']>;
   seekerState?: Maybe<Scalars['String']>;
   seekerStreet?: Maybe<Scalars['String']>;
   skills: Array<SkillType>;
@@ -186,6 +188,9 @@ export type Mutation = {
   updateJobSeekerPassword: JobSeekerResponse;
   updateProject: ProjectModifyResponse;
   updateUser: UpdateUserResponse;
+  uploadCompanyProfilePic: CompanyResponse;
+  uploadResume: JobSeekerResponse;
+  uploadSeekerProfilePic: JobSeekerResponse;
 };
 
 
@@ -298,6 +303,24 @@ export type MutationUpdateUserArgs = {
   userEmail?: InputMaybe<Scalars['String']>;
   userId: Scalars['Int'];
   userName?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUploadCompanyProfilePicArgs = {
+  profilePic: Scalars['Upload'];
+  userId: Scalars['Int'];
+};
+
+
+export type MutationUploadResumeArgs = {
+  seekerId: Scalars['Int'];
+  seekerResume: Scalars['Upload'];
+};
+
+
+export type MutationUploadSeekerProfilePicArgs = {
+  profilePic: Scalars['Upload'];
+  userId: Scalars['Int'];
 };
 
 export type NotificationResponse = {
@@ -606,6 +629,14 @@ export type UpdateCompanyPasswordMutationVariables = Exact<{
 
 export type UpdateCompanyPasswordMutation = { __typename?: 'Mutation', updateCompanyPassword: { __typename?: 'CompanyResponse', success: boolean, message?: string | null, company?: { __typename?: 'CompanyType', companyId: string } | null } };
 
+export type UploadCompanyProfilePicMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  profilePic: Scalars['Upload'];
+}>;
+
+
+export type UploadCompanyProfilePicMutation = { __typename?: 'Mutation', uploadCompanyProfilePic: { __typename?: 'CompanyResponse', success: boolean, message?: string | null, company?: { __typename?: 'CompanyType', companyId: string } | null } };
+
 export type DeleteEducationMutationVariables = Exact<{
   educationId: Scalars['ID'];
 }>;
@@ -653,14 +684,14 @@ export type CreateJobSeekerMutationVariables = Exact<{
 }>;
 
 
-export type CreateJobSeekerMutation = { __typename?: 'Mutation', createJobSeeker: { __typename?: 'JobSeekerResponse', success: boolean, message?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null } | null } };
+export type CreateJobSeekerMutation = { __typename?: 'Mutation', createJobSeeker: { __typename?: 'JobSeekerResponse', success: boolean, message?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: string | null } | null } };
 
 export type UpdateJobSeekerMutationVariables = Exact<{
   input: UpdateJobSeekerInput;
 }>;
 
 
-export type UpdateJobSeekerMutation = { __typename?: 'Mutation', updateJobSeeker: { __typename?: 'JobSeekerResponse', success: boolean, message?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null } | null } };
+export type UpdateJobSeekerMutation = { __typename?: 'Mutation', updateJobSeeker: { __typename?: 'JobSeekerResponse', success: boolean, message?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: string | null } | null } };
 
 export type DeleteJobSeekerMutationVariables = Exact<{
   seekerId: Scalars['Int'];
@@ -677,6 +708,22 @@ export type UpdateJobSeekerPasswordMutationVariables = Exact<{
 
 
 export type UpdateJobSeekerPasswordMutation = { __typename?: 'Mutation', updateJobSeekerPassword: { __typename?: 'JobSeekerResponse', success: boolean, message?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string } | null } };
+
+export type UploadResumeMutationVariables = Exact<{
+  seekerId: Scalars['Int'];
+  seekerResume: Scalars['Upload'];
+}>;
+
+
+export type UploadResumeMutation = { __typename?: 'Mutation', uploadResume: { __typename?: 'JobSeekerResponse', success: boolean, message?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string } | null } };
+
+export type UploadSeekerProfilePicMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  profilePic: Scalars['Upload'];
+}>;
+
+
+export type UploadSeekerProfilePicMutation = { __typename?: 'Mutation', uploadSeekerProfilePic: { __typename?: 'JobSeekerResponse', success: boolean, message?: string | null, jobSeeker?: { __typename?: 'JobSeekerType', seekerId: string } | null } };
 
 export type CreateUserMutationVariables = Exact<{
   username: Scalars['String'];
@@ -710,7 +757,7 @@ export type CompanyDetailQueryVariables = Exact<{
 }>;
 
 
-export type CompanyDetailQuery = { __typename?: 'Query', companyDetail?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null, projects?: Array<{ __typename?: 'ProjectListingType', projectId: string, projectName: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, projectStatus: string }> | null } | null };
+export type CompanyDetailQuery = { __typename?: 'Query', companyDetail?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, companyProfilePic?: string | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null, projects?: Array<{ __typename?: 'ProjectListingType', projectId: string, projectName: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectExpLvl?: string | null, projectStatus: string }> | null } | null };
 
 export type GetUserNotificationsQueryVariables = Exact<{
   unreadOnly: Scalars['Boolean'];
@@ -750,28 +797,28 @@ export type CompanyProjectListingQuery = { __typename?: 'Query', companyProjectL
 export type JobSeekerListingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type JobSeekerListingQuery = { __typename?: 'Query', jobSeekerListing: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null }> };
+export type JobSeekerListingQuery = { __typename?: 'Query', jobSeekerListing: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: string | null }> };
 
 export type JobSeekerDetailQueryVariables = Exact<{
   seekerId: Scalars['Int'];
 }>;
 
 
-export type JobSeekerDetailQuery = { __typename?: 'Query', jobSeekerDetail?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, seekerIsOpenForWork?: boolean | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> } | null };
+export type JobSeekerDetailQuery = { __typename?: 'Query', jobSeekerDetail?: { __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: string | null, seekerProfilePic?: string | null, seekerAbout?: string | null, seekerIsOpenForWork?: boolean | null, users?: { __typename?: 'UserType', userId: string, userName: string, userEmail: string, password: string, userType: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> } | null };
 
 export type RecommendedJobSeekerListingQueryVariables = Exact<{
   projectId: Scalars['Int'];
 }>;
 
 
-export type RecommendedJobSeekerListingQuery = { __typename?: 'Query', recommendedJobSeekerListing: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, seekerIsOpenForWork?: boolean | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
+export type RecommendedJobSeekerListingQuery = { __typename?: 'Query', recommendedJobSeekerListing: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: string | null, seekerProfilePic?: string | null, seekerAbout?: string | null, seekerIsOpenForWork?: boolean | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
 
 export type SearchJobSeekersQueryVariables = Exact<{
   searchKeyword: Scalars['String'];
 }>;
 
 
-export type SearchJobSeekersQuery = { __typename?: 'Query', searchJobSeekers: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: any | null, seekerAbout?: string | null, seekerIsOpenForWork?: boolean | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
+export type SearchJobSeekersQuery = { __typename?: 'Query', searchJobSeekers: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: string | null, seekerProfilePic?: string | null, seekerAbout?: string | null, seekerIsOpenForWork?: boolean | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
 
 export type SkillListingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1037,6 +1084,46 @@ export function useUpdateCompanyPasswordMutation(baseOptions?: Apollo.MutationHo
 export type UpdateCompanyPasswordMutationHookResult = ReturnType<typeof useUpdateCompanyPasswordMutation>;
 export type UpdateCompanyPasswordMutationResult = Apollo.MutationResult<UpdateCompanyPasswordMutation>;
 export type UpdateCompanyPasswordMutationOptions = Apollo.BaseMutationOptions<UpdateCompanyPasswordMutation, UpdateCompanyPasswordMutationVariables>;
+export const UploadCompanyProfilePicDocument = gql`
+    mutation uploadCompanyProfilePic($userId: Int!, $profilePic: Upload!) {
+  uploadCompanyProfilePic(userId: $userId, profilePic: $profilePic) {
+    ... on CompanyResponse {
+      success
+      company {
+        companyId
+      }
+      message
+    }
+  }
+}
+    `;
+export type UploadCompanyProfilePicMutationFn = Apollo.MutationFunction<UploadCompanyProfilePicMutation, UploadCompanyProfilePicMutationVariables>;
+
+/**
+ * __useUploadCompanyProfilePicMutation__
+ *
+ * To run a mutation, you first call `useUploadCompanyProfilePicMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadCompanyProfilePicMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadCompanyProfilePicMutation, { data, loading, error }] = useUploadCompanyProfilePicMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      profilePic: // value for 'profilePic'
+ *   },
+ * });
+ */
+export function useUploadCompanyProfilePicMutation(baseOptions?: Apollo.MutationHookOptions<UploadCompanyProfilePicMutation, UploadCompanyProfilePicMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadCompanyProfilePicMutation, UploadCompanyProfilePicMutationVariables>(UploadCompanyProfilePicDocument, options);
+      }
+export type UploadCompanyProfilePicMutationHookResult = ReturnType<typeof useUploadCompanyProfilePicMutation>;
+export type UploadCompanyProfilePicMutationResult = Apollo.MutationResult<UploadCompanyProfilePicMutation>;
+export type UploadCompanyProfilePicMutationOptions = Apollo.BaseMutationOptions<UploadCompanyProfilePicMutation, UploadCompanyProfilePicMutationVariables>;
 export const DeleteEducationDocument = gql`
     mutation deleteEducation($educationId: ID!) {
   deleteEducation(educationId: $educationId) {
@@ -1441,6 +1528,86 @@ export function useUpdateJobSeekerPasswordMutation(baseOptions?: Apollo.Mutation
 export type UpdateJobSeekerPasswordMutationHookResult = ReturnType<typeof useUpdateJobSeekerPasswordMutation>;
 export type UpdateJobSeekerPasswordMutationResult = Apollo.MutationResult<UpdateJobSeekerPasswordMutation>;
 export type UpdateJobSeekerPasswordMutationOptions = Apollo.BaseMutationOptions<UpdateJobSeekerPasswordMutation, UpdateJobSeekerPasswordMutationVariables>;
+export const UploadResumeDocument = gql`
+    mutation uploadResume($seekerId: Int!, $seekerResume: Upload!) {
+  uploadResume(seekerId: $seekerId, seekerResume: $seekerResume) {
+    ... on JobSeekerResponse {
+      success
+      jobSeeker {
+        seekerId
+      }
+      message
+    }
+  }
+}
+    `;
+export type UploadResumeMutationFn = Apollo.MutationFunction<UploadResumeMutation, UploadResumeMutationVariables>;
+
+/**
+ * __useUploadResumeMutation__
+ *
+ * To run a mutation, you first call `useUploadResumeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadResumeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadResumeMutation, { data, loading, error }] = useUploadResumeMutation({
+ *   variables: {
+ *      seekerId: // value for 'seekerId'
+ *      seekerResume: // value for 'seekerResume'
+ *   },
+ * });
+ */
+export function useUploadResumeMutation(baseOptions?: Apollo.MutationHookOptions<UploadResumeMutation, UploadResumeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadResumeMutation, UploadResumeMutationVariables>(UploadResumeDocument, options);
+      }
+export type UploadResumeMutationHookResult = ReturnType<typeof useUploadResumeMutation>;
+export type UploadResumeMutationResult = Apollo.MutationResult<UploadResumeMutation>;
+export type UploadResumeMutationOptions = Apollo.BaseMutationOptions<UploadResumeMutation, UploadResumeMutationVariables>;
+export const UploadSeekerProfilePicDocument = gql`
+    mutation uploadSeekerProfilePic($userId: Int!, $profilePic: Upload!) {
+  uploadSeekerProfilePic(userId: $userId, profilePic: $profilePic) {
+    ... on JobSeekerResponse {
+      success
+      jobSeeker {
+        seekerId
+      }
+      message
+    }
+  }
+}
+    `;
+export type UploadSeekerProfilePicMutationFn = Apollo.MutationFunction<UploadSeekerProfilePicMutation, UploadSeekerProfilePicMutationVariables>;
+
+/**
+ * __useUploadSeekerProfilePicMutation__
+ *
+ * To run a mutation, you first call `useUploadSeekerProfilePicMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadSeekerProfilePicMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadSeekerProfilePicMutation, { data, loading, error }] = useUploadSeekerProfilePicMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      profilePic: // value for 'profilePic'
+ *   },
+ * });
+ */
+export function useUploadSeekerProfilePicMutation(baseOptions?: Apollo.MutationHookOptions<UploadSeekerProfilePicMutation, UploadSeekerProfilePicMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadSeekerProfilePicMutation, UploadSeekerProfilePicMutationVariables>(UploadSeekerProfilePicDocument, options);
+      }
+export type UploadSeekerProfilePicMutationHookResult = ReturnType<typeof useUploadSeekerProfilePicMutation>;
+export type UploadSeekerProfilePicMutationResult = Apollo.MutationResult<UploadSeekerProfilePicMutation>;
+export type UploadSeekerProfilePicMutationOptions = Apollo.BaseMutationOptions<UploadSeekerProfilePicMutation, UploadSeekerProfilePicMutationVariables>;
 export const CreateUserDocument = gql`
     mutation createUser($username: String!, $userEmail: String!, $password: String!) {
   createUser(userName: $username, userEmail: $userEmail, password: $password) {
@@ -1647,6 +1814,7 @@ export const CompanyDetailDocument = gql`
     companyStreet
     companyCity
     companyState
+    companyProfilePic
     users {
       userId
       userName
@@ -2055,6 +2223,7 @@ export const JobSeekerDetailDocument = gql`
     seekerCity
     seekerState
     seekerResume
+    seekerProfilePic
     seekerAbout
     seekerIsOpenForWork
     users {
@@ -2121,6 +2290,7 @@ export const RecommendedJobSeekerListingDocument = gql`
     seekerCity
     seekerState
     seekerResume
+    seekerProfilePic
     seekerAbout
     seekerIsOpenForWork
     users {
@@ -2184,6 +2354,7 @@ export const SearchJobSeekersDocument = gql`
     seekerCity
     seekerState
     seekerResume
+    seekerProfilePic
     seekerAbout
     seekerIsOpenForWork
     users {

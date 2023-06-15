@@ -44,3 +44,16 @@ mutation updateCompanyPassword($userId: Int!, $currentPassword: String!, $newPas
     }
   }
 }
+
+mutation uploadCompanyProfilePic($userId: Int!, $profilePic: Upload!) {
+  uploadCompanyProfilePic(userId: $userId, profilePic: $profilePic) {
+    ... on CompanyResponse {
+      success
+      company {
+        companyId
+      }
+      message
+    }
+  }
+}
+

@@ -36,7 +36,7 @@ const AboutSection = ({
             {aboutData}
           </Typography>
         ) : (
-          <Typography variant={'body2'}>Introduce yourself now</Typography>
+          <Typography variant={'body2'}>No information is provided</Typography>
         )}
       </Box>
     </Box>

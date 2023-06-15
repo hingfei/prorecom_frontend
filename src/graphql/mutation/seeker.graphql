@@ -63,3 +63,27 @@ mutation updateJobSeekerPassword($userId: Int!, $currentPassword: String!, $newP
     }
   }
 }
+
+mutation uploadResume($seekerId: Int!, $seekerResume: Upload!) {
+  uploadResume(seekerId: $seekerId, seekerResume:$seekerResume) {
+    ... on JobSeekerResponse {
+      success
+      jobSeeker {
+        seekerId
+      }
+      message
+    }
+  }
+}
+
+mutation uploadSeekerProfilePic($userId: Int!, $profilePic: Upload!) {
+  uploadSeekerProfilePic(userId: $userId, profilePic: $profilePic) {
+    ... on JobSeekerResponse {
+      success
+      jobSeeker {
+        seekerId
+      }
+      message
+    }
+  }
+}

@@ -6,7 +6,8 @@ import {
   EyeOutline,
   MinusCircleOutline,
   PlusCircleOutline,
-  SquareEditOutline
+  SquareEditOutline,
+  TrayArrowDown
 } from 'mdi-material-ui'
 
 export type IconBaseProps = IconButtonProps & { title?: string; children: React.ReactNode }
@@ -73,6 +74,14 @@ export const CloseIcon = (props: Omit<IconBaseProps, 'children'>) => {
   return (
     <IconBase {...props}>
       <CloseCircleOutline fontSize={'small'} />
+    </IconBase>
+  )
+}
+
+export const DownloadIcon = (props: Omit<IconBaseProps, 'children'>) => {
+  return (
+    <IconBase {...props}>
+      <TrayArrowDown fontSize={'large'} />
     </IconBase>
   )
 }

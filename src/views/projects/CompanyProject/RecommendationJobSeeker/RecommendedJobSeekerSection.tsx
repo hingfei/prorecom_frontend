@@ -42,7 +42,6 @@ function RecommendedJobSeekerSection({
       projectId: projectId
     },
     onCompleted: data => {
-      console.log('listing', data)
       setJobSeeker(data?.recommendedJobSeekerListing[0])
       setJobSeekerList(data?.recommendedJobSeekerListing)
       if (!switchOption.checked) {
@@ -64,7 +63,6 @@ function RecommendedJobSeekerSection({
 
   const [searchJobSeeker, { loading: searchLoading }] = useSearchJobSeekersLazyQuery({
     onCompleted: data => {
-      console.log('listing', data)
       setJobSeeker(data?.searchJobSeekers[0])
       setJobSeekerList(data?.searchJobSeekers)
       if (switchOption.checked) {

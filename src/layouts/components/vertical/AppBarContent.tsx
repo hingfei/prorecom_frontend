@@ -12,6 +12,8 @@ import { useRouter } from 'next/router'
 import { useAuth } from '../../../@core/context/authContext'
 import { useEffect, useState } from 'react'
 import { BriefcaseOutline, ViewDashboardOutline } from 'mdi-material-ui'
+import { useCompanyDetailLazyQuery, useJobSeekerDetailLazyQuery } from "../../../graphql/api";
+import { onError } from "../../../@core/utils/response";
 
 interface Props {
   hidden: boolean
@@ -31,14 +33,31 @@ const AppBarContent = (props: Props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [userName, setUsername] = useState()
   const [userType, setUserType] = useState()
+  const [profilePic, setProfilePic] = useState(null);
   const { isAuthenticated: useAuthAuthenticated, logout, handleLogin } = useAuth()
-  // ** Props
-  const { hidden, settings, saveSettings, toggleNavVisibility } = props
 
-  // ** Hook
-  const hiddenSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
-  const theme = useTheme()
+
   const router = useRouter()
+
+  const [fetchJobSeeker] = useJobSeekerDetailLazyQuery({
+    onCompleted: data => {
+      setProfilePic(data?.jobSeekerDetail?.seekerProfilePic)
+    },
+    onError: error => {
+      router.push('/404')
+      onError(error, undefined)
+    }
+  })
+
+  const [fetchCompany] = useCompanyDetailLazyQuery({
+    onCompleted: data => {
+      setProfilePic(data?.companyDetail?.companyProfilePic)
+    },
+    onError: error => {
+      router.push('/404')
+      onError(error, undefined)
+    }
+  })
 
   const handleLogout = () => {
     logout()
@@ -55,6 +74,11 @@ const AppBarContent = (props: Props) => {
           const userData = JSON.parse(data)
           setUsername(userData?.userName)
           setUserType(userData?.userType)
+          if (userData?.userType === 'job_seekers') {
+            fetchJobSeeker({ variables: { seekerId: parseInt(userData.userId) } })
+          } else {
+            fetchCompany({ variables: { companyId: parseInt(userData.userId) } })
+          }
           setIsAuthenticated(true)
         }
       }
@@ -94,7 +118,7 @@ const AppBarContent = (props: Props) => {
               </IconButton>
             )}
             <NotificationDropdown />
-            <UserDropdown handleLogout={handleLogout} userType={userType} userName={userName} />
+            <UserDropdown handleLogout={handleLogout} userType={userType} userName={userName} profilePic={profilePic}/>
           </>
         )}
 

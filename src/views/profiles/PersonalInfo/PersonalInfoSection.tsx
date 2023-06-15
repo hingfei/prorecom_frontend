@@ -1,13 +1,15 @@
 import { Box, Button, Typography } from '@mui/material'
-import { setDrawerState, useAppDispatch } from '../../../store'
+import { closeDrawerState, setDrawerState, useAppDispatch } from '../../../store'
 import { DrawerType } from '../../../constants'
 import { styled } from '@mui/material/styles'
 import { BoxProps } from '@mui/material/Box'
 import { generateGenderIcon } from '../../../@core/utils/generate-gender-icon'
-import Avatar from '@mui/material/Avatar'
 import dayjs from 'dayjs'
 import Chip from '@mui/material/Chip'
 import React from 'react'
+import UserAvatar from '../../../@core/components/user-avatar'
+import { JobSeekerDetailDocument, useUploadSeekerProfilePicMutation } from '../../../graphql/api'
+import { onCompleted, onError } from '../../../@core/utils/response'
 
 // ** Styled Components
 const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -37,27 +39,37 @@ const AddressWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%'
 }))
 
-export const renderUserAvatar = () => {
-  return (
-    <Avatar
-      alt='avatar'
-      sx={{
-        width: 120,
-        height: 'auto',
-        fontWeight: 600,
-        fontSize: '3rem'
-      }}
-      src='/images/avatars/1.png'
-    />
-  )
-}
-
-const PersonalInfoSection = ({ jobSeeker, seekerId, viewOnly }: { jobSeeker: any; seekerId: string | undefined; viewOnly: boolean }) => {
+const PersonalInfoSection = ({
+  jobSeeker,
+  seekerId,
+  viewOnly
+}: {
+  jobSeeker: any
+  seekerId: string | undefined
+  viewOnly: boolean
+}) => {
   const dispatch = useAppDispatch()
+
+  const [uploadProfilePic, { loading }] = useUploadSeekerProfilePicMutation({
+    onCompleted: data =>
+      onCompleted(data?.uploadSeekerProfilePic, () => {
+        dispatch(closeDrawerState())
+      }),
+    onError: error => {
+      onError(error, undefined)
+    },
+    refetchQueries: [JobSeekerDetailDocument]
+  })
 
   return (
     <>
-      {renderUserAvatar()}
+      <UserAvatar
+        loading={loading}
+        viewOnly={viewOnly}
+        userId={jobSeeker?.seekerId}
+        imageUrl={jobSeeker?.seekerProfilePic}
+        uploadProfilePic={uploadProfilePic}
+      />
       <Typography variant={'h4'} fontWeight={700} sx={{ mt: 4, mb: 2 }}>
         {jobSeeker?.seekerName ?? ''}
       </Typography>

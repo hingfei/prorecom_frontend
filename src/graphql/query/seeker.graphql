@@ -25,6 +25,7 @@ query jobSeekerDetail($seekerId: Int!) {
     seekerCity
     seekerState
     seekerResume
+    seekerProfilePic
     seekerAbout
     seekerIsOpenForWork
     users {
@@ -62,6 +63,7 @@ query recommendedJobSeekerListing($projectId: Int!) {
     seekerCity
     seekerState
     seekerResume
+    seekerProfilePic
     seekerAbout
     seekerIsOpenForWork
     users {
@@ -96,6 +98,7 @@ query searchJobSeekers($searchKeyword: String!) {
     seekerCity
     seekerState
     seekerResume
+    seekerProfilePic
     seekerAbout
     seekerIsOpenForWork
     users {

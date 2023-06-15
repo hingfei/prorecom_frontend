@@ -168,7 +168,7 @@ const EducationSection = ({
           )
         })
       ) : (
-        <Typography variant={'body2'}>Add your education now</Typography>
+        <Typography variant={'body2'}>No information is provided</Typography>
       )}
     </Box>
   )

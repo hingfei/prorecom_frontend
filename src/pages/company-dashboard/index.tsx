@@ -352,7 +352,6 @@ const CompanyDashboard = () => {
 
   const [fetchProject, { data }] = useCompanyProjectListingLazyQuery({
     onCompleted: data => {
-      console.log('company data', data)
       setLoading(false)
     },
     onError: error => {

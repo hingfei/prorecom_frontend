@@ -1,11 +1,17 @@
 import { Box, Button, Typography } from '@mui/material'
-import { setDrawerState, useAppDispatch } from '../../store'
+import { closeDrawerState, setDrawerState, useAppDispatch } from '../../store'
 import { DrawerType } from '../../constants'
 import { styled } from '@mui/material/styles'
-import { BoxProps } from '@mui/material/Box'
-import Avatar from '@mui/material/Avatar'
 import { capitalizeFirstLetter } from '../../@core/utils/capitalize-first-letter'
 import { TypographyProps } from '@mui/material/Typography'
+import UserAvatar from '../../@core/components/user-avatar'
+import {
+  CompanyDetailDocument,
+  JobSeekerDetailDocument,
+  useUploadCompanyProfilePicMutation,
+  useUploadSeekerProfilePicMutation
+} from "../../graphql/api";
+import { onCompleted, onError } from "../../@core/utils/response";
 
 // ** Styled Components
 const DescriptionBox = styled(Typography)<TypographyProps>(({ theme }) => ({
@@ -31,28 +37,23 @@ const DescriptionTitleWrapper = styled(Typography)<TypographyProps>(({ theme }) 
   alignSelf: 'flex-start'
 }))
 
-
-export const renderUserAvatar = () => {
-  return (
-    <Avatar
-      alt='avatar'
-      sx={{
-        width: 120,
-        height: 'auto',
-        fontWeight: 600,
-        fontSize: '3rem'
-      }}
-      src='/images/avatars/1.png'
-    />
-  )
-}
-
 const CompanyProfileSection = ({ company, companyId }: { company: any; companyId: string | undefined }) => {
   const dispatch = useAppDispatch()
 
+  const [uploadProfilePic, { loading }] = useUploadCompanyProfilePicMutation({
+    onCompleted: data =>
+      onCompleted(data?.uploadCompanyProfilePic, () => {
+        dispatch(closeDrawerState())
+      }),
+    onError: error => {
+      onError(error, undefined)
+    },
+    refetchQueries: [CompanyDetailDocument]
+  })
+
   return (
     <>
-      {renderUserAvatar()}
+      <UserAvatar viewOnly={false} userId={companyId} imageUrl={company.companyProfilePic} uploadProfilePic={uploadProfilePic} loading={loading}/>
       <Typography variant={'h4'} fontWeight={700} sx={{ my: 4 }}>
         {company?.companyName ?? '-'}
       </Typography>
@@ -98,7 +99,7 @@ const CompanyProfileSection = ({ company, companyId }: { company: any; companyId
       <Button
         variant={'contained'}
         size='large'
-        sx={{ mt: 5, mb: 4 }}
+        sx={{ mt: 5, mb: 4, alignSelf: 'end' }}
         onClick={() =>
           dispatch(
             setDrawerState({

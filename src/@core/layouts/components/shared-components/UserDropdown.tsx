@@ -32,11 +32,13 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 const UserDropdown = ({
   handleLogout,
   userType,
-  userName
+  userName,
+  profilePic
 }: {
   handleLogout: () => void
   userType: any
   userName: string
+  profilePic: string | null
 }) => {
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
@@ -84,11 +86,21 @@ const UserDropdown = ({
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
         <Avatar
-          alt='John Doe'
+          alt='avatar'
           onClick={handleDropdownOpen}
           sx={{ width: 40, height: 40 }}
-          src='/images/avatars/1.png'
-        />
+        >
+          <Box
+            component='img'
+            sx={{
+              height: '100%',
+              width: '100%',
+              objectFit: 'cover'
+            }}
+            src={profilePic ? `/images/profile-pics/${profilePic}` : '/images/avatars/1.png'}
+            alt='avatar'
+          />
+        </Avatar>
       </Badge>
       <Menu
         anchorEl={anchorEl}
@@ -105,7 +117,21 @@ const UserDropdown = ({
               badgeContent={<BadgeContentSpan />}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             >
-              <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
+              <Avatar
+                alt='avatar'
+                sx={{ width: '2.5rem', height: '2.5rem' }}
+              >
+                <Box
+                  component='img'
+                  sx={{
+                    height: '100%',
+                    width: '100%',
+                    objectFit: 'cover'
+                  }}
+                  src={profilePic ? `/images/profile-pics/${profilePic}` : '/images/avatars/1.png'}
+                  alt='avatar'
+                />
+              </Avatar>
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
               <Typography sx={{ fontWeight: 600 }}>{userName}</Typography>

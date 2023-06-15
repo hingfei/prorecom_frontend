@@ -21,6 +21,7 @@ query companyDetail($companyId: Int!){
     companyStreet
     companyCity
     companyState
+    companyProfilePic
     users {
       userId
       userName

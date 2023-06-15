@@ -59,7 +59,7 @@ const SkillSection = ({
           })}
         </List>
       ) : (
-        <Typography variant={'body2'}>Add your skills now</Typography>
+        <Typography variant={'body2'}>No information is provided</Typography>
       )}
     </Box>
   )
