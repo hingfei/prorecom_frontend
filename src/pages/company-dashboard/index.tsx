@@ -368,7 +368,7 @@ const CompanyDashboard = () => {
   return (
     <Grid container spacing={6}>
       <PageHeader
-        title={'Project Management'}
+        title={'Project Dashboard'}
         linkTitle={'Add Project'}
         onLinkClick={() =>
           router.push({
