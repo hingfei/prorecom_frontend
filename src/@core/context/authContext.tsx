@@ -1,6 +1,11 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import Spinner from '../components/spinner'
-import { useLoginMutation, useMeLazyQuery } from '../../graphql/api'
+import {
+  GetUserNotificationsQuery,
+  useGetUserNotificationsLazyQuery,
+  useLoginMutation,
+  useMeLazyQuery
+} from '../../graphql/api'
 import { onCompleted, onError } from '../utils/response'
 import { useRouter } from 'next/router'
 import { authConfig } from '../../configs/auth'
@@ -15,6 +20,7 @@ type AuthContextType = {
   fetchMe: () => Promise<void>
   setIsInitialized: (value: boolean) => void
   resetStore: () => void
+  notif: any
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -25,7 +31,8 @@ export const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
   fetchMe: () => Promise.resolve(),
   setIsInitialized: () => Boolean,
-  resetStore: () => {}
+  resetStore: () => {},
+  notif: []
 })
 
 type Props = {
@@ -35,6 +42,10 @@ type Props = {
 export const AuthProvider = ({ children }: Props) => {
   const [isInitialized, setIsInitialized] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null)
+  const [notif, setNotif] = useState<GetUserNotificationsQuery['getUserNotifications']>([])
+
+
   const router = useRouter()
 
   const resetStore = () => {
@@ -43,6 +54,9 @@ export const AuthProvider = ({ children }: Props) => {
     window.localStorage.removeItem(authConfig.storageTokenKeyName)
     removeCookies(authConfig.storageTokenKeyName)
     setIsAuthenticated(false)
+    if (pollingInterval) {
+      clearInterval(pollingInterval)
+    }
   }
 
   const [fetchMe, { loading: fetchMeLoading }] = useMeLazyQuery({
@@ -58,6 +72,16 @@ export const AuthProvider = ({ children }: Props) => {
       onError(error, undefined)
       resetStore()
     }
+  })
+
+  const [fetchNotif] = useGetUserNotificationsLazyQuery({
+    variables: {
+      unreadOnly: false
+    },
+    onCompleted: data => {
+      setNotif(data?.getUserNotifications)
+    },
+    fetchPolicy: 'cache-and-network'
   })
 
   const [login, { loading }] = useLoginMutation({
@@ -90,6 +114,27 @@ export const AuthProvider = ({ children }: Props) => {
     initAuth()
   }, [])
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchNotif()
+      const interval = setInterval(() => {
+        fetchNotif()
+      }, 60000)
+
+      setPollingInterval(interval)
+    } else {
+      if (pollingInterval) {
+        clearInterval(pollingInterval)
+      }
+    }
+
+    return () => {
+      if (pollingInterval) {
+        clearInterval(pollingInterval)
+      }
+    }
+  }, [isAuthenticated])
+
   const handleLogin = (userName: string, password: string) => {
     login({
       variables: {
@@ -109,7 +154,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   return (
     <AuthContext.Provider
-      value={{ isInitialized, fetchMeLoading, fetchMe, isAuthenticated, handleLogin, logout, resetStore }}
+      value={{ isInitialized, fetchMeLoading, fetchMe, isAuthenticated, handleLogin, logout, resetStore, notif }}
     >
       {children}
     </AuthContext.Provider>

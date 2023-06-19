@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, ReactNode, SyntheticEvent, useEffect, useState } from 'react'
+import { Fragment, ReactNode, SyntheticEvent, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -16,14 +16,10 @@ import BellOutline from 'mdi-material-ui/BellOutline'
 
 // ** Third Party Components
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
-import {
-  GetUserNotificationsDocument,
-  GetUserNotificationsQuery,
-  useGetUserNotificationsLazyQuery,
-  useMarkNotificationAsReadMutation
-} from '../../../../graphql/api'
+import { GetUserNotificationsDocument, useMarkNotificationAsReadMutation } from '../../../../graphql/api'
 import dayjs from 'dayjs'
 import Badge from '@mui/material/Badge'
+import { useAuth } from '../../../context/authContext'
 
 const Menu = styled(MuiMenu)<MenuProps>(({ theme }) => ({
   '& .MuiMenu-paper': {
@@ -68,8 +64,7 @@ const MenuItemTitle = styled(Typography)<TypographyProps>(({ theme }) => ({
 
 const NotificationDropdown = () => {
   const [anchorEl, setAnchorEl] = useState<(EventTarget & Element) | null>(null)
-  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null)
-  const [notif, setNotif] = useState<GetUserNotificationsQuery['getUserNotifications']>([])
+  const { notif } = useAuth()
 
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
 
@@ -89,39 +84,9 @@ const NotificationDropdown = () => {
     }
   }
 
-  const [fetchNotif] = useGetUserNotificationsLazyQuery({
-    variables: {
-      unreadOnly: false
-    },
-    onCompleted: data => {
-      setNotif(data?.getUserNotifications)
-    },
-    onError: e => {
-      if (pollingInterval) {
-        clearInterval(pollingInterval)
-      }
-    },
-    fetchPolicy: 'cache-and-network'
-  })
-
   const [readNotif] = useMarkNotificationAsReadMutation({
     refetchQueries: [GetUserNotificationsDocument]
   })
-
-  useEffect(() => {
-    fetchNotif()
-    const interval = setInterval(() => {
-      fetchNotif()
-    }, 30000)
-
-    setPollingInterval(interval)
-
-    return () => {
-      if (pollingInterval) {
-        clearInterval(pollingInterval)
-      }
-    }
-  }, [])
 
   const ScrollWrapper = ({ children }: { children: ReactNode }) => {
     if (hidden) {

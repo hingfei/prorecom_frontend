@@ -565,7 +565,9 @@ export type UserNotFound = {
 
 export type UserNotificationCountType = {
   __typename?: 'UserNotificationCountType';
+  message?: Maybe<Scalars['String']>;
   notifications: Array<NotificationType>;
+  success: Scalars['Boolean'];
   unreadCount: Scalars['Int'];
 };
 
@@ -764,7 +766,7 @@ export type GetUserNotificationsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserNotificationsQuery = { __typename?: 'Query', getUserNotifications: { __typename?: 'UserNotificationCountType', unreadCount: number, notifications: Array<{ __typename?: 'NotificationType', notificationId: string, senderId: string, receiverId: string, message?: string | null, isRead?: boolean | null, createdAt?: any | null }> } };
+export type GetUserNotificationsQuery = { __typename?: 'Query', getUserNotifications: { __typename?: 'UserNotificationCountType', success: boolean, message?: string | null, unreadCount: number, notifications: Array<{ __typename?: 'NotificationType', notificationId: string, senderId: string, receiverId: string, message?: string | null, isRead?: boolean | null, createdAt?: any | null }> } };
 
 export type ProjectListingQueryVariables = Exact<{
   recommendation: Scalars['Boolean'];
@@ -1868,6 +1870,8 @@ export type CompanyDetailQueryResult = Apollo.QueryResult<CompanyDetailQuery, Co
 export const GetUserNotificationsDocument = gql`
     query getUserNotifications($unreadOnly: Boolean!) {
   getUserNotifications(unreadOnly: $unreadOnly) {
+    success
+    message
     unreadCount
     notifications {
       notificationId
