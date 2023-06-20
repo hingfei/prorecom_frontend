@@ -5,13 +5,8 @@ import { styled } from '@mui/material/styles'
 import { capitalizeFirstLetter } from '../../@core/utils/capitalize-first-letter'
 import { TypographyProps } from '@mui/material/Typography'
 import UserAvatar from '../../@core/components/user-avatar'
-import {
-  CompanyDetailDocument,
-  JobSeekerDetailDocument,
-  useUploadCompanyProfilePicMutation,
-  useUploadSeekerProfilePicMutation
-} from "../../graphql/api";
-import { onCompleted, onError } from "../../@core/utils/response";
+import { CompanyDetailDocument, useUploadCompanyProfilePicMutation } from '../../graphql/api'
+import { onCompleted, onError } from '../../@core/utils/response'
 
 // ** Styled Components
 const DescriptionBox = styled(Typography)<TypographyProps>(({ theme }) => ({
@@ -37,7 +32,15 @@ const DescriptionTitleWrapper = styled(Typography)<TypographyProps>(({ theme }) 
   alignSelf: 'flex-start'
 }))
 
-const CompanyProfileSection = ({ company, companyId }: { company: any; companyId: string | undefined }) => {
+const CompanyProfileSection = ({
+  company,
+  companyId,
+  viewOnly
+}: {
+  company: any
+  companyId: string | undefined
+  viewOnly: boolean
+}) => {
   const dispatch = useAppDispatch()
 
   const [uploadProfilePic, { loading }] = useUploadCompanyProfilePicMutation({
@@ -53,7 +56,13 @@ const CompanyProfileSection = ({ company, companyId }: { company: any; companyId
 
   return (
     <>
-      <UserAvatar viewOnly={false} userId={companyId} imageUrl={company.companyProfilePic} uploadProfilePic={uploadProfilePic} loading={loading}/>
+      <UserAvatar
+        viewOnly={viewOnly}
+        userId={companyId}
+        imageUrl={company.companyProfilePic}
+        uploadProfilePic={uploadProfilePic}
+        loading={loading}
+      />
       <Typography variant={'h4'} fontWeight={700} sx={{ my: 4 }}>
         {company?.companyName ?? '-'}
       </Typography>
@@ -95,23 +104,24 @@ const CompanyProfileSection = ({ company, companyId }: { company: any; companyId
           </DescriptionWrapper>
         </DescriptionBox>
       </Box>
-
-      <Button
-        variant={'contained'}
-        size='large'
-        sx={{ mt: 5, mb: 4, alignSelf: 'end' }}
-        onClick={() =>
-          dispatch(
-            setDrawerState({
-              isOpen: true,
-              type: DrawerType.editCompanyProfile,
-              content: companyId
-            })
-          )
-        }
-      >
-        Edit
-      </Button>
+      {!viewOnly && (
+        <Button
+          variant={'contained'}
+          size='large'
+          sx={{ mt: 5, mb: 4, alignSelf: 'end' }}
+          onClick={() =>
+            dispatch(
+              setDrawerState({
+                isOpen: true,
+                type: DrawerType.editCompanyProfile,
+                content: companyId
+              })
+            )
+          }
+        >
+          Edit
+        </Button>
+      )}
     </>
   )
 }

@@ -89,16 +89,27 @@ const SearchFilter = ({
   handleChangeProjectList,
   switchOption,
   defaultProjectList,
-  setProjectList
+  setProjectList,
+  setCurrentPage,
+  setFilteredProjectList
 }: {
   onClick: any
   handleChangeProjectList: any
   switchOption?: { checked: boolean; label: string }
   defaultProjectList?: never[]
   setProjectList?: Dispatch<SetStateAction<never[]>>
+  setCurrentPage: Dispatch<SetStateAction<number>>
+  setFilteredProjectList: Dispatch<SetStateAction<never[]>>
 }) => {
   const [numFilters, setNumFilters] = useState(0)
   const [anchorEl, setAnchorEl] = useState<(EventTarget & Element) | null>(null)
+  const [filterOptions, setFilterOptions] = useState({
+    projectType: [],
+    companyState: [],
+    projectExpLevel: [],
+    projectMinSalary: 0
+  })
+
   const { control } = useFormContext()
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
@@ -108,13 +119,6 @@ const SearchFilter = ({
   const handleDropdownClose = () => {
     setAnchorEl(null)
   }
-
-  const [filterOptions, setFilterOptions] = useState({
-    projectType: [],
-    companyState: [],
-    projectExpLevel: [],
-    projectMinSalary: 0
-  })
 
   const valueLabelFormat = (value: number) => {
     return `RM ${value}`
@@ -135,10 +139,12 @@ const SearchFilter = ({
       projectMinSalary: 0
     })
     setNumFilters(0)
-    setProjectList(defaultProjectList)
+    setFilteredProjectList([])
+    setProjectList(defaultProjectList.slice(0, 10))
   }
 
   const handleFilterButtonClick = (type: string) => {
+    setCurrentPage(1)
     if (type === 'default') {
       resetState()
     } else {
@@ -185,7 +191,8 @@ const SearchFilter = ({
         return total
       }, 0) as number
       setNumFilters(numItems)
-      setProjectList(filteredProjects)
+      setFilteredProjectList(filteredProjects)
+      setProjectList(filteredProjects.slice(0, 10))
     }
     setAnchorEl(null)
   }

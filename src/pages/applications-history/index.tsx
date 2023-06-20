@@ -111,9 +111,15 @@ const columns = [
     renderCell: ({ row }: ApplicationHistoryCellType) => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography variant='body2' fontWeight={600}>
-            {row?.project?.company?.companyName ?? '-'}
-          </Typography>
+          <Link href={`/company-profiles?id=${row?.project?.companyId}`} passHref>
+            <a target='_blank' style={{ textDecoration: 'unset' }}>
+              <Button variant={'text'}>
+                <Typography variant='body2' fontWeight={600}>
+                  {row?.project?.company?.companyName ?? '-'}
+                </Typography>
+              </Button>
+            </a>
+          </Link>
         </Box>
       )
     }

@@ -1,4 +1,4 @@
-import { Box, Grid, Icon, Typography } from '@mui/material'
+import { Box, Grid, Icon, Pagination, Stack, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import {
   ProjectType,
@@ -18,17 +18,20 @@ import { getFormInputValues } from '../../@core/utils/get-form-input-values'
 import SearchFilter from '../../views/projects/SearchFilter'
 import { onError } from '../../@core/utils/response'
 import { useAuth } from '../../@core/context/authContext'
+import { PROJECTS_PER_PAGE } from '../../constants'
 
 function Projects() {
   const router = useRouter()
   const { resetStore } = useAuth()
   const [switchOption, setSwitchOption] = useState({ checked: true, label: 'Best Match' })
   const [loading, setLoading] = useState(true)
+  const [filteredProjectList, setFilteredProjectList] = useState([])
   const [defaultProjectList, setDefaultProjectList] = useState([])
   const [project, setProject] = useState<ProjectType>()
   const [projectList, setProjectList] = useState([])
   const [applications, setApplications] = useState([])
   const [jobSeeker, setJobSeeker] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const formMethods = useForm()
 
@@ -40,7 +43,7 @@ function Projects() {
     },
     onCompleted: data => {
       setProject(data?.projectListing[0])
-      setProjectList(data?.projectListing)
+      setProjectList(data?.projectListing.slice(0, 10))
       setDefaultProjectList(data?.projectListing)
       reset({ searchKeyword: null })
       setLoading(false)
@@ -60,7 +63,7 @@ function Projects() {
   const [searchProject, { loading: searchLoading }] = useSearchProjectsLazyQuery({
     onCompleted: data => {
       setProject(data.searchProjects[0])
-      setProjectList(data?.searchProjects)
+      setProjectList(data?.searchProjects.slice(0, 10))
       setDefaultProjectList(data?.searchProjects)
       if (switchOption.checked) {
         setSwitchOption({ checked: false, label: 'Default' })
@@ -94,6 +97,7 @@ function Projects() {
   })
 
   const handleChangeProjectList = () => {
+    setCurrentPage(1)
     if (switchOption.checked) {
       setSwitchOption({ checked: false, label: 'Default' })
       fetchProject({
@@ -112,6 +116,8 @@ function Projects() {
   }
 
   useEffect(() => {
+    setFilteredProjectList([])
+    setCurrentPage(1)
     setLoading(true)
     const data = window.localStorage.getItem('userData')
     if (data) {
@@ -139,8 +145,19 @@ function Projects() {
     }
   }, [])
 
-  if (loading || fetchLoading || searchLoading || applicationLoading || seekerLoading) {
-    return <Spinner />
+  useEffect(() => {
+    const lastIndex = currentPage * PROJECTS_PER_PAGE
+    const firstIndex = lastIndex - PROJECTS_PER_PAGE
+
+    if (filteredProjectList.length > 0) {
+      setProjectList(filteredProjectList.slice(firstIndex, lastIndex))
+    } else {
+      setProjectList(defaultProjectList.slice(firstIndex, lastIndex))
+    }
+  }, [currentPage])
+
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page)
   }
 
   const onChangeProject = (project: ProjectType) => {
@@ -148,6 +165,8 @@ function Projects() {
   }
 
   const onSubmit = (values: any) => {
+    setCurrentPage(1)
+
     if (values.searchKeyword === '') {
       if (switchOption.checked) {
         fetchProject({
@@ -173,6 +192,10 @@ function Projects() {
     }
   }
 
+  if (loading || fetchLoading || searchLoading || applicationLoading || seekerLoading) {
+    return <Spinner />
+  }
+
   return (
     <FormProvider {...formMethods}>
       <form style={{ height: '100%' }} onSubmit={handleSubmit(onSubmit)}>
@@ -186,8 +209,23 @@ function Projects() {
                   switchOption={switchOption}
                   defaultProjectList={defaultProjectList}
                   setProjectList={setProjectList}
+                  setCurrentPage={setCurrentPage}
+                  setFilteredProjectList={setFilteredProjectList}
                 />
                 <ProjectListing projectListing={projectList} project={project} onChangeProject={onChangeProject} />
+                <Stack direction='row' justifyContent='center' sx={{ mt: 6 }}>
+                  <Pagination
+                    count={
+                      filteredProjectList.length > 0
+                        ? Math.ceil(filteredProjectList.length / PROJECTS_PER_PAGE)
+                        : Math.ceil(defaultProjectList.length / PROJECTS_PER_PAGE)
+                    }
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    variant={'outlined'}
+                    color={'primary'}
+                  />
+                </Stack>
               </Grid>
               <Grid item xs={7.5} sx={{ display: { xs: 'none', md: 'flex' } }}>
                 <ProjectDetails project={project} applications={applications} jobSeeker={jobSeeker} />
@@ -204,6 +242,8 @@ function Projects() {
                   switchOption={switchOption}
                   defaultProjectList={defaultProjectList}
                   setProjectList={setProjectList}
+                  setCurrentPage={setCurrentPage}
+                  setFilteredProjectList={setFilteredProjectList}
                 />
               </Grid>
             </Grid>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, Link, Typography } from '@mui/material'
 import Chip from '@mui/material/Chip'
 import {
   GetJobSeekerApplicationsDocument,
   ProjectListingDocument,
-  ProjectType, SearchProjectsDocument,
+  ProjectType,
+  SearchProjectsDocument,
   useCreateApplicationMutation,
   useSendNotificationMutation
 } from '../../../graphql/api'
@@ -86,7 +87,9 @@ const ProjectTitle = ({
         <Box display={'flex'} alignItems={'center'}>
           <Domain fontSize={'small'} sx={{ mr: 1, alignSelf: 'flex-start' }} />
           <Box>
-            <Typography variant={'body1'}>{project?.company?.companyName ?? '-'}</Typography>
+            <Link href={`/company-profiles?id=${project?.companyId}`} target={'_blank'} underline={'hover'}>
+              <Typography variant={'body1'}>{project?.company?.companyName ?? '-'}</Typography>
+            </Link>
             <Typography variant={'body2'}>
               {project?.company?.companySize
                 ? `${capitalizeFirstLetter(project?.company?.companySize)} enterprise`
