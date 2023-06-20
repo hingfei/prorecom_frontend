@@ -10,7 +10,7 @@ import ProjectSkills from './ProjectSkills'
 import ProjectExperience from './ProjectExperience'
 
 const PerfectScrollbar = styled(PerfectScrollbarComponent)({
-  maxHeight: '124vh',
+  maxHeight: '120vh',
   padding: '0 16px',
   '& .MuiMenuItem-root:last-of-type': {
     border: 0

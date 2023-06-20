@@ -213,7 +213,7 @@ function Projects() {
                   setFilteredProjectList={setFilteredProjectList}
                 />
                 <ProjectListing projectListing={projectList} project={project} onChangeProject={onChangeProject} />
-                <Stack direction='row' justifyContent='center' sx={{ mt: 6 }}>
+                <Stack direction='row' justifyContent='center' sx={{ mt: '3vh' }}>
                   <Pagination
                     count={
                       filteredProjectList.length > 0
