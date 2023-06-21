@@ -158,6 +158,7 @@ function Projects() {
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   const onChangeProject = (project: ProjectType) => {
