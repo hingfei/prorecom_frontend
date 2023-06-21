@@ -91,7 +91,8 @@ const SearchFilter = ({
   defaultProjectList,
   setProjectList,
   setCurrentPage,
-  setFilteredProjectList
+  setFilteredProjectList,
+  setFilterState
 }: {
   onClick: any
   handleChangeProjectList: any
@@ -100,6 +101,7 @@ const SearchFilter = ({
   setProjectList?: Dispatch<SetStateAction<never[]>>
   setCurrentPage: Dispatch<SetStateAction<number>>
   setFilteredProjectList: Dispatch<SetStateAction<never[]>>
+  setFilterState: Dispatch<SetStateAction<boolean>>
 }) => {
   const [numFilters, setNumFilters] = useState(0)
   const [anchorEl, setAnchorEl] = useState<(EventTarget & Element) | null>(null)
@@ -140,6 +142,7 @@ const SearchFilter = ({
     })
     setNumFilters(0)
     setFilteredProjectList([])
+    setFilterState(false)
     setProjectList(defaultProjectList.slice(0, 10))
   }
 
@@ -192,6 +195,7 @@ const SearchFilter = ({
       }, 0) as number
       setNumFilters(numItems)
       setFilteredProjectList(filteredProjects)
+      setFilterState(true)
       setProjectList(filteredProjects.slice(0, 10))
     }
     setAnchorEl(null)

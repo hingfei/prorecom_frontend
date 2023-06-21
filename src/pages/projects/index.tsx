@@ -32,6 +32,7 @@ function Projects() {
   const [applications, setApplications] = useState([])
   const [jobSeeker, setJobSeeker] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [filterState, setFilterState] = useState(false)
 
   const formMethods = useForm()
 
@@ -116,6 +117,7 @@ function Projects() {
   }
 
   useEffect(() => {
+    setFilterState(false)
     setFilteredProjectList([])
     setCurrentPage(1)
     setLoading(true)
@@ -149,7 +151,7 @@ function Projects() {
     const lastIndex = currentPage * PROJECTS_PER_PAGE
     const firstIndex = lastIndex - PROJECTS_PER_PAGE
 
-    if (filteredProjectList.length > 0) {
+    if (filterState) {
       setProjectList(filteredProjectList.slice(firstIndex, lastIndex))
     } else {
       setProjectList(defaultProjectList.slice(firstIndex, lastIndex))
@@ -158,7 +160,7 @@ function Projects() {
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page)
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const onChangeProject = (project: ProjectType) => {
@@ -212,12 +214,13 @@ function Projects() {
                   setProjectList={setProjectList}
                   setCurrentPage={setCurrentPage}
                   setFilteredProjectList={setFilteredProjectList}
+                  setFilterState={setFilterState}
                 />
                 <ProjectListing projectListing={projectList} project={project} onChangeProject={onChangeProject} />
                 <Stack direction='row' justifyContent='center' sx={{ mt: '3vh' }}>
                   <Pagination
                     count={
-                      filteredProjectList.length > 0
+                      filterState
                         ? Math.ceil(filteredProjectList.length / PROJECTS_PER_PAGE)
                         : Math.ceil(defaultProjectList.length / PROJECTS_PER_PAGE)
                     }
@@ -245,6 +248,7 @@ function Projects() {
                   setProjectList={setProjectList}
                   setCurrentPage={setCurrentPage}
                   setFilteredProjectList={setFilteredProjectList}
+                  setFilterState={setFilterState}
                 />
               </Grid>
             </Grid>
