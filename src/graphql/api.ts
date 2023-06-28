@@ -162,6 +162,7 @@ export type JobSeekerType = {
   seekerResume?: Maybe<Scalars['String']>;
   seekerState?: Maybe<Scalars['String']>;
   seekerStreet?: Maybe<Scalars['String']>;
+  similarityScore?: Maybe<Scalars['Float']>;
   skills: Array<SkillType>;
   users?: Maybe<UserType>;
 };
@@ -393,6 +394,7 @@ export type ProjectType = {
   projectReq?: Maybe<Scalars['String']>;
   projectStatus?: Maybe<Scalars['Boolean']>;
   projectTypes?: Maybe<Scalars['String']>;
+  similarityScore?: Maybe<Scalars['Float']>;
   skills: Array<SkillType>;
 };
 
@@ -566,9 +568,9 @@ export type UserNotFound = {
 export type UserNotificationCountType = {
   __typename?: 'UserNotificationCountType';
   message?: Maybe<Scalars['String']>;
-  notifications: Array<NotificationType>;
+  notifications?: Maybe<Array<NotificationType>>;
   success: Scalars['Boolean'];
-  unreadCount: Scalars['Int'];
+  unreadCount?: Maybe<Scalars['Int']>;
 };
 
 export type UserType = {
@@ -766,14 +768,14 @@ export type GetUserNotificationsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserNotificationsQuery = { __typename?: 'Query', getUserNotifications: { __typename?: 'UserNotificationCountType', success: boolean, message?: string | null, unreadCount: number, notifications: Array<{ __typename?: 'NotificationType', notificationId: string, senderId: string, receiverId: string, message?: string | null, isRead?: boolean | null, createdAt?: any | null }> } };
+export type GetUserNotificationsQuery = { __typename?: 'Query', getUserNotifications: { __typename?: 'UserNotificationCountType', success: boolean, message?: string | null, unreadCount?: number | null, notifications?: Array<{ __typename?: 'NotificationType', notificationId: string, senderId: string, receiverId: string, message?: string | null, isRead?: boolean | null, createdAt?: any | null }> | null } };
 
 export type ProjectListingQueryVariables = Exact<{
   recommendation: Scalars['Boolean'];
 }>;
 
 
-export type ProjectListingQuery = { __typename?: 'Query', projectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
+export type ProjectListingQuery = { __typename?: 'Query', projectListing: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, similarityScore?: number | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
 
 export type ProjectDetailQueryVariables = Exact<{
   projectId: Scalars['Int'];
@@ -787,7 +789,7 @@ export type SearchProjectsQueryVariables = Exact<{
 }>;
 
 
-export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
+export type SearchProjectsQuery = { __typename?: 'Query', searchProjects: Array<{ __typename?: 'ProjectType', projectId: string, projectName: string, companyId: string, projectTypes?: string | null, postDates?: string | null, projectMinSalary?: number | null, projectMaxSalary?: number | null, projectDesc?: string | null, projectReq?: string | null, projectStatus?: boolean | null, projectExpLvl?: string | null, similarityScore?: number | null, company?: { __typename?: 'CompanyType', companyId: string, companyName?: string | null, companyFounder?: string | null, companySize?: string | null, companyDesc?: string | null, companyStreet?: string | null, companyCity?: string | null, companyState?: string | null, users?: { __typename?: 'UserType', userType: string } | null } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }> }> };
 
 export type CompanyProjectListingQueryVariables = Exact<{
   companyId: Scalars['Int'];
@@ -813,7 +815,7 @@ export type RecommendedJobSeekerListingQueryVariables = Exact<{
 }>;
 
 
-export type RecommendedJobSeekerListingQuery = { __typename?: 'Query', recommendedJobSeekerListing: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: string | null, seekerProfilePic?: string | null, seekerAbout?: string | null, seekerIsOpenForWork?: boolean | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
+export type RecommendedJobSeekerListingQuery = { __typename?: 'Query', recommendedJobSeekerListing: Array<{ __typename?: 'JobSeekerType', seekerId: string, seekerName?: string | null, seekerAge?: number | null, seekerGender?: string | null, seekerBirthdate?: string | null, seekerPhoneNo?: number | null, seekerStreet?: string | null, seekerCity?: string | null, seekerState?: string | null, seekerResume?: string | null, seekerProfilePic?: string | null, seekerAbout?: string | null, seekerIsOpenForWork?: boolean | null, similarityScore?: number | null, users?: { __typename?: 'UserType', userName: string, userEmail: string } | null, skills: Array<{ __typename?: 'SkillType', skillId: string, skillName?: string | null }>, educations: Array<{ __typename?: 'EducationType', educationId: string, educationLevel?: number | null, educationInstitution?: string | null, description?: string | null, fieldOfStudy?: number | null, graduationYear?: number | null, grade?: string | null }> }> };
 
 export type SearchJobSeekersQueryVariables = Exact<{
   searchKeyword: Scalars['String'];
@@ -1943,6 +1945,7 @@ export const ProjectListingDocument = gql`
       skillId
       skillName
     }
+    similarityScore
   }
 }
     `;
@@ -2077,6 +2080,7 @@ export const SearchProjectsDocument = gql`
       skillId
       skillName
     }
+    similarityScore
   }
 }
     `;
@@ -2314,6 +2318,7 @@ export const RecommendedJobSeekerListingDocument = gql`
       graduationYear
       grade
     }
+    similarityScore
   }
 }
     `;

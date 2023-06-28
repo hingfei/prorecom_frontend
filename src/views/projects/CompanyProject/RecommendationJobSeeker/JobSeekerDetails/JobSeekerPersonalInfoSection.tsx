@@ -72,6 +72,8 @@ const JobSeekerPersonalInfoSection = ({
     })
   }, [jobSeeker])
 
+  console.log(jobSeeker)
+
   return (
     <>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={3}>
@@ -85,17 +87,16 @@ const JobSeekerPersonalInfoSection = ({
           {buttonTitle}
         </Button>
       </Box>
-      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={1}>
+      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={2}>
         <Typography variant={'body1'}>{jobSeeker?.seekerAge + ' Years old'}</Typography>
         <Box display={'flex'} alignItems={'center'}>
           <PhoneOutline fontSize={'small'} sx={{ mr: 1 }} />
           <Typography variant={'body1'}>+60{jobSeeker?.seekerPhoneNo}</Typography>
         </Box>
       </Box>
-      <Typography variant={'body2'} pb={2}></Typography>
       <Box pb={5} display={'flex'} alignItems={'center'}>
         <MapMarkerOutline fontSize={'small'} sx={{ mr: 1 }} />
-        <Typography variant={'body2'}>
+        <Typography variant={'body1'}>
           {jobSeeker?.seekerStreet}, {jobSeeker?.seekerCity}, {jobSeeker?.seekerState}
         </Typography>
       </Box>

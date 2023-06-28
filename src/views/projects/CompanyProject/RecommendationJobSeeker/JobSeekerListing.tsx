@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react'
-import { Box, CardContent, Typography } from '@mui/material'
+import { BadgeProps, Box, CardContent, Typography, Badge, Chip } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 import Card, { CardProps } from '@mui/material/Card'
 import { JobSeekerType } from '../../../../graphql/api'
-import { MapMarkerOutline, PhoneOutline } from 'mdi-material-ui'
+import { MapMarkerOutline, PhoneOutline, ThumbUpOutline } from 'mdi-material-ui'
+import { convertToPercentage } from 'src/@core/utils/convert-to-percentage'
 
 // ** Styled Components
 const StyledCard = styled(Card)<CardProps>(({ theme }) => ({
@@ -21,6 +22,14 @@ const PerfectScrollbar = styled(PerfectScrollbarComponent)({
     border: 0
   }
 })
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    padding: '14px 6px', 
+    borderRadius: '50%',
+    backgroundColor: theme.palette.info.light,
+  },
+}))
 
 const ScrollWrapper = ({ children }: { children: ReactNode }) => {
   return <PerfectScrollbar options={{ wheelPropagation: false, suppressScrollX: true }}>{children}</PerfectScrollbar>
@@ -51,18 +60,35 @@ const JobSeekerListing = ({
           }}
           onClick={() => onChangeJobSeeker(item)}
         >
-          <CardContent sx={{ paddingX: 6, paddingY: 4 }}>
-            <Typography variant={'h6'} fontWeight={700} mb={2}>
+          <CardContent sx={{ paddingX: 6, paddingY: 5 }}>
+            {/* <Typography variant={'h6'} fontWeight={700} >
               {item.seekerName}
-            </Typography>
+            </Typography> */}
+            <Box display={'flex'} justifyContent={'space-between'} mb={2}>
+              <Typography variant={'h6'} fontWeight={700}>
+                {item.seekerName}
+              </Typography>
+              {item.similarityScore && (
+                <StyledBadge badgeContent={<ThumbUpOutline fontSize='small'/>} color='info'>
+                  <Chip
+                    size='medium'
+                    variant='outlined'
+                    label={convertToPercentage(item.similarityScore)}
+                    color='info'
+                    sx={{ fontSize: '14px', fontWeight: 500, borderRadius: '18px'}}
+                  />
+              </StyledBadge>
+                
+              )}
+            </Box>
             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
               <Box display={'flex'} alignItems={'center'}>
                 <PhoneOutline fontSize={'small'} sx={{ mr: 1 }} />
-                <Typography variant={'body2'}>+60{item.seekerPhoneNo}</Typography>
+                <Typography variant={'body1'}>+60{item.seekerPhoneNo}</Typography>
               </Box>
               <Box display={'flex'} alignItems={'center'}>
                 <MapMarkerOutline fontSize={'small'} sx={{ mr: 1 }} />
-                <Typography variant={'body2'}>{item.seekerState}</Typography>
+                <Typography variant={'body1'}>{item.seekerState}</Typography>
               </Box>
             </Box>
           </CardContent>

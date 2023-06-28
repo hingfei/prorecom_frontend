@@ -12,7 +12,7 @@ const ProjectDescription = ({ projectDesc }: { projectDesc: string | null | unde
             Project Description
           </Typography>
         </Box>
-        <Typography variant={'body2'}>{projectDesc}</Typography>
+        <Typography variant={'body1'}>{projectDesc}</Typography>
       </CardContent>
     </Card>
   )

@@ -37,7 +37,7 @@ interface State {
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: { width: '28rem' }
+  [theme.breakpoints.up('sm')]: { width: '29rem' }
 }))
 
 const LinkStyled = styled('a')(({ theme }) => ({

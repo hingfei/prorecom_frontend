@@ -12,7 +12,7 @@ const ProjectRequirement = ({ projectReq }: { projectReq: string | null | undefi
             Project Requirement
           </Typography>
         </Box>
-        <Typography variant={'body2'}>{projectReq}</Typography>
+        <Typography variant={'body1'}>{projectReq}</Typography>
       </CardContent>
     </Card>
   )

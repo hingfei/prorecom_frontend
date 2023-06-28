@@ -83,6 +83,7 @@ query recommendedJobSeekerListing($projectId: Int!) {
       graduationYear
       grade
     }
+    similarityScore
   }
 }
 

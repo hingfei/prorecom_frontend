@@ -97,7 +97,7 @@ export const DialogDeleteLayout = ({
       }
     >
       {children || (
-        <Typography variant='body2' sx={{ mb: 3, lineHeight: '2rem' }}>
+        <Typography variant='body1' sx={{ mb: 3, lineHeight: '2rem' }}>
           {dialogContext}
         </Typography>
       )}
@@ -134,7 +134,7 @@ export const DialogApplicationLayout = ({
       }
     >
       {children || (
-        <Typography variant='body2' sx={{ mb: 3, lineHeight: '2rem' }}>
+        <Typography variant='body1' sx={{ mb: 3, lineHeight: '2rem' }}>
           {dialogContext}
         </Typography>
       )}

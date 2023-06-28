@@ -22,7 +22,7 @@ const ProjectSkills = ({ project }: { project: ProjectType | undefined }) => {
                 </ListItemIcon>
                 <ListItemText
                   primary={
-                    <Typography variant={'body2'} fontWeight={500}>
+                    <Typography variant={'body1'} fontWeight={500}>
                       {skill.skillName}
                     </Typography>
                   }

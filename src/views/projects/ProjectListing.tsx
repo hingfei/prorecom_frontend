@@ -1,11 +1,13 @@
 import React, { ReactNode } from 'react'
-import { Box, CardContent, Typography } from '@mui/material'
+import { Box, CardContent, Typography, Badge, BadgeProps } from '@mui/material'
 import Chip from '@mui/material/Chip'
 import { styled, useTheme } from '@mui/material/styles'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 import Card, { CardProps } from '@mui/material/Card'
 import { ProjectType } from '../../graphql/api'
 import { CurrencyUsd, Domain, MapMarkerOutline } from 'mdi-material-ui'
+import { convertToPercentage } from 'src/@core/utils/convert-to-percentage'
+import ThumbUpOutline from 'mdi-material-ui/ThumbUpOutline'
 
 // ** Styled Components
 const StyledCard = styled(Card)<CardProps>(({ theme }) => ({
@@ -22,6 +24,14 @@ const PerfectScrollbar = styled(PerfectScrollbarComponent)({
     border: 0
   }
 })
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    padding: '14px 6px', 
+    borderRadius: '50%',
+    backgroundColor: theme.palette.info.light,
+  },
+}))
 
 const ScrollWrapper = ({ children }: { children: ReactNode }) => {
   return <PerfectScrollbar options={{ wheelPropagation: false, suppressScrollX: true }}>{children}</PerfectScrollbar>
@@ -53,17 +63,32 @@ const ProjectListing = ({
           onClick={() => onChangeProject(item)}
         >
           <CardContent sx={{ paddingX: 6, paddingY: 5 }}>
-            <Typography variant={'h6'} fontWeight={700}>
-              {item.projectName}
-            </Typography>
+            <Box display={'flex'} justifyContent={'space-between'} >
+              <Typography variant={'h6'} fontWeight={700}>
+                {item.projectName}
+              </Typography>
+              {item.similarityScore && (
+                <StyledBadge badgeContent={<ThumbUpOutline fontSize='small'/>} color='info'>
+                  <Chip
+                    size='medium'
+                    variant='outlined'
+                    label={convertToPercentage(item.similarityScore)}
+                    color='info'
+                    sx={{ fontSize: '14px', fontWeight: 500, borderRadius: '18px'}}
+                  />
+              </StyledBadge>
+                
+              )}
+            </Box>
+            
             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={5}>
               <Box display={'flex'} alignItems={'center'}>
                 <Domain fontSize={'small'} sx={{ mr: 1 }} />
-                <Typography variant={'body2'}>{item.company?.companyName}</Typography>
+                <Typography variant={'body1'}>{item.company?.companyName}</Typography>
               </Box>
               <Box display={'flex'} alignItems={'center'}>
                 <MapMarkerOutline fontSize={'small'} sx={{ mr: 1 }} />
-                <Typography variant={'body2'}>{item.company?.companyState}</Typography>
+                <Typography variant={'body1'}>{item.company?.companyState}</Typography>
               </Box>
             </Box>
             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
@@ -77,13 +102,13 @@ const ProjectListing = ({
               <Box display={'flex'} alignItems={'center'}>
                 <CurrencyUsd fontSize={'small'} sx={{ mr: 1 }} />
                 {item?.projectMinSalary != null && item?.projectMaxSalary != null ? (
-                  <Typography variant={'body2'}>
+                  <Typography variant={'body1'}>
                     RM{item?.projectMinSalary} - RM{item?.projectMaxSalary}
                   </Typography>
                 ) : item?.projectMinSalary != null && item?.projectMaxSalary == null ? (
-                  <Typography variant={'body2'}>RM{item?.projectMinSalary}</Typography>
+                  <Typography variant={'body1'}>RM{item?.projectMinSalary}</Typography>
                 ) : (
-                  <Typography variant={'body2'}>Undisclosed</Typography>
+                  <Typography variant={'body1'}>Undisclosed</Typography>
                 )}
               </Box>
             </Box>

@@ -83,7 +83,7 @@ const ProjectTitle = ({
           {buttonTitle}
         </Button>
       </Box>
-      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={1}>
+      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={2}>
         <Box display={'flex'} alignItems={'center'}>
           <Domain fontSize={'small'} sx={{ mr: 1, alignSelf: 'flex-start' }} />
           <Box>
@@ -104,9 +104,9 @@ const ProjectTitle = ({
         <Box display={'flex'} alignItems={'center'}>
           <MapMarkerOutline fontSize={'small'} sx={{ mr: 1, alignSelf: 'flex-start' }} />
           <Box>
-            <Typography variant={'body2'}>{project?.company?.companyStreet}</Typography>
-            <Typography variant={'body2'}>{project?.company?.companyCity}</Typography>
-            <Typography variant={'body2'}>{project?.company?.companyState}</Typography>
+            <Typography variant={'body1'}>{project?.company?.companyStreet}</Typography>
+            <Typography variant={'body1'}>{project?.company?.companyCity}</Typography>
+            <Typography variant={'body1'}>{project?.company?.companyState}</Typography>
           </Box>
         </Box>
       </Box>
@@ -121,19 +121,19 @@ const ProjectTitle = ({
         <Box display={'flex'} alignItems={'center'}>
           <CurrencyUsd fontSize={'small'} sx={{ mr: 1 }} />
           {project?.projectMinSalary != null && project?.projectMaxSalary != null ? (
-            <Typography variant={'body2'}>
+            <Typography variant={'body1'}>
               RM{project?.projectMinSalary} - RM{project?.projectMaxSalary}
             </Typography>
           ) : project?.projectMinSalary != null && project?.projectMaxSalary == null ? (
-            <Typography variant={'body2'}>RM{project?.projectMinSalary}</Typography>
+            <Typography variant={'body1'}>RM{project?.projectMinSalary}</Typography>
           ) : (
-            <Typography variant={'body2'}>Undisclosed</Typography>
+            <Typography variant={'body1'}>Undisclosed</Typography>
           )}
         </Box>
       </Box>
       <Box display={'flex'} alignItems={'center'} justifyContent={'end'}>
         <CalendarMonthOutline fontSize={'small'} sx={{ mr: 1 }} />
-        <Typography variant={'body2'}>{dayjs(project?.postDates).format('DD MMM YYYY')}</Typography>
+        <Typography variant={'body1'}>{dayjs(project?.postDates).format('DD MMM YYYY')}</Typography>
       </Box>
     </>
   )

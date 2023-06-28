@@ -12,7 +12,7 @@ const ProjectExperience = ({ projectExpLvl }: { projectExpLvl: string | null | u
             Experience Level
           </Typography>
         </Box>
-        <Typography variant={'body2'}>{projectExpLvl}</Typography>
+        <Typography variant={'body1'}>{projectExpLvl}</Typography>
       </CardContent>
     </Card>
   )
