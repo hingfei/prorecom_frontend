@@ -27,7 +27,7 @@ const PerfectScrollbar = styled(PerfectScrollbarComponent)({
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {
-    padding: '14px 6px', 
+    padding: '14px 6px',
     borderRadius: '50%',
     backgroundColor: theme.palette.info.light,
   },
@@ -77,10 +77,10 @@ const ProjectListing = ({
                     sx={{ fontSize: '14px', fontWeight: 500, borderRadius: '18px'}}
                   />
               </StyledBadge>
-                
+
               )}
             </Box>
-            
+
             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={5}>
               <Box display={'flex'} alignItems={'center'}>
                 <Domain fontSize={'small'} sx={{ mr: 1 }} />
