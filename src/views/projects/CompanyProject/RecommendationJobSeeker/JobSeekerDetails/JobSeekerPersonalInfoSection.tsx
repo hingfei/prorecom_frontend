@@ -72,8 +72,6 @@ const JobSeekerPersonalInfoSection = ({
     })
   }, [jobSeeker])
 
-  console.log(jobSeeker)
-
   return (
     <>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pb={3}>

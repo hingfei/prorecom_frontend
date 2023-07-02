@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { BadgeProps, Box, CardContent, Typography, Badge, Chip } from '@mui/material'
+import { Badge, BadgeProps, Box, CardContent, Chip, Typography } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 import Card, { CardProps } from '@mui/material/Card'
@@ -25,10 +25,10 @@ const PerfectScrollbar = styled(PerfectScrollbarComponent)({
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {
-    padding: '14px 6px', 
+    padding: '14px 6px',
     borderRadius: '50%',
-    backgroundColor: theme.palette.info.light,
-  },
+    backgroundColor: theme.palette.info.light
+  }
 }))
 
 const ScrollWrapper = ({ children }: { children: ReactNode }) => {
@@ -69,16 +69,15 @@ const JobSeekerListing = ({
                 {item.seekerName}
               </Typography>
               {item.similarityScore && (
-                <StyledBadge badgeContent={<ThumbUpOutline fontSize='small'/>} color='info'>
+                <StyledBadge badgeContent={<ThumbUpOutline fontSize='small' />} color='info'>
                   <Chip
                     size='medium'
                     variant='outlined'
                     label={convertToPercentage(item.similarityScore)}
                     color='info'
-                    sx={{ fontSize: '14px', fontWeight: 500, borderRadius: '18px'}}
+                    sx={{ fontSize: '14px', fontWeight: 500, borderRadius: '18px' }}
                   />
-              </StyledBadge>
-                
+                </StyledBadge>
               )}
             </Box>
             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>

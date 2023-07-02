@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Box, CardContent, Typography, Badge, BadgeProps } from '@mui/material'
+import { Badge, BadgeProps, Box, CardContent, Typography } from '@mui/material'
 import Chip from '@mui/material/Chip'
 import { styled, useTheme } from '@mui/material/styles'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
@@ -29,8 +29,8 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {
     padding: '14px 6px',
     borderRadius: '50%',
-    backgroundColor: theme.palette.info.light,
-  },
+    backgroundColor: theme.palette.info.light
+  }
 }))
 
 const ScrollWrapper = ({ children }: { children: ReactNode }) => {
@@ -63,21 +63,20 @@ const ProjectListing = ({
           onClick={() => onChangeProject(item)}
         >
           <CardContent sx={{ paddingX: 6, paddingY: 5 }}>
-            <Box display={'flex'} justifyContent={'space-between'} >
+            <Box display={'flex'} justifyContent={'space-between'}>
               <Typography variant={'h6'} fontWeight={700}>
                 {item.projectName}
               </Typography>
-              {item.similarityScore && (
-                <StyledBadge badgeContent={<ThumbUpOutline fontSize='small'/>} color='info'>
+              {(item.similarityScore || item.similarityScore === 0) && (
+                <StyledBadge badgeContent={<ThumbUpOutline fontSize='small' />} color='info'>
                   <Chip
                     size='medium'
                     variant='outlined'
                     label={convertToPercentage(item.similarityScore)}
                     color='info'
-                    sx={{ fontSize: '14px', fontWeight: 500, borderRadius: '18px'}}
+                    sx={{ fontSize: '14px', fontWeight: 500, borderRadius: '18px' }}
                   />
-              </StyledBadge>
-
+                </StyledBadge>
               )}
             </Box>
 
