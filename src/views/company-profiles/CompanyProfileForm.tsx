@@ -51,7 +51,7 @@ const CompanyProfileForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boole
           }}
         />
       </Grid>
-      <Grid item xs={12} mb={4}>
+      <Grid item xs={12} mt={6} mb={2}>
         <TextInput
           inputProps={{
             label: 'Company Description',
