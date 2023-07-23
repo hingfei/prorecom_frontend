@@ -21,6 +21,12 @@ const projectDefaultValues = {
   skills: []
 }
 
+/**
+ * AddProject Component represents the page for adding a new project by a company.
+ * It uses the ProjectForm component to display the project form and handles form submission to create the project.
+ *
+ * @returns {JSX.Element} The JSX element representing the AddProject component.
+ */
 const AddProject = () => {
   const router = useRouter()
   const formMethods = useForm()
@@ -32,6 +38,7 @@ const AddProject = () => {
     formState: { isSubmitting }
   } = formMethods
 
+  // ** Reset form values to default when component mounts
   const resetValue = () => {
     reset(projectDefaultValues)
   }
@@ -40,6 +47,7 @@ const AddProject = () => {
     resetValue()
   }, [])
 
+  // ** GraphQL mutation to create a new project
   const [createProject, { loading }] = useCreateProjectMutation({
     onCompleted: data =>
       onCompleted(data?.createProject, () => {
@@ -51,6 +59,7 @@ const AddProject = () => {
     refetchQueries: [CompanyProjectListingDocument]
   })
 
+  // ** Handle form submission
   const onSubmit = (values: any) => {
     const { skills, ...restValues } = values
     const skillsArray = skills ? skills.map((skill: any) => parseInt(skill.value)) : []

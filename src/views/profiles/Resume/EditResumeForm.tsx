@@ -6,6 +6,15 @@ import toast from 'react-hot-toast'
 import { JobSeekerDetailDocument, useUploadResumeMutation } from '../../../graphql/api'
 import { onCompleted, onError } from '../../../@core/utils/response'
 
+/**
+ * EditResumeform Component
+ *
+ * This component allows the user to edit their resume. It displays a form with a file input for uploading the resume. The user can only upload
+ * PDF files. If the user tries to submit the form without uploading a file or if the uploaded file is not a PDF, an error toast is displayed.
+ * Once the resume is successfully uploaded, the drawer is closed.
+ *
+ * @returns {JSX.Element} The EditResumeform component.
+ */
 const EditResumeform = () => {
   const [selectedFile, setSelectedFile] = useState<File[]>([])
   const { isOpen, content } = useAppSelector(state => state.drawer)

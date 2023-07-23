@@ -6,12 +6,19 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../@core/context/authContext'
 
+// Styled Components
 const Img = styled('img')(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: 276
   }
 }))
 
+/**
+ * IntroToAlgo Component
+ *
+ * This component displays the introduction to the algorithm section on the homepage.
+ * It shows a list of features offered by the Skill-Based Recommendation System.
+ */
 const IntroToAlgo = () => {
   const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -92,6 +99,8 @@ const IntroToAlgo = () => {
             </ListItem>
           </List>
         </Box>
+
+        {/* Show "Get started now" button if the user is not authenticated */}
         {!isAuthenticated && (
           <Button
             variant={'outlined'}

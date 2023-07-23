@@ -8,6 +8,15 @@ import { onCompleted, onError } from '../../../@core/utils/response'
 import { getFormInputValues } from '../../../@core/utils/get-form-input-values'
 import PersonalInfoForm from './PersonalInfoForm'
 
+/**
+ * EditPersonalInfoForm Component
+ *
+ * This component provides a form to edit the personal information of a job seeker. The form includes fields for the seeker's name, openness to work,
+ * age, phone number, email, birthdate, gender, street, city, and state. The component fetches the job seeker's details using the `useJobSeekerDetailQuery`
+ * and populates the form with the retrieved data. When the form is submitted, it uses the `useUpdateJobSeekerMutation` to update the job seeker's information.
+ *
+ * @returns {JSX.Element} The EditPersonalInfoForm component.
+ */
 const EditPersonalInfoForm = () => {
   const [loading, setLoading] = useState(true)
   const { isOpen, content } = useAppSelector(state => state.drawer)

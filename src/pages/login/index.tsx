@@ -10,10 +10,9 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
-import { styled, Theme, useTheme } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import MuiCard, { CardProps } from '@mui/material/Card'
 
-// ** Icons Imports
 // ** Configs
 import themeConfig from 'src/configs/themeConfig'
 
@@ -22,18 +21,9 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { getFormInputValues } from '../../@core/utils/get-form-input-values'
 import { PasswordInput, TextInput } from '../../@core/components/custom-inputs'
-import { PasswordComponent } from '../../views/sign-up/UserForm'
 import { Grid } from '@mui/material'
 import { useAuth } from '../../@core/context/authContext'
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { authConfig } from "../../configs/auth";
-
-// ** Demo Imports
-
-interface State {
-  password: string
-  showPassword: boolean
-}
+import { authConfig } from '../../configs/auth'
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
@@ -46,6 +36,7 @@ const LinkStyled = styled('a')(({ theme }) => ({
   color: theme.palette.primary.main
 }))
 
+// PasswordComponent is a reusable component to handle password input
 const PasswordComponent = () => {
   const { control } = useFormContext()
   const [showPassword, setShowPassword] = useState(false)
@@ -69,6 +60,7 @@ const PasswordComponent = () => {
   )
 }
 
+// LoginPage Component handles the login page UI and functionality
 const LoginPage = () => {
   const { handleLogin } = useAuth()
   const formMethods = useForm()
@@ -83,16 +75,18 @@ const LoginPage = () => {
   const router = useRouter()
 
   useEffect(() => {
+    // Check if a session token exists in local storage, and redirect to the projects page if already logged in
     const sessionToken = window.localStorage.getItem(authConfig.storageTokenKeyName)
     if (sessionToken) {
       router.push('/projects')
     }
   }, [])
 
-
+  // Function to handle form submission
   const onSubmit = async (values: any) => {
     const input = getFormInputValues(values)
 
+    // Call the handleLogin function from the auth context to perform login
     await handleLogin(input.userName, input.password)
   }
 
@@ -102,7 +96,7 @@ const LoginPage = () => {
         <Card sx={{ zIndex: 1 }}>
           <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
             <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <img src='/images/prorecom_title.png' alt="pro_recom"/>
+              <img src='/images/prorecom_title.png' alt='pro_recom' />
             </Box>
             <Box sx={{ mb: 6 }}>
               <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
@@ -148,12 +142,12 @@ const LoginPage = () => {
             </form>
           </CardContent>
         </Card>
-        {/*<FooterIllustrationsV1/>*/}
       </Box>
     </FormProvider>
   )
 }
 
+// Set the layout for the LoginPage component to use the BlankLayout
 LoginPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
 export default LoginPage

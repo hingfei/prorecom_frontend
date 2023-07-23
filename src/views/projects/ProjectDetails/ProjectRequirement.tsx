@@ -2,6 +2,16 @@ import React from 'react'
 import { Box, Card, CardContent, Typography } from '@mui/material'
 import { ViewListOutline } from 'mdi-material-ui'
 
+/**
+ * ProjectRequirement Component
+ *
+ * This component displays the project requirements using Material-UI's Card component. It includes a list icon
+ * followed by the project requirement text.
+ *
+ * @param {Object} props - The component props.
+ * @param {string | null | undefined} props.projectReq - The project requirements text.
+ * @returns {JSX.Element} The ProjectRequirement component.
+ */
 const ProjectRequirement = ({ projectReq }: { projectReq: string | null | undefined }) => {
   return (
     <Card>

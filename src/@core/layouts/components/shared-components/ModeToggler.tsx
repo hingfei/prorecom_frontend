@@ -14,10 +14,26 @@ interface Props {
   saveSettings: (values: Settings) => void
 }
 
+/**
+ * ModeToggler Component is a functional component that represents a mode toggler icon button.
+ * It allows users to toggle between light mode and dark mode.
+ *
+ * @param {Object} props - The props object that contains the following properties:
+ * @param {Settings} props.settings - The settings object containing various configuration settings.
+ * @param {(values: Settings) => void} props.saveSettings - A function to save the updated settings.
+ *
+ * @returns {JSX.Element} The JSX element representing the mode toggler icon button.
+ */
+interface Props {
+  settings: Settings
+  saveSettings: (values: Settings) => void
+}
+
 const ModeToggler = (props: Props) => {
   // ** Props
   const { settings, saveSettings } = props
 
+  // Handles the mode change when the mode toggler icon button is clicked.
   const handleModeChange = (mode: PaletteMode) => {
     saveSettings({ ...settings, mode })
   }
@@ -30,6 +46,7 @@ const ModeToggler = (props: Props) => {
     }
   }
 
+  // ** The ModeToggler component renders an IconButton with an icon representing the current mode (light or dark).
   return (
     <IconButton color='inherit' aria-haspopup='true' onClick={handleModeToggle}>
       {settings.mode === 'dark' ? <WeatherSunny /> : <WeatherNight />}

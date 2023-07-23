@@ -21,6 +21,7 @@ import dayjs from 'dayjs'
 import Badge from '@mui/material/Badge'
 import { useAuth } from '../../../context/authContext'
 
+// ** Styled Components
 const Menu = styled(MuiMenu)<MenuProps>(({ theme }) => ({
   '& .MuiMenu-paper': {
     width: 380,
@@ -62,6 +63,12 @@ const MenuItemTitle = styled(Typography)<TypographyProps>(({ theme }) => ({
   marginBottom: theme.spacing(0.75)
 }))
 
+/**
+ * NotificationDropdown Component is a functional component that displays a notification bell icon and a dropdown menu for showing user notifications.
+ * It receives the user notifications from the context and displays them in the dropdown menu.
+ *
+ * @returns {JSX.Element} The JSX element representing the notification dropdown.
+ */
 const NotificationDropdown = () => {
   const [anchorEl, setAnchorEl] = useState<(EventTarget & Element) | null>(null)
   const { notif } = useAuth()
@@ -84,6 +91,7 @@ const NotificationDropdown = () => {
     }
   }
 
+  // ** Mutation Hook
   const [readNotif] = useMarkNotificationAsReadMutation({
     refetchQueries: [GetUserNotificationsDocument]
   })
@@ -98,6 +106,7 @@ const NotificationDropdown = () => {
     }
   }
 
+  // ** The NotificationDropdown component renders the notification bell icon and the dropdown menu for showing user notifications.
   return (
     <Fragment>
       {notif.unreadCount !== 0 ? (
@@ -119,6 +128,7 @@ const NotificationDropdown = () => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
+        {/* Menu Header */}
         <MenuItem disableRipple>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
             <Typography sx={{ fontWeight: 600 }}>Notifications</Typography>
@@ -130,6 +140,8 @@ const NotificationDropdown = () => {
             />
           </Box>
         </MenuItem>
+
+        {/* Notification Items */}
         {notif?.notifications && notif?.notifications.length > 0 ? (
           <ScrollWrapper>
             {notif?.notifications.map(notif => {
@@ -157,6 +169,7 @@ const NotificationDropdown = () => {
             })}
           </ScrollWrapper>
         ) : (
+          // Empty Notifications
           <MenuItem onClick={() => handleDropdownClose()}>
             <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
               <Box sx={{ flex: '1 1', display: 'flex', overflow: 'hidden', flexDirection: 'column' }}>

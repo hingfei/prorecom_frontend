@@ -8,6 +8,15 @@ import { onCompleted, onError } from '../../../@core/utils/response'
 import { getFormInputValues } from '../../../@core/utils/get-form-input-values'
 import AboutForm from "./AboutForm";
 
+/**
+ * EditAboutForm Component
+ *
+ * This component allows users to edit their "About" information. It fetches the user's existing "About" information
+ * using the `useJobSeekerDetailQuery` hook and displays it in a form. Users can update their "About" information
+ * using the form and submit the changes through the `useUpdateJobSeekerMutation` hook.
+ *
+ * @returns {JSX.Element} The edit form for the "About" section, including the existing information and a form to update it.
+ */
 const EditAboutForm = () => {
   const [loading, setLoading] = useState(true)
   const { isOpen, content } = useAppSelector(state => state.drawer)
@@ -22,6 +31,7 @@ const EditAboutForm = () => {
     formState: { isSubmitting }
   } = formMethods
 
+  // Reset the form values with the existing "About" information from the server response
   const resetValue = (jobSeekerDetail: any) => {
     const formValues = {
       seekerAbout: jobSeekerDetail?.seekerAbout,
@@ -31,6 +41,7 @@ const EditAboutForm = () => {
     setLoading(false)
   }
 
+  // Fetch the user's existing "About" information using the useJobSeekerDetailQuery hook
   const { loading: queryLoading, data } = useJobSeekerDetailQuery({
     variables: {
       seekerId: parseInt(content)
@@ -46,6 +57,7 @@ const EditAboutForm = () => {
     }
   }, [isOpen])
 
+  // Update the user's "About" information using the useUpdateJobSeekerMutation hook
   const [updateJobSeeker, { loading: updateLoading }] = useUpdateJobSeekerMutation({
     onCompleted: data =>
       onCompleted(data?.updateJobSeeker, () => {

@@ -29,6 +29,17 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
   boxShadow: `0 0 0 2px ${theme.palette.background.paper}`
 }))
 
+/**
+ * UserDropdown Component displays a dropdown menu for the user's profile options.
+ *
+ * @param {object} props - The props object that contains the following properties:
+ * @param {Function} props.handleLogout - The function to handle user logout.
+ * @param {string} props.userType - The type of the user (job_seekers or company).
+ * @param {string} props.userName - The user's name to be displayed in the dropdown.
+ * @param {string | null} props.profilePic - The URL of the user's profile picture.
+ *
+ * @returns {JSX.Element} The JSX element representing the UserDropdown component.
+ */
 const UserDropdown = ({
   handleLogout,
   userType,
@@ -152,34 +163,24 @@ const UserDropdown = ({
             Profile
           </Box>
         </MenuItem>
-        {/*<MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>*/}
-        {/*  <Box sx={styles}>*/}
-        {/*    <EmailOutline sx={{ marginRight: 2 }} />*/}
-        {/*    Inbox*/}
-        {/*  </Box>*/}
-        {/*</MenuItem>*/}
-        {/*<MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>*/}
-        {/*  <Box sx={styles}>*/}
-        {/*    <MessageOutline sx={{ marginRight: 2 }} />*/}
-        {/*    Chat*/}
-        {/*  </Box>*/}
-        {/*</MenuItem>*/}
         <Divider />
         {userType === 'job_seekers' && (
-          <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/applications-history')}>
-            <Box sx={styles}>
-              <FileDocumentOutline sx={{ marginRight: 2 }} />
-              Applications History
-            </Box>
-          </MenuItem>
+          <>
+            <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/applications-history')}>
+              <Box sx={styles}>
+                <FileDocumentOutline sx={{ marginRight: 2 }} />
+                Applications History
+              </Box>
+            </MenuItem>
+            <Divider />
+          </>
         )}
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <HelpCircleOutline sx={{ marginRight: 2 }} />
-            FAQ
-          </Box>
-        </MenuItem>
-        <Divider />
+        {/*<MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>*/}
+        {/*  <Box sx={styles}>*/}
+        {/*    <HelpCircleOutline sx={{ marginRight: 2 }} />*/}
+        {/*    FAQ*/}
+        {/*  </Box>*/}
+        {/*</MenuItem>*/}
         <MenuItem sx={{ py: 2 }} onClick={() => logout()}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Logout

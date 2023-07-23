@@ -7,6 +7,16 @@ import { useSkillListingQuery } from '../../../graphql/api'
 import DropdownSkeleton from '../../../@core/components/skeleton/DropdownSkeleton'
 import { MinusIcon, PlusIcon } from '../../../@core/components/icons'
 
+/**
+ * ProjectForm Component
+ *
+ * This component displays a form to add or edit a project. It includes inputs for project details such as title,
+ * type, experience level, description, requirements, salary, skills required, and status.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} [props.isEdit] - A boolean indicating whether the form is used for editing an existing project.
+ * @returns {JSX.Element} The ProjectForm component.
+ */
 const ProjectForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
   const router = useRouter()
   const { control, setValue } = useFormContext()

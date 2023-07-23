@@ -11,6 +11,7 @@ interface ScrollToTopProps {
   children: ReactNode
 }
 
+// ** Styled component for the ScrollToTop button
 const ScrollToTopStyled = styled('div')(({ theme }) => ({
   zIndex: 11,
   position: 'fixed',
@@ -18,6 +19,9 @@ const ScrollToTopStyled = styled('div')(({ theme }) => ({
   bottom: theme.spacing(10)
 }))
 
+// ** ScrollToTop component
+// This component displays a button that appears when the user scrolls down the page.
+// Clicking the button scrolls the page back to the top smoothly.
 const ScrollToTop = (props: ScrollToTopProps) => {
   // ** Props
   const { children, className } = props

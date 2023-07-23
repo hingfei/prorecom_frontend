@@ -41,7 +41,12 @@ const SearchWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   gap: 20
 }))
 
-
+/**
+ * SearchContent Component
+ *
+ * This component displays the search content section on the homepage. It includes a title,
+ * description, and a search input field. The search input is used for job seekers to search for projects.
+ */
 const SearchContent = () => {
   const [userType, setUserType] = useState('job_seekers');
   const { isAuthenticated, logout } = useAuth()
@@ -104,10 +109,6 @@ const SearchContent = () => {
           ) : (
             ''
           )}
-
-          {/*<Grid item xs={12} md={6} display={'flex'} justifyContent={'center'} alignItems={'center'}>*/}
-          {/*  <Img src={'/images/homepage/job_searching.jpg'} alt={'home_img'} width={'500px'} height={'auto'} />*/}
-          {/*</Grid>*/}
         </BoxWrapper>
       </form>
     </FormProvider>

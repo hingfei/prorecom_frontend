@@ -24,6 +24,20 @@ const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
   alignItems: 'center'
 }))
 
+/**
+ * EducationSection Component
+ *
+ * This component displays the list of education details for a job seeker. It provides options to view, add, edit, and delete
+ * education details. Users can view the list of education information, add new education details, edit existing ones,
+ * and delete specific education entries. The component uses the `JobSeekerDetailDocument` query to fetch the job seeker's
+ * details and the `useDeleteEducationMutation` mutation to delete an education entry. It also displays a confirmation dialog
+ * when deleting an education entry.
+ *
+ * @param {Array<EducationType>} educations - An array of education details for the job seeker.
+ * @param {string | undefined} seekerId - The ID of the job seeker.
+ * @param {boolean} viewOnly - Determines whether the component is in view-only mode or not.
+ * @returns {JSX.Element} The education section component displaying education information and options.
+ */
 const EducationSection = ({
   educations,
   seekerId,

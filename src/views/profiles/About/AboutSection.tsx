@@ -2,6 +2,18 @@ import { Box, Button, Typography } from '@mui/material'
 import { setDrawerState, useAppDispatch } from '../../../store'
 import { DrawerType } from '../../../constants'
 
+/**
+ * AboutSection Component
+ *
+ * This component displays the "About" section for a user. It allows users to view their own "About" information
+ * and edit it if they are not in view-only mode.
+ *
+ * @param {object} props - The props object that contains the aboutData, seekerId, and viewOnly properties.
+ * @param {string | null | undefined} props.aboutData - The "About" information of the user.
+ * @param {string | undefined} props.seekerId - The ID of the seeker (user).
+ * @param {boolean} props.viewOnly - Flag to indicate whether the component is in view-only mode (true) or not (false).
+ * @returns {JSX.Element} The "About" section component displaying the user's information and an edit button if applicable.
+ */
 const AboutSection = ({
   aboutData,
   seekerId,

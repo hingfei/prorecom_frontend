@@ -34,25 +34,19 @@ const MobileViewBox = styled(Box)(({ theme }) => ({
   }
 }))
 
-const TitleWrapper = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  rowGap: theme.spacing(4),
-  // paddingRight: theme.spacing(10),
-  borderRight: `1px solid ${theme.palette.divider}`
-}))
-
-const ContentWrapper = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  rowGap: theme.spacing(4)
-  // paddingLeft: theme.spacing(10)
-}))
-
 const RowWrapper = styled(Grid)(({ theme }) => ({
   borderRight: `1px solid ${theme.palette.divider}`
 }))
 
+/**
+ * CompanyProjectDetailsSection Component
+ *
+ * This component displays project details in both desktop and mobile views using styled components.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.project - The project details to display.
+ * @returns {JSX.Element} The CompanyProjectDetailsSection component.
+ */
 const CompanyProjectDetailsSection = ({ project }: { project: any }) => {
   return (
     <Card>

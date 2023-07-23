@@ -1,4 +1,3 @@
-import MuiCard, { CardProps } from '@mui/material/Card'
 import { styled } from '@mui/material/styles'
 import Link from 'next/link'
 import { Box, Button, CardContent, Divider, Grid, GridProps, Typography } from '@mui/material'
@@ -7,7 +6,7 @@ import { AccountTieOutline, OfficeBuildingOutline } from 'mdi-material-ui'
 
 type SetStateFunction<T> = React.Dispatch<React.SetStateAction<T>>
 
-
+// ** Styled Component
 const LinkStyled = styled('a')(({ theme }) => ({
   fontSize: '0.875rem',
   textDecoration: 'none',
@@ -29,6 +28,18 @@ const StyledGrid = styled(Grid)<GridProps & { selected: boolean }>(({ theme, sel
   }
 }))
 
+/**
+ * UserTypeForm Component
+ *
+ * This component allows users to select their role (Job Seeker or Company) and proceed to the next step.
+ * The component displays two cards with icons and labels for each role, and the user can click on a card to select it.
+ *
+ * @param {Object} props - The component props.
+ * @param {Function} [props.onClick] - The function to handle the click event on the "Next" button.
+ * @param {string} [props.selected] - The currently selected role ('job_seeker' or 'company').
+ * @param {SetStateFunction} [props.setSelected] - The function to set the selected role state.
+ * @returns {JSX.Element} The UserTypeForm component.
+ */
 const UserTypeForm = ({
   onClick,
   selected,
@@ -92,12 +103,6 @@ const UserTypeForm = ({
           </Link>
         </Typography>
       </Box>
-      {/*<ShowAlert*/}
-      {/*  open={open}*/}
-      {/*  onClose={handleClose}*/}
-      {/*  message={'Please select a role before proceeding'}*/}
-      {/*  alertType={'error'}*/}
-      {/*/>*/}
     </>
   )
 }

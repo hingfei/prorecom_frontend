@@ -1,12 +1,10 @@
 // ** MUI Import
 import Box from '@mui/material/Box'
-import { useTheme } from '@mui/material/styles'
 import CircularProgress from '@mui/material/CircularProgress'
 
+// Spinner Component
+// This component displays the spinner when loading a page
 const Spinner = () => {
-  // ** Hook
-  const theme = useTheme()
-
   return (
     <Box
       sx={{

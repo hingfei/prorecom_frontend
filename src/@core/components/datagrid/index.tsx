@@ -2,6 +2,7 @@ import { Box, Card, Grid, styled, Typography } from '@mui/material';
 import { DataGrid as MUIDataGrid } from '@mui/x-data-grid';
 import { DataGridType } from './index.d';
 
+// ** Styling for the grid overlay when no rows are available
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -11,8 +12,10 @@ const StyledGridOverlay = styled('div')(({ theme }) => ({
   height: 150
 }));
 
+// ** Array of options for the number of rows per page in the data grid
 export const ROWS_PER_PAGE = [5, 10, 15]
 
+// ** Custom component for the overlay to display when no rows are available in the data grid
 export const CustomNoRowsOverlay = () => {
   return (
     <StyledGridOverlay>
@@ -26,6 +29,7 @@ export const CustomNoRowsOverlay = () => {
   );
 };
 
+// ** DataGrid component to display tabular data with various customization options
 const DataGrid = ({ listingTitle, headerComponent, visible = true, ...props }: DataGridType) => {
   return (
     <Grid item xs={12}>

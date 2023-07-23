@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 // ** MUI Imports
 import Fab from '@mui/material/Fab'
@@ -17,15 +17,11 @@ import { LayoutProps } from 'src/@core/layouts/types'
 
 // ** Components
 import AppBar from './components/vertical/appBar'
-import Navigation from './components/vertical/navigation'
 import Footer from './components/shared-components/footer'
 import ScrollToTop from 'src/@core/components/scroll-to-top'
 
 // ** Styled Component
-import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
-import toast from "react-hot-toast";
-import { authConfig } from "../../configs/auth";
-import DrawerBase from "../components/drawer/DrawerBase";
+import DrawerBase from '../components/drawer/DrawerBase'
 
 const VerticalLayoutWrapper = styled('div')({
   height: '100%',
@@ -51,6 +47,17 @@ const ContentWrapper = styled('main')(({ theme }) => ({
   }
 }))
 
+/**
+ * VerticalLayout component represents a vertical layout with an app bar, content, and footer.
+ * It supports a fixed sidebar navigation and a scroll-to-top button.
+ *
+ * @param {object} props - The props object that contains the following properties:
+ * @param {LayoutProps} props.settings - The layout settings.
+ * @param {ReactNode} props.children - The children to be rendered inside the VerticalLayout.
+ * @param {boolean} props.scrollToTop - Whether to display the scroll-to-top button.
+ *
+ * @returns {JSX.Element} The JSX element representing the VerticalLayout component.
+ */
 const VerticalLayout = (props: LayoutProps) => {
   // ** Props
   const { settings, children, scrollToTop } = props
@@ -68,14 +75,6 @@ const VerticalLayout = (props: LayoutProps) => {
   return (
     <>
       <VerticalLayoutWrapper className='layout-wrapper'>
-        {/* Navigation Menu */}
-        {/*<Navigation*/}
-        {/*  navWidth={navWidth}*/}
-        {/*  navVisible={navVisible}*/}
-        {/*  setNavVisible={setNavVisible}*/}
-        {/*  toggleNavVisibility={toggleNavVisibility}*/}
-        {/*  {...props}*/}
-        {/*/>*/}
         <MainContentWrapper className='layout-content-wrapper'>
           {/* AppBar Component */}
           <AppBar toggleNavVisibility={toggleNavVisibility} {...props} />
@@ -92,16 +91,12 @@ const VerticalLayout = (props: LayoutProps) => {
             }}
           >
             {children}
+            {/* DrawerBase (Sidebar) Component */}
             <DrawerBase />
           </ContentWrapper>
 
           {/* Footer Component */}
           <Footer {...props} />
-
-          {/* Portal for React Datepicker */}
-          <DatePickerWrapper sx={{ zIndex: 11 }}>
-            <Box id='react-datepicker-portal'></Box>
-          </DatePickerWrapper>
         </MainContentWrapper>
       </VerticalLayoutWrapper>
 

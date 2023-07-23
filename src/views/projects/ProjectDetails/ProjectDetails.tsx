@@ -9,6 +9,7 @@ import ProjectRequirement from './ProjectRequirement'
 import ProjectSkills from './ProjectSkills'
 import ProjectExperience from './ProjectExperience'
 
+// ** Styled Components
 const PerfectScrollbar = styled(PerfectScrollbarComponent)({
   maxHeight: '120vh',
   padding: '0 16px',
@@ -22,6 +23,19 @@ const ScrollWrapper = ({ children }: { children: ReactNode }) => {
   return <PerfectScrollbar options={{ wheelPropagation: false, suppressScrollX: true }}>{children}</PerfectScrollbar>
 }
 
+/**
+ * ProjectDetails Component
+ *
+ * This component displays the details of a project using Material-UI's Card component. It includes various sub-components
+ * such as ProjectTitle, ProjectDescription, ProjectRequirement, ProjectSkills, and ProjectExperience to display different
+ * aspects of the project.
+ *
+ * @param {Object} props - The component props.
+ * @param {ProjectType | undefined} props.project - The project object to display its details.
+ * @param {any} props.applications - The applications data for the project.
+ * @param {any} props.jobSeeker - The job seeker data for the project.
+ * @returns {JSX.Element} The ProjectDetails component.
+ */
 const ProjectDetails = ({
   project,
   applications,

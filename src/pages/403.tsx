@@ -37,6 +37,12 @@ const Img = styled('img')(({ theme }) => ({
   }
 }))
 
+/**
+ * Component: Error403
+ *
+ * This component displays a 403 unauthorized access error page.
+ * It informs the user that they don't have permission to access the page and provides a link to go back to the home page.
+ */
 const Error403 = () => {
   return (
     <Box className='content-center'>

@@ -5,6 +5,20 @@ import { Box, FormControlLabel, Grid, Switch } from '@mui/material'
 import React from 'react'
 import { TextInput } from '../../../../@core/components/custom-inputs'
 
+/**
+ * SearchJobSeeker Component
+ *
+ * This component provides a search bar and switch option to search for job seekers and change the listing view mode.
+ *
+ * @param {Object} props - The component props.
+ * @param {Function} props.onClick - The callback function when the search button is clicked.
+ * @param {Object} props.switchOption - The switch option for changing the listing view mode.
+ * @param {boolean} props.switchOption.checked - The checked state of the switch.
+ * @param {string} props.switchOption.label - The label text of the switch.
+ * @param {boolean} props.switchOption.disabled - The disabled state of the switch.
+ * @param {Function} props.handleChangeJobSeekerList - The callback function to handle changing the listing view mode.
+ * @returns {JSX.Element} The SearchJobSeeker component.
+ */
 const SearchJobSeeker = ({
   onClick,
   switchOption,

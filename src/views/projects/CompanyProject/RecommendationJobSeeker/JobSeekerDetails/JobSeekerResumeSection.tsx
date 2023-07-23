@@ -2,6 +2,15 @@ import React from 'react'
 import { Box, Button, Card, CardContent, Grid, Link, Typography } from '@mui/material'
 import { BookAccountOutline, EyeOutline } from 'mdi-material-ui'
 
+/**
+ * JobSeekerResumeSection Component
+ *
+ * This component displays the job seeker's resume if available or shows a message indicating that no resume is provided.
+ *
+ * @param {Object} props - The component props.
+ * @param {string | null | undefined} props.resume - The URL or path of the job seeker's resume.
+ * @returns {JSX.Element} The JobSeekerResumeSection component.
+ */
 const JobSeekerResumeSection = ({ resume }: { resume: any }) => {
   return (
     <Card>

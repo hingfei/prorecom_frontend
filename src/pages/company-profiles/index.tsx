@@ -10,6 +10,11 @@ import { useAuth } from '../../@core/context/authContext'
 import CompanyProfileSection from '../../views/company-profiles/CompanyProfileSection'
 import CompanyPasswordSection from '../../views/company-profiles/CompanyPasswordSection'
 
+/**
+ * CompanyProfile Component displays the profile details of a company.
+ *
+ * @returns {JSX.Element} The JSX element representing the CompanyProfile component.
+ */
 const CompanyProfile = () => {
   const [loading, setLoading] = useState(true)
   const [viewOnly, setViewOnly] = useState(false)
@@ -39,10 +44,12 @@ const CompanyProfile = () => {
   })
 
   useEffect(() => {
+    // Fetch the company data if the 'id' query parameter exists (viewing another company's profile)
     if (router.query.id) {
       fetchCompany({ variables: { companyId: parseInt(router.query.id) } })
       setViewOnly(true)
     } else {
+      // Fetch the user's own company data if no 'id' query parameter (viewing own profile)
       fetchMe()
     }
   }, [])
@@ -67,6 +74,7 @@ const CompanyProfile = () => {
           </CardContent>
         </Card>
       </Grid>
+      {/* Show the password section only for own company profile, not for viewing other companies */}
       {!viewOnly && (
         <Grid item xs={12} sm={10} lg={8}>
           <Card>

@@ -32,6 +32,16 @@ const DescriptionTitleWrapper = styled(Typography)<TypographyProps>(({ theme }) 
   alignSelf: 'flex-start'
 }))
 
+/**
+ * CompanyProfileSection Component
+ *
+ * This component displays the company profile section.
+ *
+ * @param {Object} props - Component props.
+ * @param {Object} props.company - Company data.
+ * @param {string | undefined} props.companyId - Company ID.
+ * @param {boolean} props.viewOnly - Flag to determine if the view is for read-only.
+ */
 const CompanyProfileSection = ({
   company,
   companyId,

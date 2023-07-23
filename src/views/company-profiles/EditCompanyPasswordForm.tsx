@@ -7,6 +7,11 @@ import { onCompleted, onError } from "../../@core/utils/response";
 import { getFormInputValues } from "../../@core/utils/get-form-input-values";
 import PasswordForm from "../profiles/Password/PasswordForm";
 
+/**
+ * EditPasswordForm Component
+ *
+ * This component displays the form for updating the company password.
+ */
 const EditPasswordForm = () => {
   const { isOpen, content } = useAppSelector(state => state.drawer)
   const dispatch = useAppDispatch()
@@ -38,6 +43,11 @@ const EditPasswordForm = () => {
     refetchQueries: [CompanyDetailDocument]
   })
 
+  /**
+   * Handles the form submission event. It updates the company password.
+   *
+   * @param {Object} values - Form values.
+   */
   const onSubmit = (values: any) => {
     const input = getFormInputValues(values)
 

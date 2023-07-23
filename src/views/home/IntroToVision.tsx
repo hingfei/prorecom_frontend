@@ -1,17 +1,22 @@
 import Grid from '@mui/material/Grid'
 import { styled } from '@mui/material/styles'
 import { Typography } from '@mui/material'
-import { useRouter } from 'next/router'
 
+// Styled Components
 const Img = styled('img')(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: 276
   }
 }))
 
+/**
+ * IntroToVision Component
+ *
+ * This component displays the section highlighting the purpose of the application,
+ * which is to make the job search process easier with intelligent project and candidate recommendations.
+ * It includes an image illustrating the job search process and a descriptive text.
+ */
 const IntroToVision = () => {
-  const router = useRouter()
-
   return (
     <Grid
       container

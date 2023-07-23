@@ -5,6 +5,18 @@ import { SkillType } from '../../../graphql/api'
 import { RhombusMedium } from 'mdi-material-ui'
 import { DrawerType } from '../../../constants'
 
+/**
+ * SkillSection Component
+ *
+ * This component displays a list of skills for a job seeker.
+ * It allows the job seeker to view their skills and provides an "Edit" button to edit the skills.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array<SkillType>} props.skills - An array of skills to be displayed.
+ * @param {string | undefined} props.seekerId - The ID of the job seeker.
+ * @param {boolean} props.viewOnly - A boolean indicating whether the component is in view-only mode.
+ * @returns {JSX.Element} The SkillSection component.
+ */
 const SkillSection = ({
   skills,
   seekerId,

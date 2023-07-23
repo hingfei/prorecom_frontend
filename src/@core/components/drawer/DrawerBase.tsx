@@ -13,6 +13,7 @@ import AddEducationForm from '../../../views/profiles/Education/AddEducationForm
 import EditCompanyProfileForm from "../../../views/company-profiles/EditCompanyProfileForm";
 import EditResumeform from "../../../views/profiles/Resume/EditResumeForm";
 
+// Styling for the custom Drawer component
 const Drawer = styled(MuiDrawer)<DrawerProps>(({ theme }) => ({
   zIndex: theme.zIndex.drawer,
   '& .MuiFormControlLabel-root': {
@@ -33,10 +34,14 @@ const CustomizerSpacing = styled('div')(({ theme }) => ({
   padding: theme.spacing(5, 6)
 }))
 
+// DrawerBase Component
+// This component renders the custom Drawer that can display different forms based on the DrawerType.
 const DrawerBase = ({ onCloseCallback }: { onCloseCallback?: () => void }) => {
+  // Retrieve the drawer state and dispatch function from the store
   const { isOpen, type } = useAppSelector(state => state.drawer)
   const dispatch = useAppDispatch()
 
+  // Function to render the appropriate form based on the DrawerType
   const renderChildren = () => {
     switch (type) {
       case DrawerType.editJobSeekerForm:

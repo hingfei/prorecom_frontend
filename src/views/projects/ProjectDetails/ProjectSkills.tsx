@@ -3,6 +3,16 @@ import { Box, Card, CardContent, List, ListItem, ListItemIcon, ListItemText, Typ
 import { CogOutline, RhombusMedium } from 'mdi-material-ui'
 import { ProjectType } from '../../../graphql/api'
 
+/**
+ * ProjectSkills Component
+ *
+ * This component displays the skills required for a project using Material-UI's Card component and List component.
+ * It includes a cog icon followed by the title "Skills Required" and a list of skills using RhombusMedium icon.
+ *
+ * @param {Object} props - The component props.
+ * @param {ProjectType | undefined} props.project - The project object that includes the skills required for the project.
+ * @returns {JSX.Element} The ProjectSkills component.
+ */
 const ProjectSkills = ({ project }: { project: ProjectType | undefined }) => {
   return (
     <Card>

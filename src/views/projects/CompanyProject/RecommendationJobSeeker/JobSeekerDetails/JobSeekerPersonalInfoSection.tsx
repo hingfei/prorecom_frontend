@@ -13,6 +13,18 @@ import { generateGenderIcon } from '../../../../../@core/utils/generate-gender-i
 import { MapMarkerOutline, PhoneOutline } from 'mdi-material-ui'
 import { onCompleted, onError } from '../../../../../@core/utils/response'
 
+/**
+ * JobSeekerPersonalInfoSection Component
+ *
+ * This component displays the personal information of a job seeker, including their name, gender icon,
+ * age, phone number, and address. It also provides a button to apply or invite the job seeker to a project.
+ *
+ * @param {Object} props - The component props.
+ * @param {JobSeekerType | undefined} props.jobSeeker - The details of the job seeker.
+ * @param {Array<ProjectApplicationType>} props.applications - List of project applications.
+ * @param {ProjectType} props.project - The project details.
+ * @returns {JSX.Element} The JobSeekerPersonalInfoSection component.
+ */
 const JobSeekerPersonalInfoSection = ({
   jobSeeker,
   applications,

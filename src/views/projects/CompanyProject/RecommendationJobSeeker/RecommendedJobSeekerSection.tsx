@@ -18,6 +18,18 @@ import { useAuth } from '../../../../@core/context/authContext'
 import { getFormInputValues } from '../../../../@core/utils/get-form-input-values'
 import SearchJobSeeker from './SearchJobSeeker'
 
+/**
+ * RecommendedJobSeekerSection Component
+ *
+ * This component displays the recommended job seekers for a specific project.
+ * It also provides a search functionality to search for job seekers and view their details.
+ *
+ * @param {Object} props - The component props.
+ * @param {number} props.projectId - The ID of the project to fetch recommended job seekers for.
+ * @param {Array<ProjectApplicationType>} props.applications - The list of project applications.
+ * @param {ProjectType} props.project - The project details.
+ * @returns {JSX.Element} The RecommendedJobSeekerSection component.
+ */
 function RecommendedJobSeekerSection({
   projectId,
   applications,

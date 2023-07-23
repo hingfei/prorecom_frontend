@@ -19,6 +19,12 @@ const CardMediaStyled = styled(CardMedia)(({ theme }) => ({
   height: 130
 }))
 
+/**
+ * IntroToProRecom Component
+ *
+ * This component displays the section explaining the steps to use the recommendation system.
+ * It includes three cards explaining the process of creating an account, completing the profile, and getting recommendations.
+ */
 const IntroToProRecom = () => {
   return (
     <Grid container spacing={6}>

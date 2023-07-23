@@ -1,10 +1,20 @@
-import { useTheme } from '@mui/material/styles'
 import { CalendarInput, SelectInput, TextInput } from 'src/@core/components/custom-inputs'
 import { Box, Button, Grid, Typography } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
 import { genderSelect, statesListing } from "../../constants";
 
-
+/**
+ * JobSeekerForm Component
+ *
+ * This component displays a form to collect job seeker profile details. Users can enter their name, age, gender,
+ * date of birth, phone number, street, city, and state. The form provides validation for required fields.
+ *
+ * @param {Object} props - The component props.
+ * @param {Function} [props.onClick] - The function to handle the click event on the "Join Now" button.
+ * @param {Function} [props.changeStep] - The function to change the current step in the multi-step form.
+ * @param {boolean} props.isSubmitting - A boolean indicating if the form is being submitted.
+ * @returns {JSX.Element} The JobSeekerForm component.
+ */
 const JobSeekerForm = ({
   onClick,
   changeStep,
@@ -14,8 +24,6 @@ const JobSeekerForm = ({
   changeStep?: (val: number) => void
   isSubmitting: boolean
 }) => {
-  const theme = useTheme()
-
   const { control } = useFormContext()
 
   return (

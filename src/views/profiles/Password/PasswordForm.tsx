@@ -4,6 +4,18 @@ import { closeDrawerState, useAppDispatch } from '../../../store'
 import { PasswordInput } from '../../../@core/components/custom-inputs'
 import { useState } from 'react'
 
+/**
+ * PasswordForm Component
+ *
+ * This component provides a form to enter the current password and the new password. It uses the `PasswordInput` component
+ * from `custom-inputs` to render password input fields. The form allows the user to toggle the visibility of the password
+ * using the `showPassword` and `showConfirmPassword` states. The form can be used for both editing the password and adding
+ * a new password. It takes a `isEdit` prop to indicate if it is used for editing or adding. When the form is submitted, the
+ * `onSubmit` function is called. The `onCancel` function is used to close the drawer.
+ *
+ * @param {ButtonProps & { isEdit?: boolean }} props - The component props. It includes the `isEdit` prop to indicate if it's for editing or adding.
+ * @returns {JSX.Element} The password form component.
+ */
 const PasswordForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)

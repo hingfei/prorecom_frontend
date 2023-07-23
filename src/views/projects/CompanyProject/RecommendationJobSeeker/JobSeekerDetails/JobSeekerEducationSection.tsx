@@ -20,6 +20,16 @@ const TextBox = styled(Box)<BoxProps>(({ theme }) => ({
   alignItems: 'center'
 }))
 
+/**
+ * JobSeekerEducationSection Component
+ *
+ * This component displays the education details of a job seeker, including their education institution,
+ * education level, field of study, graduation year, grade, and description.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array<EducationType> | undefined} props.educations - List of education records of the job seeker.
+ * @returns {JSX.Element} The JobSeekerEducationSection component.
+ */
 const JobSeekerEducationSection = ({ educations }: { educations: Array<EducationType> | undefined }) => {
   return (
     <Card>

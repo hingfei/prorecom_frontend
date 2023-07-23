@@ -4,6 +4,14 @@ import { closeDrawerState, useAppDispatch } from '../../store'
 import { SelectInput, TextInput } from '../../@core/components/custom-inputs'
 import { companySize, statesListing } from '../../constants'
 
+/**
+ * CompanyProfileForm Component
+ *
+ * This component displays a form to add or edit company profile details.
+ *
+ * @param {boolean} isEdit - Flag to determine whether the form is for editing an existing profile.
+ * @param {ButtonProps} props - Additional props to be passed to the "Save" button.
+ */
 const CompanyProfileForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
   const dispatch = useAppDispatch()
   const { control } = useFormContext()

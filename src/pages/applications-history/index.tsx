@@ -10,7 +10,7 @@ import { onCompleted, onError } from '../../@core/utils/response'
 import withAuth from '../../@core/hooks/withAuth'
 import { Box, Button, Grid, Typography } from '@mui/material'
 import PageHeader from '../../@core/components/page-header'
-import DataGrid from '../../@core/datagrid'
+import DataGrid from '../../@core/components/datagrid'
 import { mapEmptyRows } from '../../@core/utils/map-empty-rows'
 import generateSkeletonColumns from '../../@core/utils/generate-skeleton-columns'
 import { capitalizeFirstLetter } from '../../@core/utils/capitalize-first-letter'
@@ -24,6 +24,11 @@ type ApplicationHistoryCellType = {
   row: NonNullable<GetJobSeekerApplicationsQuery['getJobSeekerApplications']>[0]
 }
 
+/**
+ * ActionsRow component displays the accept and reject buttons for application status update.
+ *
+ * @returns {JSX.Element} The JSX element representing the ActionsRow component.
+ */
 const ActionsRow = ({ row }: ApplicationHistoryCellType) => {
   const [updateApplicationMutation, { loading }] = useUpdateApplicationMutation({
     onCompleted: data => {
@@ -37,6 +42,13 @@ const ActionsRow = ({ row }: ApplicationHistoryCellType) => {
 
   const [sendNotif] = useSendNotificationMutation()
 
+  /**
+   * handleClick function handles the click event for accept and reject buttons. It updates the application status and sends a notification to the company.
+   *
+   * @param {string} applicationId - The ID of the application.
+   * @param {string} status - The status to be updated.
+   * @param {string} seekerId - The ID of the job seeker.
+   */
   const handleClick = (applicationId: string, status: string, seekerId: string) => {
     updateApplicationMutation({
       variables: {
@@ -170,6 +182,11 @@ const columns = [
   }
 ]
 
+/**
+ * ApplicationsHistory Component displays the job seeker's application history with accept and reject actions for pending applications.
+ *
+ * @returns {JSX.Element} The JSX element representing the ApplicationsHistory component.
+ */
 const ApplicationsHistory = () => {
   const skeletonColumns = generateSkeletonColumns(columns)
 

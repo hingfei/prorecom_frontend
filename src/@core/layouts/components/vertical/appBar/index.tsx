@@ -8,8 +8,6 @@ import MuiToolbar, { ToolbarProps } from '@mui/material/Toolbar'
 
 // ** Type Import
 import { Settings } from 'src/@core/context/settingsContext'
-import { Simulate } from "react-dom/test-utils";
-import blur = Simulate.blur;
 
 interface Props {
   hidden: boolean
@@ -19,13 +17,14 @@ interface Props {
   verticalAppBarContent?: (props?: any) => ReactNode
 }
 
+// Styled Components
 const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({
   transition: 'none',
   alignItems: 'center',
   justifyContent: 'center',
   padding: theme.spacing(0, 6),
   backgroundColor: theme.palette.customColors.header,
-  backdropFilter: blur('0.25rem'),
+  backdropFilter: 'blur(0.25rem)',
   color: theme.palette.text.primary,
   minHeight: theme.mixins.toolbar.minHeight,
   boxShadow: theme.shadows[5],
@@ -45,6 +44,12 @@ const Toolbar = styled(MuiToolbar)<ToolbarProps>(({ theme }) => ({
     'padding .25s ease-in-out, box-shadow .25s ease-in-out, backdrop-filter .25s ease-in-out, background-color .25s ease-in-out'
 }))
 
+/**
+ * LayoutAppBar Component represents the top app bar of the layout.
+ * It displays the content provided by the user or nothing if not provided.
+ *
+ * @returns {JSX.Element} The JSX element representing the LayoutAppBar component.
+ */
 const LayoutAppBar = (props: Props) => {
   // ** Props
   const { settings, verticalAppBarContent: userVerticalAppBarContent } = props

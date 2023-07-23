@@ -15,12 +15,19 @@ import SkillSection from '../../views/profiles/Skill/SkillSection'
 import withAuth from '../../@core/hooks/withAuth'
 import { useAuth } from '../../@core/context/authContext'
 
+/**
+ * Profile Component represents the user profile page, which displays personal information, about section, education history,
+ * skills, resume, and allows the user to change their password if viewOnly is false.
+ *
+ * @returns {JSX.Element} The JSX element representing the Profile component.
+ */
 const Profile = () => {
   const [loading, setLoading] = useState(true)
   const [viewOnly, setViewOnly] = useState(false)
   const router = useRouter()
   const { resetStore } = useAuth()
 
+  // ** GraphQL queries
   const [fetchMe, { data: userData }] = useMeLazyQuery({
     onCompleted: data => {
       fetchJobSeeker({ variables: { seekerId: parseInt(data?.me?.userId) } })
@@ -43,6 +50,7 @@ const Profile = () => {
     }
   })
 
+  // ** Fetch user data
   useEffect(() => {
     if (router.query.id) {
       fetchJobSeeker({ variables: { seekerId: parseInt(router.query.id) } })
@@ -59,17 +67,29 @@ const Profile = () => {
   return (
     <Grid container spacing={6}>
       <PageHeader title={'Profile'} />
+
+      {/* Personal Info */}
       <Grid item xs={12} md={5} lg={4}>
         <Card>
           <CardContent sx={{ py: 10, display: 'flex', alignItems: 'center', flexDirection: 'column', rowGap: '6px' }}>
-            <PersonalInfoSection seekerId={data?.jobSeekerDetail?.seekerId} jobSeeker={data?.jobSeekerDetail} viewOnly={viewOnly}/>
+            <PersonalInfoSection
+              seekerId={data?.jobSeekerDetail?.seekerId}
+              jobSeeker={data?.jobSeekerDetail}
+              viewOnly={viewOnly}
+            />
           </CardContent>
         </Card>
       </Grid>
+
+      {/* Main Content */}
       <Grid item xs={12} md={7} lg={8}>
         <Card>
           <CardContent sx={{ py: 10, px: '32px !important' }}>
-            <AboutSection aboutData={data?.jobSeekerDetail?.seekerAbout} seekerId={data?.jobSeekerDetail?.seekerId} viewOnly={viewOnly}/>
+            <AboutSection
+              aboutData={data?.jobSeekerDetail?.seekerAbout}
+              seekerId={data?.jobSeekerDetail?.seekerId}
+              viewOnly={viewOnly}
+            />
             <Divider sx={{ mb: 5 }} />
 
             <EducationSection
@@ -79,15 +99,21 @@ const Profile = () => {
             />
             <Divider sx={{ mb: 5 }} />
 
-            <SkillSection skills={data?.jobSeekerDetail?.skills} seekerId={data?.jobSeekerDetail?.seekerId} viewOnly={viewOnly}/>
+            <SkillSection
+              skills={data?.jobSeekerDetail?.skills}
+              seekerId={data?.jobSeekerDetail?.seekerId}
+              viewOnly={viewOnly}
+            />
             <Divider sx={{ mb: 5 }} />
 
-            <ResumeSection jobSeeker={data?.jobSeekerDetail} seekerId={data?.jobSeekerDetail?.seekerId} viewOnly={viewOnly}/>
+            <ResumeSection
+              jobSeeker={data?.jobSeekerDetail}
+              seekerId={data?.jobSeekerDetail?.seekerId}
+              viewOnly={viewOnly}
+            />
             <Divider sx={{ mb: 5 }} />
 
-            {!viewOnly && (
-              <PasswordSection seekerId={data?.jobSeekerDetail?.seekerId} />
-            )}
+            {!viewOnly && <PasswordSection seekerId={data?.jobSeekerDetail?.seekerId} />}
           </CardContent>
         </Card>
       </Grid>

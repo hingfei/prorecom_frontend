@@ -46,6 +46,12 @@ const TreeIllustration = styled('img')(({ theme }) => ({
   }
 }))
 
+/**
+ * Component: Error404
+ *
+ * This component displays a 404 page not found error page.
+ * It informs the user that the page they are looking for couldn't be found and provides a link to go back to the home page.
+ */
 const Error404 = () => {
   return (
     <Box className='content-center'>

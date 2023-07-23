@@ -1,7 +1,11 @@
 import { Alert, AlertColor, Snackbar } from '@mui/material'
-import { useState } from 'react'
-import AlertTitle from "@mui/material/AlertTitle";
+import AlertTitle from '@mui/material/AlertTitle'
 
+// ---------------------------------------------------------
+// ShowAlert Component
+// ---------------------------------------------------------
+
+// This component is a reusable Snackbar-based Alert that displays a message with different severity levels.
 const ShowAlert = ({
   open,
   onClose,
@@ -13,7 +17,8 @@ const ShowAlert = ({
   message?: string
   alertType: AlertColor
 }) => {
-  let alertTitle = 'Success';
+  // Determine the title based on the alertType for the Alert component.
+  let alertTitle = 'Success'
   if (alertType === 'error') {
     alertTitle = 'Error'
   } else if (alertType === 'warning') {
@@ -24,6 +29,7 @@ const ShowAlert = ({
     alertTitle = 'Success'
   }
 
+  // The Alert displays the provided message with the specified severity level.
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}

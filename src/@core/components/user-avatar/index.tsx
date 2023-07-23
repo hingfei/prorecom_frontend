@@ -4,16 +4,21 @@ import Avatar from '@mui/material/Avatar'
 import { ImageEditOutline } from 'mdi-material-ui'
 import Spinner from '../spinner'
 
+// ** Custom Button component for image input
 const ImageInputButton = (props: ButtonProps<'label'>) => {
   return <Button {...props} component='label' />
 }
 
-//start of styling for logo and overlay
+// ** Styling for the UserAvatar component
+// This section includes styled components for the Avatar, ImageBackdrop, ImageSrc, and Image
+// These styles create an overlay effect on the Avatar when hovered, and allow users to upload a profile picture.
+
+// ** Styled component for the ImageButton
 const ImageButton = styled(ImageInputButton)(({ theme }) => ({
   position: 'relative',
   height: '150px',
   [theme.breakpoints.down('sm')]: {
-    width: '100% !important', // Overrides inline-style
+    width: '100% !important',
     height: 120
   },
   '&:hover, &.Mui-focusVisible': {
@@ -27,7 +32,7 @@ const ImageButton = styled(ImageInputButton)(({ theme }) => ({
   }
 }))
 
-//styling for image/logo/profilepicture
+// ** Styled component for the ImageSrc (displaying the profile picture)
 const ImageSrc = styled('span')({
   position: 'absolute',
   left: 0,
@@ -38,7 +43,7 @@ const ImageSrc = styled('span')({
   backgroundPosition: 'center'
 })
 
-//styling for opacity effect
+// ** Styled component for the ImageBackdrop (overlay effect)
 const ImageBackdrop = styled('span')(({ theme }) => ({
   position: 'absolute',
   left: 0,
@@ -50,7 +55,7 @@ const ImageBackdrop = styled('span')(({ theme }) => ({
   transition: theme.transitions.create('opacity')
 }))
 
-//styling for overlay logo (here the cameraIcon)
+// ** Styled component for the Image (overlay logo)
 const Image = styled('span')(({ theme }) => ({
   position: 'absolute',
   left: 0,
@@ -64,6 +69,10 @@ const Image = styled('span')(({ theme }) => ({
   color: theme.palette.common.white
 }))
 
+// ** UserAvatar component
+// This component renders an Avatar with the user's profile picture or a default avatar.
+// If in view-only mode, it displays the Avatar without any upload functionality.
+// If not in view-only mode, it allows users to upload their profile picture by clicking the Avatar and selecting an image.
 const UserAvatar = ({
   viewOnly,
   userId,

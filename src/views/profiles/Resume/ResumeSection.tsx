@@ -4,6 +4,17 @@ import { DrawerType } from '../../../constants'
 import { EyeOutline } from 'mdi-material-ui'
 import React from 'react'
 
+/**
+ * ResumeSection Component
+ *
+ * This component displays the resume section for a job seeker, including the resume PDF view and an "Edit" button.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.jobSeeker - The job seeker object containing the resume information.
+ * @param {string | undefined} props.seekerId - The job seeker ID.
+ * @param {boolean} props.viewOnly - Flag to indicate if the view is for display-only (view mode).
+ * @returns {JSX.Element} The ResumeSection component.
+ */
 const ResumeSection = ({
   jobSeeker,
   seekerId,
@@ -53,6 +64,7 @@ const ResumeSection = ({
             </Grid>
           </Grid>
         ) : (
+          // Render this message if no resume is provided
           <Typography variant={'body2'}>No information is provided</Typography>
         )}
       </Box>

@@ -2,6 +2,13 @@ import { Box, Button, Typography } from '@mui/material'
 import { setDrawerState, useAppDispatch } from "../../store";
 import { DrawerType } from "../../constants";
 
+/**
+ * CompanyPasswordSection Component
+ *
+ * This component displays a section to change the password for a company.
+ *
+ * @param {string | undefined} companyId - The ID of the company.
+ */
 const CompanyPasswordSection = ({ companyId }: { companyId: string | undefined }) => {
   const dispatch = useAppDispatch()
 

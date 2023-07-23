@@ -4,6 +4,16 @@ import { closeDrawerState, useAppDispatch } from '../../../store'
 import { CalendarInput, SelectInput, SwitchInput, TextInput } from '../../../@core/components/custom-inputs'
 import { genderSelect, statesListing } from '../../../constants'
 
+/**
+ * PersonalInfoForm Component
+ *
+ * This component provides a form to capture the personal information of a job seeker.
+ * The form includes fields for the seeker's name, age, phone number, email, date of birth, gender, street,
+ * city, state, and availability for work.
+ *
+ * @param {ButtonProps & { isEdit?: boolean }} props - The props of the component.
+ * @returns {JSX.Element} The PersonalInfoForm component.
+ */
 const PersonalInfoForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
   const dispatch = useAppDispatch()
   const { control } = useFormContext()

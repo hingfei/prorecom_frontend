@@ -14,6 +14,18 @@ import { CalendarMonthOutline, CurrencyUsd, Domain, MapMarkerOutline } from 'mdi
 import { onCompleted, onError } from '../../../@core/utils/response'
 import dayjs from 'dayjs'
 
+/**
+ * ProjectTitle Component
+ *
+ * This component displays the details of a project's title, company information,
+ * location, project type, salary, and post date. It also handles the "Apply" button logic.
+ *
+ * @param {Object} props - The component props.
+ * @param {ProjectType | undefined} props.project - The project object that includes the project details.
+ * @param {Array} props.applications - The list of job seeker applications.
+ * @param {Object} props.jobSeeker - The job seeker information.
+ * @returns {JSX.Element} The ProjectTitle component.
+ */
 const ProjectTitle = ({
   project,
   applications,

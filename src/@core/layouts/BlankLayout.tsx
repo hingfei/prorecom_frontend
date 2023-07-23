@@ -1,13 +1,11 @@
 // ** MUI Imports
-import { styled, useTheme } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import Box, { BoxProps } from '@mui/material/Box'
 
 // ** Types
 import { BlankLayoutProps } from './types'
-import { useRouter } from "next/router";
-import Link from "next/link";
-import themeConfig from "../../configs/themeConfig";
-import Typography, { TypographyProps } from "@mui/material/Typography";
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 // Styled component for Blank Layout component
 const BlankLayoutWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -17,7 +15,7 @@ const BlankLayoutWrapper = styled(Box)<BoxProps>(({ theme }) => ({
     display: 'flex',
     minHeight: '100vh',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
 
   // For V1 Blank layout pages
@@ -38,14 +36,6 @@ const BlankLayoutWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   }
 }))
 
-const HeaderTitle = styled(Typography)<TypographyProps>(({ theme }) => ({
-  fontWeight: 600,
-  lineHeight: 'normal',
-  textTransform: 'uppercase',
-  color: theme.palette.text.primary,
-  transition: 'opacity .25s ease-in-out, margin .25s ease-in-out'
-}))
-
 const StyledLink = styled('a')({
   display: 'flex',
   alignItems: 'center',
@@ -59,22 +49,32 @@ const HeaderStyle = styled(Box)<BoxProps>(({ theme }) => ({
   padding: theme.spacing(0, 6)
 }))
 
+/**
+ * BlankLayout component represents a layout with a blank canvas, ideal for login or sign-up pages.
+ * It includes a header at the top with a clickable logo to navigate to the home page.
+ *
+ * @param {object} props - The props object that contains the following property:
+ * @param {ReactNode} props.children - The children to be rendered inside the BlankLayout.
+ *
+ * @returns {JSX.Element} The JSX element representing the BlankLayout component.
+ */
 const BlankLayout = ({ children }: BlankLayoutProps) => {
   const router = useRouter()
-  const theme = useTheme()
 
   return (
     <BlankLayoutWrapper className='layout-wrapper'>
       <Box className='app-content' sx={{ minHeight: '100vh', overflowX: 'hidden', position: 'relative' }}>
-        {router.pathname == '/login' || router.pathname == '/sign-up' ?
+        {router.pathname == '/login' || router.pathname == '/sign-up' ? (
           <HeaderStyle>
             <Link href='/' passHref>
               <StyledLink>
-                <img src='/images/prorecom_title.png' alt="pro_recom" width={230} height={'auto'}/>
+                <img src='/images/prorecom_title.png' alt='pro_recom' width={230} height={'auto'} />
               </StyledLink>
             </Link>
           </HeaderStyle>
-          : ''}
+        ) : (
+          ''
+        )}
 
         {children}
       </Box>

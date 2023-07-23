@@ -8,6 +8,15 @@ import { onCompleted, onError } from '../../../@core/utils/response'
 import { getFormInputValues } from '../../../@core/utils/get-form-input-values'
 import SkillForm from './SkillForm'
 
+/**
+ * EditSkillForm Component
+ *
+ * This component provides the form for editing job seeker skills.
+ * It retrieves the job seeker details and their existing skills from the server.
+ * The component allows the job seeker to update their skills and submit the changes.
+ *
+ * @returns {JSX.Element} The EditSkillForm component.
+ */
 const EditSkillForm = () => {
   const [loading, setLoading] = useState(true)
   const { isOpen, content } = useAppSelector(state => state.drawer)
@@ -22,6 +31,7 @@ const EditSkillForm = () => {
     formState: { isSubmitting }
   } = formMethods
 
+  // Reset the form values with the job seeker's existing skills.
   const resetValue = (jobSeekerDetail: any) => {
     const skillList = jobSeekerDetail?.skills.map(item => item.skillId)
     const formValues = {
@@ -32,6 +42,7 @@ const EditSkillForm = () => {
     setLoading(false)
   }
 
+  // Query the server to get the job seeker details and reset the form when the data is available.
   const { loading: queryLoading, data } = useJobSeekerDetailQuery({
     variables: {
       seekerId: parseInt(content)
@@ -41,6 +52,7 @@ const EditSkillForm = () => {
     }
   })
 
+  // Reset the form values when the drawer is opened or the job seeker data is available.
   useEffect(() => {
     if (data?.jobSeekerDetail) {
       resetValue(data?.jobSeekerDetail)

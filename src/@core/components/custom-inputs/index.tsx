@@ -1,6 +1,5 @@
 import {
   Autocomplete,
-  Checkbox,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -13,30 +12,27 @@ import {
   TextField,
   Typography
 } from '@mui/material'
-import { CalendarOutline, EyeOffOutline, EyeOutline } from 'mdi-material-ui'
+import { EyeOffOutline, EyeOutline } from 'mdi-material-ui'
 import { useController } from 'react-hook-form'
 import {
   CalendarInputType,
-  CheckboxInputType,
   FormControlBaseType,
   PasswordInputType,
   SelectInputType,
-  SwitchInputType, TextInputIconType,
+  SwitchInputType,
   TextInputType
 } from './index.d'
-import { useEffect, useRef, useState } from 'react'
-import dayjs, { Dayjs } from "dayjs";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-// import DatePicker from 'react-datepicker';
-// import { DateTimePicker, DateTimePickerProps } from '@mui/x-date-pickers/DateTimePicker';
-// import { LocalizationProvider, TimePicker } from '@mui/lab';
-// import AdapterDateFns from '@mui/lab/AdapterDateFns';
-// import { useDropzone } from 'react-dropzone';
-// import toast from 'react-hot-toast';
-// import dayjs from 'dayjs';
+import { useEffect, useState } from 'react'
+import dayjs from 'dayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
+// -------------------------
+// FormControlBase Component
+// -------------------------
+
+// A wrapper component for form controls with common styling and error handling.
 export const FormControlBase = ({ children, isInvalid, errorMessage, isRequired }: FormControlBaseType) => {
   return (
     <FormControl fullWidth required={isRequired}>
@@ -46,6 +42,11 @@ export const FormControlBase = ({ children, isInvalid, errorMessage, isRequired 
   )
 }
 
+// -------------------------
+// TextInput Component
+// -------------------------
+
+// A custom text input component that integrates with 'react-hook-form'.
 export const TextInput = ({
   controllerProps,
   inputProps,
@@ -63,6 +64,7 @@ export const TextInput = ({
     ...controllerProps
   })
 
+  // Render the text input wrapped in the FormControlBase for styling and error display.
   return (
     <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message}>
       <TextField
@@ -70,11 +72,13 @@ export const TextInput = ({
         autoFocus={Boolean(isAutofocus)}
         value={value ? value : ''}
         onChange={event => {
+          // Convert the input value to a number if isNumber prop is true.
           if (isNumber && !!event?.target?.value) {
             onChange(Number(event?.target?.value))
           } else {
             onChange(event)
           }
+          // Call the provided onChangeCallback, if any, on input change.
           !!onChangeCallback && onChangeCallback(event)
         }}
         error={Boolean(error)}
@@ -85,6 +89,11 @@ export const TextInput = ({
   )
 }
 
+// -------------------------
+// SelectInput Component
+// -------------------------
+
+// A custom select input component that integrates with 'react-hook-form'.
 export const SelectInput = ({
   controllerProps,
   selectProps,
@@ -99,13 +108,14 @@ export const SelectInput = ({
     ...controllerProps
   })
 
-  // Note: autocomplete value must be in object format
+  // Convert the select input value to an object format required by the Autocomplete component.
   useEffect(() => {
     if (typeof value !== 'object' && value) {
       onChange(selectData?.find(item => item.value === value))
     }
   }, [typeof value !== 'object', JSON.stringify(selectData)])
 
+  // Render the select input wrapped in the FormControlBase for styling and error display.
   return (
     <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message} isRequired={Boolean(isRequired)}>
       <Autocomplete
@@ -128,6 +138,7 @@ export const SelectInput = ({
         )}
         value={value}
         onChange={(event, va) => {
+          // Call the provided onChangeCallback, if any, on select input change.
           onChange(va)
           !!onChangeCallback && onChangeCallback(va)
         }}
@@ -137,6 +148,11 @@ export const SelectInput = ({
   )
 }
 
+// -------------------------
+// PasswordInput Component
+// -------------------------
+
+// A custom password input component with an eye icon to toggle visibility.
 export const PasswordInput = ({
   controllerProps,
   inputProps,
@@ -151,6 +167,7 @@ export const PasswordInput = ({
     ...controllerProps
   })
 
+  // Render the password input wrapped in the FormControlBase for styling and error display.
   return (
     <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message}>
       <InputLabel sx={{ display: 'flex' }}>
@@ -184,7 +201,19 @@ export const PasswordInput = ({
   )
 }
 
-export const CheckboxInput = ({ controllerProps, checkboxProps, label, onChangeCallback }: CheckboxInputType) => {
+// -------------------------
+// CalendarInput Component
+// -------------------------
+
+// A custom date picker input component that integrates with 'react-hook-form'.
+export const CalendarInput = ({
+  controllerProps,
+  label,
+  minDate,
+  disabled,
+  datePickerProps,
+  isRequired
+}: CalendarInputType) => {
   const {
     field: { onChange, value },
     fieldState: { error }
@@ -192,45 +221,20 @@ export const CheckboxInput = ({ controllerProps, checkboxProps, label, onChangeC
     ...controllerProps
   })
 
-  return (
-    <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message}>
-      <FormControlLabel
-        control={
-          <Checkbox
-            value={value}
-            checked={value}
-            onChange={e => {
-              onChange(e.target.checked)
-              !!onChangeCallback && onChangeCallback(e)
-            }}
-            {...checkboxProps}
-          />
-        }
-        label={label}
-      />
-    </FormControlBase>
-  )
-}
+  // Local state to manage the date picker open and anchor element for Popper.
+  const [open, setOpen] = useState(false)
+  const [anchorEl, setAnchorEl]: any = useState(null)
 
-export const CalendarInput = ({ controllerProps, label, minDate, disabled, datePickerProps, isRequired }: CalendarInputType) => {
-  const {
-    field: { onChange, value },
-    fieldState: { error }
-  } = useController({
-    ...controllerProps
-  });
-
-  const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl]: any = useState(null);
-
+  // Handle date picker Popper open and close.
   const handleClick = (event: MouseEvent) => {
-    setOpen(true);
-    setAnchorEl(event?.currentTarget);
+    setOpen(true)
+    setAnchorEl(event?.currentTarget)
     if (open) {
-      event.stopPropagation();
+      event.stopPropagation()
     }
-  };
+  }
 
+  // Render the date picker input wrapped in the FormControlBase for styling and error display.
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs as any}>
       <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message}>
@@ -244,11 +248,11 @@ export const CalendarInput = ({ controllerProps, label, minDate, disabled, dateP
           value={value}
           maxDate={dayjs()}
           onChange={(input: any) => {
-            const convertDate = input ? dayjs(input)?.format('MM-DD-YYYY') : null;
+            const convertDate = input ? dayjs(input)?.format('MM-DD-YYYY') : null
             if (convertDate) {
-              onChange(convertDate);
+              onChange(convertDate)
             } else {
-              onChange(null);
+              onChange(null)
             }
           }}
           PopperProps={{
@@ -274,9 +278,14 @@ export const CalendarInput = ({ controllerProps, label, minDate, disabled, dateP
         />
       </FormControlBase>
     </LocalizationProvider>
-  );
-};
+  )
+}
 
+// -------------------------
+// SwitchInput Component
+// -------------------------
+
+// A custom switch input component that integrates with 'react-hook-form'.
 export const SwitchInput = ({
   controllerProps,
   switchProps,
@@ -295,16 +304,19 @@ export const SwitchInput = ({
     ...controllerProps
   })
 
+  // Set the default value if the provided value is empty.
   useEffect(() => {
     if (!value) {
       defaultValue && onChange(defaultValue)
     }
   }, [value])
 
+  // Render the switch input wrapped in the FormControlBase for styling and error display.
   return (
     <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message}>
       <SwitchInputBase
         onChangeCallback={e => {
+          // Call the provided onChangeCallback, if any, on switch change.
           onChange(e.target.checked ? checkedValue ?? true : unCheckedValue ?? false)
           !!onChangeCallback && onChangeCallback(e)
         }}
@@ -318,6 +330,11 @@ export const SwitchInput = ({
   )
 }
 
+// -------------------------
+// SwitchInputBase Component
+// -------------------------
+
+// A base component for rendering a custom switch input with labels.
 export const SwitchInputBase = ({
   switchProps,
   formControlLabelProps,
@@ -330,6 +347,7 @@ export const SwitchInputBase = ({
   const [isChecked, setIsChecked] = useState(checked || false)
   const [currentlabel, setLabel] = useState(checked ? checkedLabel || label : unCheckedLabel || label)
 
+  // Update the local state when the checked prop changes.
   useEffect(() => {
     if (checked != isChecked) {
       setIsChecked(checked || false)
@@ -337,6 +355,7 @@ export const SwitchInputBase = ({
     }
   }, [checked, isChecked])
 
+  // Render the switch input wrapped in the FormControlLabel for styling and label display.
   return (
     <FormControlLabel
       control={
@@ -346,6 +365,7 @@ export const SwitchInputBase = ({
           onChange={e => {
             setIsChecked(e.target.checked)
             !!onChangeCallback && onChangeCallback(e)
+            // Update the label based on the switch state.
             e.target.checked
               ? checkedLabel
                 ? setLabel(checkedLabel)
@@ -377,278 +397,3 @@ export const SwitchInputBase = ({
     />
   )
 }
-
-// export const TimeInput = ({ controllerProps, label, defaultValue }: TimeInputType) => {
-//   const {
-//     field: { onChange, value },
-//     fieldState: { error }
-//   } = useController({
-//     ...controllerProps
-//   });
-//
-//   const [open, setOpen] = useState<boolean>(false);
-//   const [pickerError, setPickerError] = useState<string | ''>('');
-//
-//   useEffect(() => {
-//     setPickerError('');
-//     if (!value) {
-//       onChange(defaultValue);
-//     }
-//   }, []);
-//
-//   const time = value?.split(':');
-//
-//   return (
-//     <FormControlBase isInvalid={Boolean(error || pickerError)} errorMessage={error?.message || pickerError}>
-//       {/* @ts-ignore */}
-//       <LocalizationProvider dateAdapter={AdapterDateFns}>
-//         <TimePicker
-//           onError={reason => {
-//             if (!!reason) {
-//               setPickerError(`Invalid Time`);
-//               onChange(null);
-//             }
-//           }}
-//           onClose={() => setOpen(false)}
-//           open={open}
-//           label={label || ''}
-//           value={time && time?.[0] && time?.[1] ? new Date(2022, 1, 1, time[0], time[1], 0, 0) : null}
-//           onChange={newValue => {
-//             if (newValue != null) {
-//               const hour = (newValue?.getHours() || 0) < 10 ? '0' + newValue?.getHours() : newValue?.getHours();
-//               const minutes =
-//                 (newValue?.getMinutes() || 0) < 10 ? '0' + newValue?.getMinutes() : newValue?.getMinutes();
-//               onChange(`${hour}:${minutes}`);
-//               setPickerError(``);
-//             }
-//           }}
-//           renderInput={params => (
-//             <TextField
-//               onClick={() => setOpen(true)}
-//               onChange={value => {
-//                 if (!value.target.value) {
-//                   onChange(null);
-//                 }
-//                 if (!/^(1[0-2]|0?[1-9]):[0-5]*[0-9] (AM|PM)$/i.test(value.target.value)) {
-//                   setPickerError(`Invalid Time`);
-//                   onChange(null);
-//                 }
-//               }}
-//               {...params}
-//               error={Boolean(error || pickerError)}
-//               sx={{ '.MuiOutlinedInput-input': { paddingY: '12px!important' } }}
-//             />
-//           )}
-//         />
-//       </LocalizationProvider>
-//     </FormControlBase>
-//   );
-// };
-
-// export const PlacesAutoCompleteInput = ({
-//                                           controllerProps,
-//                                           isRequired,
-//                                           label,
-//                                           setSelected,
-//                                           isGoogleApiLoaded,
-//                                           ...props
-//                                         }: PlaceAutoCompleteInputProps) => {
-//   const {
-//     field: { onChange, value },
-//     fieldState: { error }
-//   } = useController({
-//     ...controllerProps
-//   });
-//
-//   return (
-//     <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message} isRequired={Boolean(isRequired)}>
-//       <PlacesAutoComplete
-//         label={label}
-//         setSelected={setSelected}
-//         address={value}
-//         onInputChange={onChange}
-//         isRequired={Boolean(isRequired)}
-//         isGoogleApiLoaded={isGoogleApiLoaded}
-//         error={Boolean(error)}
-//         {...props}
-//       />
-//     </FormControlBase>
-//   );
-// };
-
-// export const ImageInput = ({ controllerProps, previewHeight, imageStyle, buttonStyle }: ImageInputType) => {
-//   const {
-//     field: { onChange, value },
-//     fieldState: { error }
-//   } = useController({
-//     ...controllerProps
-//   });
-//
-//   const { getRootProps, getInputProps } = useDropzone({
-//     accept: {
-//       'image/*': ['.png', '.jpg', '.jpeg', '.gif']
-//     },
-//     onDrop: (uploadFiles: File[]) => {
-//       onChange(uploadFiles[0]);
-//     },
-//     onDropRejected: () => {
-//       toast.error('Something went wrong', {
-//         duration: 2000
-//       });
-//     }
-//   });
-//
-//   const preview_image = (value: any) => {
-//     if (typeof value === 'string' && value != '') {
-//       return value;
-//     } else if (value instanceof File) {
-//       return URL.createObjectURL(value);
-//     }
-//   };
-//
-//   const Img = styled('img')(({ theme }) => ({
-//     [theme.breakpoints.up('xs')]: {
-//       marginRight: '18px'
-//     }
-//   }));
-//
-//   return (
-//     <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message}>
-//       <Button
-//         sx={{
-//           display: 'flex',
-//           justifyContent: 'center',
-//           alignItems: 'center',
-//           flexDirection: 'row',
-//           border: '2px dashed rgba(93, 89, 98, 0.22);',
-//           marginBottom: 3,
-//           paddingX: 5,
-//           ...buttonStyle,
-//           height: !!previewHeight ? previewHeight : '120px',
-//           textTransform: 'unset'
-//         }}
-//         {...getRootProps({ className: 'dropzone' })}
-//       >
-//         <input {...getInputProps()} value={undefined} />
-//
-//         {value ? (
-//           <Box position={'relative'} height="100%" width="100%">
-//             <IconButton
-//               onClick={e => {
-//                 e.stopPropagation();
-//                 onChange(null);
-//               }}
-//               sx={{ position: 'absolute', right: 0, top: 0 }}
-//             >
-//               <Close fontSize='medium' />
-//             </IconButton>
-//
-//             <img
-//               src={preview_image(value)}
-//               alt={`add_image`}
-//               width={'auto'}
-//               height={'100%'}
-//               style={{ objectFit: 'contain', ...imageStyle }}
-//             />
-//           </Box>
-//         ) : (
-//           <>
-//             <Img height={28} alt='image' src='/images/misc/image_icon.png' />
-//             <Box
-//               sx={{
-//                 display: 'flex',
-//                 flexDirection: 'column',
-//                 textAlign: ['start']
-//               }}
-//             >
-//               <Typography variant='body2' fontWeight={600}>
-//                 Upload Image
-//               </Typography>
-//               <Typography variant={'body1'}>Allowed JPG or PNG.</Typography>
-//               <Typography variant={'body1'}>Max size of 800K</Typography>
-//             </Box>
-//           </>
-//         )}
-//       </Button>
-//     </FormControlBase>
-//   );
-// };
-
-// export const DateTimeInput = ({
-//                                 isRequired,
-//                                 controllerProps,
-//                                 label,
-//                                 disabled,
-//                                 disablePast,
-//                                 ampm,
-//                                 minDateTime,
-//                                 maxDateTime,
-//                                 dateTimePickerProps
-//                               }: CalendarInputType & { dateTimePickerProps?: Partial<DateTimePickerProps> }) => {
-//   const {
-//     field: { onChange, value },
-//     fieldState: { error }
-//   } = useController({
-//     ...controllerProps
-//   });
-//
-//   const [open, setOpen] = useState(false);
-//   const [anchorEl, setAnchorEl]: any = useState(null);
-//
-//   const handleClick = (event: MouseEvent<HTMLDivElement, MouseEvent>) => {
-//     setOpen(true);
-//     setAnchorEl(event?.currentTarget);
-//     if (open) {
-//       event.stopPropagation();
-//     }
-//   };
-//
-//   return (
-//     <LocalizationProvider dateAdapter={AdapterDayjs as any}>
-//       <FormControlBase isInvalid={Boolean(error)} errorMessage={error?.message}>
-//         <DateTimePicker
-//           open={open}
-//           onOpen={() => setOpen(true)}
-//           onClose={() => setOpen(false)}
-//           renderInput={({ inputProps, ...restParams }) => (
-//             <TextField
-//               {...restParams}
-//               inputProps={{
-//                 ...inputProps,
-//                 placeholder: 'DD-MM-YYYY hh:mm'
-//               }}
-//               error={Boolean(error)}
-//               required={isRequired}
-//               onClick={(event: any) => (!disabled ? handleClick(event) : null)}
-//               inputRef={inputRef => (!open ? inputRef?.blur() : false)}
-//               focused={open}
-//             />
-//           )}
-//           PopperProps={{
-//             placement: 'bottom',
-//             anchorEl: anchorEl
-//           }}
-//           label={label}
-//           inputFormat={'DD-MM-YYYY hh:mma'}
-//           views={['year', 'month', 'day', 'hours', 'minutes']}
-//           value={value}
-//           ampm={ampm}
-//           minDate={dayjs('2022-01-01')}
-//           minDateTime={minDateTime}
-//           maxDateTime={maxDateTime}
-//           disablePast={disablePast}
-//           onChange={(dateTimeInput: any) => {
-//             const convertDate = dateTimeInput ? dayjs(dateTimeInput)?.format('YYYY-MM-DD HH:mm:00') : null;
-//             if (convertDate) {
-//               onChange(convertDate);
-//             } else {
-//               onChange(null);
-//             }
-//           }}
-//           disabled={disabled}
-//           {...dateTimePickerProps}
-//         />
-//       </FormControlBase>
-//     </LocalizationProvider>
-//   );
-// };

@@ -20,6 +20,12 @@ import { onError } from '../../@core/utils/response'
 import { useAuth } from '../../@core/context/authContext'
 import { PROJECTS_PER_PAGE } from '../../constants'
 
+/**
+ * Component: Projects
+ *
+ * This component displays the list of projects and allows job seekers to filter and search for projects.
+ * It also supports pagination to display a limited number of projects per page.
+ */
 function Projects() {
   const router = useRouter()
   const { resetStore } = useAuth()
@@ -38,6 +44,7 @@ function Projects() {
 
   const { handleSubmit, setValue, reset } = formMethods
 
+  // Fetch recommended projects using the useProjectListingLazyQuery hook from GraphQL
   const [fetchProject, { loading: fetchLoading }] = useProjectListingLazyQuery({
     variables: {
       recommendation: true
@@ -61,6 +68,7 @@ function Projects() {
     fetchPolicy: 'no-cache'
   })
 
+  // Search for projects using the useSearchProjectsLazyQuery hook from GraphQL
   const [searchProject, { loading: searchLoading }] = useSearchProjectsLazyQuery({
     onCompleted: data => {
       setProject(data.searchProjects[0])
@@ -77,6 +85,7 @@ function Projects() {
     fetchPolicy: 'no-cache'
   })
 
+  // Fetch the job seeker's applications using the useGetJobSeekerApplicationsQuery hook from GraphQL
   const { loading: applicationLoading } = useGetJobSeekerApplicationsQuery({
     onCompleted: async data => {
       setApplications(data?.getJobSeekerApplications)
@@ -87,6 +96,7 @@ function Projects() {
     fetchPolicy: 'no-cache'
   })
 
+  // Fetch the job seeker's details using the useJobSeekerDetailLazyQuery hook from GraphQL
   const [fetchJobSeeker, { loading: seekerLoading }] = useJobSeekerDetailLazyQuery({
     onCompleted: async data => {
       setJobSeeker(data?.jobSeekerDetail)
@@ -97,6 +107,7 @@ function Projects() {
     fetchPolicy: 'cache-and-network'
   })
 
+  // Handle switch option change to switch between 'Best Match' and 'Default' project lists
   const handleChangeProjectList = () => {
     setCurrentPage(1)
     if (switchOption.checked) {
@@ -116,6 +127,7 @@ function Projects() {
     }
   }
 
+  // Initial data fetching on component mount or when the router query changes
   useEffect(() => {
     setFilterState(false)
     setFilteredProjectList([])
@@ -147,6 +159,7 @@ function Projects() {
     }
   }, [])
 
+  // Pagination logic to update the displayed projects when the page changes
   useEffect(() => {
     const lastIndex = currentPage * PROJECTS_PER_PAGE
     const firstIndex = lastIndex - PROJECTS_PER_PAGE
@@ -158,15 +171,18 @@ function Projects() {
     }
   }, [currentPage])
 
+  // Handle page change when the pagination component is used
   const handlePageChange = (event, page) => {
     setCurrentPage(page)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  // Handle project selection from the list of projects
   const onChangeProject = (project: ProjectType) => {
     setProject(project)
   }
 
+  // Handle form submission for project search
   const onSubmit = (values: any) => {
     setCurrentPage(1)
 
@@ -199,6 +215,7 @@ function Projects() {
     return <Spinner />
   }
 
+  // Render the projects listing and details components with pagination
   return (
     <FormProvider {...formMethods}>
       <form style={{ height: '100%' }} onSubmit={handleSubmit(onSubmit)}>

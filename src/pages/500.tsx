@@ -46,6 +46,12 @@ const TreeIllustration = styled('img')(({ theme }) => ({
   }
 }))
 
+/**
+ * Component: Error500
+ *
+ * This component displays a 500 internal server error page.
+ * It informs the user that something went wrong on the server and provides a link to go back to the home page.
+ */
 const Error500 = () => {
   return (
     <Box className='content-center'>

@@ -7,6 +7,16 @@ import { getFormInputValues } from '../../../@core/utils/get-form-input-values'
 import PasswordForm from './PasswordForm'
 import { useEffect } from 'react'
 
+/**
+ * EditPasswordForm Component
+ *
+ * This component allows the job seeker to update their password. It uses the `useUpdateJobSeekerPasswordMutation` mutation
+ * to update the job seeker's password and the `JobSeekerDetailDocument` query to fetch the job seeker's details.
+ * The component includes a `PasswordForm` that provides inputs to enter the current password and the new password.
+ * It resets the form when the drawer is opened, and when the form is submitted, it calls the mutation to update the password.
+ *
+ * @returns {JSX.Element} The edit password form component.
+ */
 const EditPasswordForm = () => {
   const { isOpen, content } = useAppSelector(state => state.drawer)
   const dispatch = useAppDispatch()

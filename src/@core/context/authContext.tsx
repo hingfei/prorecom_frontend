@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import { authConfig } from '../../configs/auth'
 import { removeCookies, setCookies } from 'cookies-next'
 
+// ** AuthContextType interface defining the structure of the AuthContext
 type AuthContextType = {
   fetchMeLoading: boolean
   isInitialized: boolean
@@ -23,6 +24,7 @@ type AuthContextType = {
   notif: any
 }
 
+// ** Create AuthContext with initial values
 export const AuthContext = createContext<AuthContextType>({
   fetchMeLoading: true,
   isAuthenticated: false,
@@ -39,6 +41,7 @@ type Props = {
   children: ReactNode
 }
 
+// ** AuthProvider component to wrap the children with AuthContext
 export const AuthProvider = ({ children }: Props) => {
   const [isInitialized, setIsInitialized] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -48,6 +51,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   const router = useRouter()
 
+  // Function to reset the auth store
   const resetStore = () => {
     setIsInitialized(true)
     window.localStorage.removeItem('userData')
@@ -59,6 +63,7 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }
 
+  // GraphQL Queries & Mutations
   const [fetchMe, { loading: fetchMeLoading }] = useMeLazyQuery({
     onCompleted: async data => {
       setIsAuthenticated(true)
@@ -68,12 +73,13 @@ export const AuthProvider = ({ children }: Props) => {
       }
     },
     onError: error => {
-      router.push('/401')
+      router.push('/401') // Redirect to unauthorized page on error
       onError(error, undefined)
       resetStore()
     }
   })
 
+  // Query to get user notifications
   const [fetchNotif] = useGetUserNotificationsLazyQuery({
     variables: {
       unreadOnly: false
@@ -84,15 +90,18 @@ export const AuthProvider = ({ children }: Props) => {
     fetchPolicy: 'cache-and-network'
   })
 
+  // Mutation for user login
   const [login, { loading }] = useLoginMutation({
     onCompleted: data => {
       onCompleted(data.login, () => {
         if (data.login.success) {
+          // Set user data and token to local storage and cookies on successful login
           window.localStorage.setItem(authConfig.storageTokenKeyName, data?.login?.token || '')
           window.localStorage.setItem('userData', JSON.stringify(data?.login?.user))
           setCookies(authConfig.storageTokenKeyName, `Bearer ${data?.login?.token}`)
           setIsAuthenticated(true)
           setIsInitialized(false)
+          // Redirect users to different routes based on their userType
           if (data?.login?.user?.userType === 'job_seekers') {
             router.push('/projects')
           } else {
@@ -106,14 +115,17 @@ export const AuthProvider = ({ children }: Props) => {
     }
   })
 
+  // useEffect to check if user is authenticated on app load
   useEffect(() => {
     const initAuth = async (): Promise<void> => {
+      // Check if token is stored in local storage, if yes, fetchMe() to authenticate the user
       const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
       storedToken ? await fetchMe() : resetStore()
     }
     initAuth()
   }, [])
 
+  // useEffect to fetch user notifications and set up polling
   useEffect(() => {
     if (isAuthenticated) {
       fetchNotif()
@@ -135,6 +147,7 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }, [isAuthenticated])
 
+  // Function to handle user login
   const handleLogin = (userName: string, password: string) => {
     login({
       variables: {
@@ -147,7 +160,9 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }
 
+  // Function to handle user logout
   const logout = () => {
+    // Call resetStore() to clear user data and redirect to home page
     resetStore()
     router.push('/')
   }
@@ -161,4 +176,5 @@ export const AuthProvider = ({ children }: Props) => {
   )
 }
 
+// Hook to use the AuthContext values in functional components
 export const useAuth = () => useContext(AuthContext)

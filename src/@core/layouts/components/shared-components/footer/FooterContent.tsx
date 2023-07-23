@@ -1,44 +1,16 @@
-// ** MUI Imports
 import Box from '@mui/material/Box'
-import Link from '@mui/material/Link'
-import { Theme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
-import useMediaQuery from '@mui/material/useMediaQuery'
 
+/**
+ * FooterContent is a functional component that represents the content of the website's footer.
+ * It displays the copyright information along with the current year and the website name.
+ *
+ * @returns {JSX.Element} The JSX element representing the content of the footer.
+ */
 const FooterContent = () => {
-  // ** Var
-  const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'))
-
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
-      <Typography sx={{ mr: 2 }}>
-        {`© ${new Date().getFullYear()}, ProRecom`}
-      </Typography>
-      {hidden ? null : ( ''
-        // <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', '& :not(:last-child)': { mr: 4 } }}>
-        //   <Link
-        //     target='_blank'
-        //     href='https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free/blob/main/LICENSE'
-        //   >
-        //     MIT License
-        //   </Link>
-        //   <Link target='_blank' href='https://themeselection.com/'>
-        //     More Themes
-        //   </Link>
-        //   <Link
-        //     target='_blank'
-        //     href='https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free/blob/main/README.md'
-        //   >
-        //     Documentation
-        //   </Link>
-        //   <Link
-        //     target='_blank'
-        //     href='https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free/issues'
-        //   >
-        //     Support
-        //   </Link>
-        // </Box>
-      )}
+      <Typography sx={{ mr: 2 }}>{`© ${new Date().getFullYear()}, ProRecom`}</Typography>
     </Box>
   )
 }

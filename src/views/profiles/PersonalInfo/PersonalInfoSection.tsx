@@ -39,6 +39,22 @@ const AddressWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%'
 }))
 
+/**
+ * PersonalInfoSection Component
+ *
+ * This component displays the personal information of a job seeker. It includes the seeker's name, profile picture, age, phone number, email,
+ * date of birth, gender, and address. The component allows the user to upload or change the profile picture. The `generateGenderIcon` function
+ * is used to display the appropriate gender icon based on the seeker's gender. The component also displays a chip indicating whether the seeker
+ * is open for work or closed for work. If the `viewOnly` prop is true, the component displays the information in read-only mode without the
+ * "Edit" button. Otherwise, the "Edit" button allows the user to update the personal information.
+ *
+ * @param {{
+ *   jobSeeker: any,
+ *   seekerId: string | undefined,
+ *   viewOnly: boolean
+ * }} props - The props of the component.
+ * @returns {JSX.Element} The PersonalInfoSection component.
+ */
 const PersonalInfoSection = ({
   jobSeeker,
   seekerId,

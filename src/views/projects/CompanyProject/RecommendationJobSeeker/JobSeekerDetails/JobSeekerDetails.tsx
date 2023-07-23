@@ -9,6 +9,7 @@ import JobSeekerEducationSection from './JobSeekerEducationSection'
 import JobSeekerSkillsSection from './JobSeekerSkillsSection'
 import JobSeekerResumeSection from './JobSeekerResumeSection'
 
+// ** Styled Components
 const PerfectScrollbar = styled(PerfectScrollbarComponent)({
   maxHeight: '117vh',
   width: '100%',
@@ -22,6 +23,18 @@ const ScrollWrapper = ({ children }: { children: ReactNode }) => {
   return <PerfectScrollbar options={{ wheelPropagation: false, suppressScrollX: true }}>{children}</PerfectScrollbar>
 }
 
+/**
+ * JobSeekerDetails Component
+ *
+ * This component displays the details of a job seeker, including personal information, about section,
+ * education history, skills, and resume. It provides a structured and organized view of the job seeker's profile.
+ *
+ * @param {Object} props - The component props.
+ * @param {JobSeekerType | undefined} props.jobSeeker - The job seeker's information.
+ * @param {Array<ProjectApplicationType>} props.applications - List of applications made by the job seeker.
+ * @param {ProjectType} props.project - The project associated with the job seeker's profile.
+ * @returns {JSX.Element} The JobSeekerDetails component.
+ */
 const JobSeekerDetails = ({
   jobSeeker,
   applications,

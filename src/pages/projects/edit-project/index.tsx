@@ -10,6 +10,12 @@ import { getFormInputValues } from '../../../@core/utils/get-form-input-values'
 import ProjectForm from 'src/views/projects/CompanyProject/ProjectForm'
 import Spinner from '../../../@core/components/spinner'
 
+/**
+ * Component: EditProject
+ *
+ * This component allows users to edit an existing project. It fetches the project details using GraphQL queries,
+ * then updates the project using a GraphQL mutation. It utilizes react-hook-form for form management.
+ */
 const EditProject = () => {
   const [loading, setLoading] = useState(true)
   const router = useRouter()
@@ -22,6 +28,10 @@ const EditProject = () => {
     formState: { isSubmitting }
   } = formMethods
 
+  /**
+   * Reset the form values with the project details fetched from GraphQL query.
+   * @param {Object} projectDetail - The project details fetched from GraphQL query.
+   */
   const resetValue = (projectDetail: any) => {
     const skillList = projectDetail?.skills.map(item => item.skillId)
 
@@ -41,6 +51,7 @@ const EditProject = () => {
     setLoading(false)
   }
 
+  // Fetch the project details using the useProjectDetailQuery hook from GraphQL
   const { data, loading: queryLoading } = useProjectDetailQuery({
     variables: { projectId: parseInt(router.query.id) },
     onCompleted: ({ projectDetail }) => {
@@ -48,6 +59,7 @@ const EditProject = () => {
     }
   })
 
+  // Use the useUpdateProjectMutation hook from GraphQL to perform the project update mutation
   const [updateProject, { loading: updateLoading }] = useUpdateProjectMutation({
     onCompleted: data =>
       onCompleted(data?.updateProject, () => {
@@ -59,6 +71,10 @@ const EditProject = () => {
     refetchQueries: [ProjectDetailDocument]
   })
 
+  /**
+   * Handle form submission and call the updateProject mutation to update the project.
+   * @param {Object} values - Form values submitted by the user.
+   */
   const onSubmit = (values: any) => {
     const { skills, ...restValues } = values
     const skillsArray = skills ? skills.map((skill: any) => parseInt(skill.value)) : []

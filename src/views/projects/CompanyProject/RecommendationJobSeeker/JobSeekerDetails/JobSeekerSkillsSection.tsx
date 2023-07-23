@@ -3,6 +3,15 @@ import { Box, Card, CardContent, List, ListItem, ListItemIcon, ListItemText, Typ
 import { CogOutline, RhombusMedium } from 'mdi-material-ui'
 import { SkillType } from '../../../../../graphql/api'
 
+/**
+ * JobSeekerSkillsSection Component
+ *
+ * This component displays the list of skills of a job seeker.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array<SkillType> | undefined} props.skills - The array of skills to be displayed.
+ * @returns {JSX.Element} The JobSeekerSkillsSection component.
+ */
 const JobSeekerSkillsSection = ({ skills }: { skills: Array<SkillType> | undefined }) => {
   return (
     <Card>
@@ -13,6 +22,7 @@ const JobSeekerSkillsSection = ({ skills }: { skills: Array<SkillType> | undefin
             Skills
           </Typography>
         </Box>
+        {/* Check if skills are available */}
         {skills && skills.length > 0 ? (
           <List>
             {skills.map(skill => {

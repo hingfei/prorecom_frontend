@@ -27,6 +27,15 @@ const TreeImg = styled('img')(({ theme }) => ({
   }
 }))
 
+/**
+ * FooterIllustrations Component
+ *
+ * This component renders the illustrations at the bottom of the page in the footer.
+ * It includes a mask image and a tree image that changes positions based on the screen size.
+ *
+ * @param {ReactNode} image (Optional) Custom image to render instead of the default tree image.
+ * @returns {ReactNode} The illustrations components if the screen size is not small (hidden on small screens).
+ */
 const FooterIllustrations = (props: FooterIllustrationsProp) => {
   // ** Props
   const { image } = props

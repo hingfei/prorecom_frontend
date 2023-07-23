@@ -13,7 +13,7 @@ import { onCompleted, onError } from '../../@core/utils/response'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import withAuth from '../../@core/hooks/withAuth'
-import DataGrid from '../../@core/datagrid'
+import DataGrid from '../../@core/components/datagrid'
 import generateSkeletonColumns from '../../@core/utils/generate-skeleton-columns'
 import { CheckIcon, CloseIcon, DeleteIcon, ViewIcon } from '../../@core/components/icons'
 import { DialogApplicationLayout, DialogDeleteLayout } from '../../@core/components/dialog'
@@ -42,6 +42,11 @@ type ProjectListingCellType = {
   row: NonNullable<CompanyProjectListingQuery['companyProjectListing']>[0]
 }
 
+/**
+ * ApplicationRow Component displays the number of applicants and a dialog to view the applications for a project.
+ *
+ * @returns {JSX.Element} The JSX element representing the ApplicationRow component.
+ */
 const ApplicationRow = ({ row }: ProjectListingCellType) => {
   const [dialog, setDialog] = useState(false)
 
@@ -57,6 +62,13 @@ const ApplicationRow = ({ row }: ProjectListingCellType) => {
 
   const [sendNotif] = useSendNotificationMutation()
 
+  /**
+   * handleClick function handles the click event for accept and reject buttons. It updates the application status and sends a notification to the job seeker.
+   *
+   * @param {string} applicationId - The ID of the application.
+   * @param {string} status - The status to be updated.
+   * @param {string} seekerId - The ID of the job seeker.
+   */
   const handleClick = (applicationId: string, status: string, seekerId: string) => {
     updateApplicationMutation({
       variables: {
@@ -196,6 +208,11 @@ const ApplicationRow = ({ row }: ProjectListingCellType) => {
   )
 }
 
+/**
+ * ActionsRow Component displays the actions (view and delete) for a project in the data grid.
+ *
+ * @returns {JSX.Element} The JSX element representing the ActionsRow component.
+ */
 const ActionsRow = ({ row }: ProjectListingCellType) => {
   const router = useRouter()
   const [dialog, setDialog] = useState(false)
@@ -332,6 +349,11 @@ const columns = [
   }
 ]
 
+/**
+ * CompanyDashboard Component displays the dashboard for a company showing their projects with actions for viewing and deleting.
+ *
+ * @returns {JSX.Element} The JSX element representing the CompanyDashboard component.
+ */
 const CompanyDashboard = () => {
   const [loading, setLoading] = useState(true)
   const skeletonColumns = generateSkeletonColumns(columns)

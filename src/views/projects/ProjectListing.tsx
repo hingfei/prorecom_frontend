@@ -37,6 +37,18 @@ const ScrollWrapper = ({ children }: { children: ReactNode }) => {
   return <PerfectScrollbar options={{ wheelPropagation: false, suppressScrollX: true }}>{children}</PerfectScrollbar>
 }
 
+/**
+ * ProjectListing Component
+ *
+ * This component displays a list of project cards with project details such as project name, company information,
+ * project type, salary, and similarity score. It also handles the click event on each card to update the selected project.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.projectListing - The list of project items to display.
+ * @param {ProjectType | undefined} props.project - The currently selected project object.
+ * @param {Function} props.onChangeProject - The function to handle the change of selected project.
+ * @returns {JSX.Element} The ProjectListing component.
+ */
 const ProjectListing = ({
   projectListing,
   project,

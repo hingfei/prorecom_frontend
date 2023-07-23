@@ -2,6 +2,11 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography }
 import { Fragment } from 'react'
 import { DialogLayoutBasePropsType, DialogPropsType } from './index.d'
 
+// ---------------------------
+// DialogLayoutBase Component
+// ---------------------------
+
+// This component is a reusable base layout for creating a dialog.
 export const DialogLayoutBase = ({
   isOpen,
   onClose,
@@ -65,6 +70,13 @@ export const DialogLayoutBase = ({
   )
 }
 
+// ------------------------------
+// DialogDeleteLayout Component
+// ------------------------------
+
+// This component is a specific layout for a delete confirmation dialog.
+// It extends the DialogLayoutBase component and receives the same props.
+// The dialogContext prop can be used to display additional information in the dialog body.
 export const DialogDeleteLayout = ({
   isOpen,
   onClose,
@@ -105,6 +117,13 @@ export const DialogDeleteLayout = ({
   )
 }
 
+// ----------------------------------
+// DialogApplicationLayout Component
+// ----------------------------------
+
+// This component is a specific layout for an application dialog.
+// It extends the DialogLayoutBase component and receives the same props.
+// The dialogContext prop can be used to display additional information in the dialog body.
 export const DialogApplicationLayout = ({
   isOpen,
   onClose,

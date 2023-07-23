@@ -1,16 +1,17 @@
 // ** Toolkit imports
-import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from './reducers';
+import { configureStore } from '@reduxjs/toolkit'
+import rootReducer from './reducers'
 
+// ** Configure Redux Store
 export const store = configureStore({
   reducer: rootReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false
     })
-});
+})
 
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
-export * from './hooks';
-export * from './reducers/drawerReducer';
+export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>
+export * from './hooks'
+export * from './reducers/drawerReducer'

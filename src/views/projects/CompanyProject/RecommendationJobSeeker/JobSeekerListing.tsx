@@ -35,6 +35,17 @@ const ScrollWrapper = ({ children }: { children: ReactNode }) => {
   return <PerfectScrollbar options={{ wheelPropagation: false, suppressScrollX: true }}>{children}</PerfectScrollbar>
 }
 
+/**
+ * JobSeekerListing Component
+ *
+ * This component displays a list of job seekers with their details.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array<any>} props.jobSeekerList - The list of job seekers to be displayed.
+ * @param {JobSeekerType | undefined} props.jobSeeker - The selected job seeker from the list.
+ * @param {(item: any) => void} props.onChangeJobSeeker - The callback function to handle the selection of a job seeker.
+ * @returns {JSX.Element} The JobSeekerListing component.
+ */
 const JobSeekerListing = ({
   jobSeekerList,
   jobSeeker,
@@ -61,9 +72,6 @@ const JobSeekerListing = ({
           onClick={() => onChangeJobSeeker(item)}
         >
           <CardContent sx={{ paddingX: 6, paddingY: 5 }}>
-            {/* <Typography variant={'h6'} fontWeight={700} >
-              {item.seekerName}
-            </Typography> */}
             <Box display={'flex'} justifyContent={'space-between'} mb={2}>
               <Typography variant={'h6'} fontWeight={700}>
                 {item.seekerName}

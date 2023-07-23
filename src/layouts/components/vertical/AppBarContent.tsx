@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box'
-import { styled, Theme, useTheme } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
-import useMediaQuery from '@mui/material/useMediaQuery'
 import { Settings } from 'src/@core/context/settingsContext'
 // ** Components
 import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
@@ -12,8 +11,8 @@ import { useRouter } from 'next/router'
 import { useAuth } from '../../../@core/context/authContext'
 import { useEffect, useState } from 'react'
 import { BriefcaseOutline, ViewDashboardOutline } from 'mdi-material-ui'
-import { useCompanyDetailLazyQuery, useJobSeekerDetailLazyQuery } from "../../../graphql/api";
-import { onError } from "../../../@core/utils/response";
+import { useCompanyDetailLazyQuery, useJobSeekerDetailLazyQuery } from '../../../graphql/api'
+import { onError } from '../../../@core/utils/response'
 
 interface Props {
   hidden: boolean
@@ -29,16 +28,21 @@ const StyledLink = styled('a')({
   textDecoration: 'none'
 })
 
+/**
+ * Represents the content of the AppBar, which is the top navigation bar of the application.
+ *
+ * @returns {JSX.Element} The JSX Element representing the AppBar content.
+ */
 const AppBarContent = (props: Props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [userName, setUsername] = useState()
   const [userType, setUserType] = useState()
-  const [profilePic, setProfilePic] = useState(null);
+  const [profilePic, setProfilePic] = useState(null)
   const { isAuthenticated: useAuthAuthenticated, logout, handleLogin } = useAuth()
-
 
   const router = useRouter()
 
+  // Queries to fetch job seeker or company details based on the user type
   const [fetchJobSeeker] = useJobSeekerDetailLazyQuery({
     onCompleted: data => {
       setProfilePic(data?.jobSeekerDetail?.seekerProfilePic)
@@ -64,6 +68,7 @@ const AppBarContent = (props: Props) => {
     setIsAuthenticated(false)
   }
 
+  // useEffect to check user authentication status and fetch user data
   useEffect(() => {
     const checkAuth = () => {
       if (!useAuthAuthenticated) {
@@ -118,7 +123,7 @@ const AppBarContent = (props: Props) => {
               </IconButton>
             )}
             <NotificationDropdown />
-            <UserDropdown handleLogout={handleLogout} userType={userType} userName={userName} profilePic={profilePic}/>
+            <UserDropdown handleLogout={handleLogout} userType={userType} userName={userName} profilePic={profilePic} />
           </>
         )}
 

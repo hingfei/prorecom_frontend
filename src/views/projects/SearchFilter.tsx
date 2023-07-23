@@ -84,6 +84,23 @@ const CustomSlider = styled(Slider)(({ theme }) => ({
   }
 }))
 
+/**
+ * SearchFilter Component
+ *
+ * This component displays a search bar and filter options for projects. Users can filter projects based on project type,
+ * company state, experience levels, and salary range. The filter options are displayed in a dropdown menu.
+ *
+ * @param {Object} props - The component props.
+ * @param {Function} props.onClick - The function to handle the click event on the search button.
+ * @param {Function} props.handleChangeProjectList - The function to handle the change event on the project list.
+ * @param {Object} [props.switchOption] - The switch option for project list.
+ * @param {never[]} [props.defaultProjectList] - The default list of projects.
+ * @param {Dispatch<SetStateAction<never[]>>} [props.setProjectList] - The function to set the list of projects.
+ * @param {Dispatch<SetStateAction<number>>} props.setCurrentPage - The function to set the current page.
+ * @param {Dispatch<SetStateAction<never[]>>} props.setFilteredProjectList - The function to set the filtered list of projects.
+ * @param {Dispatch<SetStateAction<boolean>>} props.setFilterState - The function to set the filter state.
+ * @returns {JSX.Element} The SearchFilter component.
+ */
 const SearchFilter = ({
   onClick,
   handleChangeProjectList,

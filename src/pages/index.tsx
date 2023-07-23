@@ -15,6 +15,12 @@ const BoxSection = styled(Box)<BoxProps>(({ theme }) => ({
   }
 }))
 
+/**
+ * Component: Home
+ *
+ * This component represents the home page of the application.
+ * It renders different sections of content, including search content, introductions to various topics, etc.
+ */
 const Home = () => {
   return (
     <>

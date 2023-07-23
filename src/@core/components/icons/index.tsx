@@ -12,6 +12,7 @@ import {
 
 export type IconBaseProps = IconButtonProps & { title?: string; children: React.ReactNode }
 
+// Icon Base Component to render different types of icon
 const IconBase = ({ title, children, ...props }: IconBaseProps) => {
   return title ? (
     <Tooltip title={title}>

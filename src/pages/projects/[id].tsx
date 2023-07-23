@@ -12,18 +12,31 @@ import { useRouter } from 'next/router'
 import RecommendedJobSeekerSection from '../../views/projects/CompanyProject/RecommendationJobSeeker/RecommendedJobSeekerSection'
 import { useEffect, useState } from 'react'
 
+/**
+ * Component: CompanyProjectDetails
+ *
+ * This component displays the details of a specific company project. It fetches the project details using GraphQL
+ * queries and supports Server-Side Rendering (SSR). The displayed content and options may vary based on the user type
+ * (companies or job_seekers).
+ *
+ * @param {number} projectId - The ID of the project to display.
+ * @param {ProjectDetailQuery} ssrData - The pre-fetched data from SSR to avoid re-fetching when the component mounts.
+ */
 const CompanyProjectDetails = ({ projectId, ssrData }: { projectId: number; ssrData: ProjectDetailQuery }) => {
   const router = useRouter()
   const [userType, setUserType] = useState(null)
 
+  // Fetch the project details using the useProjectDetailQuery hook from GraphQL with cache-and-network fetch policy
   const { data: csrData, loading } = useProjectDetailQuery({
     variables: { projectId: projectId },
     fetchPolicy: 'cache-and-network'
   })
 
+  // Use the data from SSR if available, otherwise use the freshly fetched data from GraphQL query
   const data = csrData == undefined ? ssrData : csrData
 
   useEffect(() => {
+    // Get user data from localStorage to determine the user type (companies or job_seekers)
     const data = window.localStorage.getItem('userData')
     let userData
     if (data) {
@@ -36,6 +49,7 @@ const CompanyProjectDetails = ({ projectId, ssrData }: { projectId: number; ssrD
     <Spinner />
   ) : (
     <Grid container spacing={6}>
+      {/* Display the page header, and if the user is a company, show an additional 'Edit Project' link */}
       {userType === 'companies' ? (
         <PageHeader
           title={'Project Details'}
@@ -55,6 +69,7 @@ const CompanyProjectDetails = ({ projectId, ssrData }: { projectId: number; ssrD
         <CompanyProjectDetailsSection project={data?.projectDetail} />
       </Grid>
 
+      {/* If the user is a company, show the 'Potential Candidates' section */}
       {userType === 'companies' && (
         <>
           <PageHeader title={'Potential Candidates'} />
@@ -71,13 +86,19 @@ const CompanyProjectDetails = ({ projectId, ssrData }: { projectId: number; ssrD
   )
 }
 
-CompanyProjectDetails.title = 'Location Detail'
-
 export default withAuth(CompanyProjectDetails, ['companies', 'job_seekers'])
 
+/**
+ * Server-Side Rendering (SSR) function for the CompanyProjectDetails component.
+ * This function is called on the server-side and fetches the project details using Apollo Client with the provided token.
+ *
+ * @param {NextPageContext} ctx - The Next.js page context, which includes request information.
+ * @returns {Object} - An object with props for the component, including SSR data and the project ID.
+ */
 export async function getServerSideProps(ctx: NextPageContext | undefined) {
   const token = getCookie(authConfig.storageTokenKeyName, ctx)
   const projectId = parseInt((ctx?.query?.id as string) || '')
+
   try {
     const data = await client.query<ProjectDetailQuery>({
       fetchPolicy: 'network-only',

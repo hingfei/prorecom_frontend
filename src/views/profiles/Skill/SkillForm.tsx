@@ -6,10 +6,21 @@ import { useSkillListingQuery } from '../../../graphql/api'
 import DropdownSkeleton from '../../../@core/components/skeleton/DropdownSkeleton'
 import { MinusIcon, PlusIcon } from '../../../@core/components/icons'
 
+/**
+ * SkillForm Component
+ *
+ * This component provides a form for adding or editing job seeker skills.
+ * It allows job seekers to select skills from a dropdown list and add or remove them dynamically.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} props.isEdit - A boolean indicating whether the form is for editing an existing skill.
+ * @returns {JSX.Element} The SkillForm component.
+ */
 const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => {
   const dispatch = useAppDispatch()
   const { control, setValue } = useFormContext()
 
+  // Get the current skills array using react-hook-form's useWatch hook
   const skills = useWatch({
     name: 'skills',
     defaultValue: []
@@ -19,16 +30,19 @@ const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => 
     dispatch(closeDrawerState())
   }
 
+  // Fetch the list of available skills from the server using the useSkillListingQuery
   const { data, loading } = useSkillListingQuery({
     fetchPolicy: 'no-cache'
   })
 
+  // Remove a skill from the skills array at the specified index.
   const removeSkill = (index: number) => {
     const updatedSkills = [...skills]
     updatedSkills.splice(index, 1)
     setValue('skills', updatedSkills)
   }
 
+  // Add a new empty skill to the skills array.
   const addSkill = () => {
     const newSkills = [...skills, { value: '' }]
     setValue('skills', newSkills)
@@ -39,6 +53,7 @@ const SkillForm = ({ isEdit, ...props }: ButtonProps & { isEdit?: boolean }) => 
       {loading ? (
         <DropdownSkeleton />
       ) : skills.length > 0 ? (
+        // Map through the skills array to display each skill as a SelectInput component
         skills.map((skill: any, index: number) => (
           <Grid
             container
