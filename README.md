@@ -1,4 +1,5 @@
 # ProRecom
+
 ## Intelligent Project Recommendation System (Front-end)
 
 ![img.png](public/images/prorecom_landing_page.png)
@@ -13,6 +14,7 @@ traditional recommendation systems and offer more accurate and relevant recommen
 
 - [ProRecom](#prorecom)
   - [Table of Contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Description](#description)
     - [Purpose](#purpose)
@@ -21,8 +23,17 @@ traditional recommendation systems and offer more accurate and relevant recommen
     - [Why Choose ProRecom](#why-choose-prorecom)
   - [Technologies](#technologies)
   - [Features](#features)
-  - [Usage](#usage)
+  - [Future Enhancements](#future-enhancements)
   - [Backend Reference](#backend-reference)
+
+## Prerequisites
+
+Before installing and running ProRecom Frontend, ensure that you have the following prerequisites set up:
+
+1. **Node Package Manager (npm) or Yarn**: ProRecom Frontend requires either npm or Yarn to manage and install its
+   dependencies. If you don't have npm or Yarn installed, you can download Node.js, which includes npm, from the
+   official website: [Node.js](https://nodejs.org/en). Alternatively, you can install Yarn from its official
+   website: [Yarn](https://yarnpkg.com/).
 
 ## Installation
 
@@ -174,4 +185,4 @@ the efficiency and effectiveness of the job market, benefiting both individuals 
 
 ## Backend Reference
 
-For backend reference, kindly visit https://github.com/hingfei/prorecom_backend
+For backend reference, kindly visit [ProRecom Backend Repository](https://github.com/hingfei/prorecom_backend). 
