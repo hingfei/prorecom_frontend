@@ -1,4 +1,4 @@
-# ProRecom
+# ProRecom - Intelligent Project Recommendation System
 
 ![img.png](public/images/prorecom_landing_page.png)
 
