@@ -25,8 +25,6 @@ traditional recommendation systems and offer more accurate and relevant recommen
 
 ## Installation
 
-[Provide step-by-step instructions on how to set up and install your project locally. Include any prerequisites and dependencies.]
-
 1. Clone the repository: `git clone https://github.com/hingfei/prorecom_frontend.git`
 2. Install dependencies: `npm install` or `yarn install`
 3. Add .env file
