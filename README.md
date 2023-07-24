@@ -1,4 +1,5 @@
-# ProRecom - Intelligent Project Recommendation System
+# ProRecom
+## Intelligent Project Recommendation System (Front-end)
 
 ![img.png](public/images/prorecom_landing_page.png)
 
